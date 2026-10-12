@@ -33,64 +33,66 @@ export const WelcomeMessagesSection = () => {
   ];
 
   return (
-    <section className="bg-neutral-50 text-neutral-900 pt-10 sm:pt-12 pb-16 sm:pb-24 border-b border-neutral-200">
-      <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-14">
+    <section className="bg-neutral-50 text-neutral-900 pt-8 sm:pt-12 pb-12 sm:pb-24 border-b border-neutral-200">
+      <div className="mx-auto max-w-[1400px] px-4 sm:px-8 lg:px-14">
 
         {/* Section Header */}
-        <div className="mb-14 text-center max-w-3xl mx-auto">
-          <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-[#B70D2B] mb-2">
+        <div className="mb-8 sm:mb-14 text-center max-w-3xl mx-auto">
+          <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-[#B70D2B] mb-1.5 sm:mb-2">
             Leadership &amp; Vision
           </p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-neutral-900 leading-tight">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-neutral-900 leading-tight">
             Welcome <span className="text-[#B70D2B]">Messages</span>
           </h2>
-          <div className="mt-3.5 h-1 w-16 bg-[#B70D2B] mx-auto mb-4" />
-          <p className="text-sm sm:text-base text-neutral-600">
+          <div className="mt-2.5 sm:mt-3.5 h-1 w-16 bg-[#B70D2B] mx-auto mb-3 sm:mb-4" />
+          <p className="text-xs sm:text-base text-neutral-600">
             Inspiring words from our Dean, President, and General Secretary welcoming the alumni fraternity to Dharohar 2026.
           </p>
         </div>
 
         {/* 3 Leadership Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
           {messages.map((item, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl border border-neutral-200 p-8 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between relative group hover:-translate-y-1"
+              className="bg-white rounded-xl border border-neutral-200 p-5 sm:p-8 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between relative group hover:-translate-y-1"
             >
               {/* Quote Icon */}
-              <div className="absolute top-6 right-6 text-neutral-200 group-hover:text-red-100 transition-colors pointer-events-none">
-                <Quote className="w-10 h-10" />
+              <div className="absolute top-5 sm:top-6 right-5 sm:right-6 text-neutral-200 group-hover:text-red-100 transition-colors pointer-events-none">
+                <Quote className="w-8 h-8 sm:w-10 sm:h-10" />
               </div>
 
               <div>
                 {/* Profile Avatar & Header */}
-                <div className="flex items-center gap-5 mb-6">
+                <div className="flex items-center gap-3.5 sm:gap-5 mb-4 sm:mb-6">
                   <div className="relative shrink-0">
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-4 border-[#B70D2B] p-1 shadow-lg"
+                      className="w-20 h-20 sm:w-28 sm:h-28 rounded-full object-cover border-4 border-[#B70D2B] p-0.5 sm:p-1 shadow-lg"
                     />
                     <span className="absolute -bottom-1 -right-1 bg-[#B70D2B] text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-tighter shadow">
                       {item.roleBadge}
                     </span>
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-neutral-900 leading-tight">{item.name}</h3>
-                    <p className="text-xs font-semibold text-[#B70D2B] mt-1">{item.title}</p>
+                    <h3 className="text-base sm:text-lg font-bold text-neutral-900 leading-tight">{item.name}</h3>
+                    <p className="text-xs font-semibold text-[#B70D2B] mt-0.5 sm:mt-1">{item.title}</p>
                   </div>
                 </div>
 
                 {/* Message Quote */}
-                <div className="space-y-3 text-xs sm:text-sm leading-relaxed text-neutral-600 border-t border-neutral-100 pt-5">
+                <div className="space-y-2.5 sm:space-y-3 text-xs sm:text-sm leading-relaxed text-neutral-600 border-t border-neutral-100 pt-4 sm:pt-5">
                   {item.quote.split('\n\n').map((para, pIdx) => (
-                    <p key={pIdx}>{para}</p>
+                    <p key={pIdx} className={pIdx > 0 ? 'hidden sm:block' : ''}>
+                      {para}
+                    </p>
                   ))}
                 </div>
               </div>
 
               {/* Bottom Card Accent */}
-              <div className="mt-6 pt-4 border-t border-neutral-100 flex items-center justify-between text-[11px] text-neutral-400 font-medium">
+              <div className="mt-5 sm:mt-6 pt-3.5 sm:pt-4 border-t border-neutral-100 flex items-center justify-between text-[11px] text-neutral-400 font-medium">
                 <span>DHAROHAR 2026</span>
                 <span className="text-[#B70D2B] font-bold">GCAAA Family</span>
               </div>
@@ -99,12 +101,12 @@ export const WelcomeMessagesSection = () => {
         </div>
 
         {/* Bottom CTA Button */}
-        <div className="mt-12 text-center">
+        <div className="mt-8 sm:mt-12 text-center">
           <Link
             to="/committee"
-            className="inline-flex items-center gap-2 bg-white hover:bg-neutral-900 text-neutral-800 hover:text-white border border-neutral-300 hover:border-neutral-900 px-7 py-3.5 text-xs font-bold uppercase tracking-wider rounded shadow-sm hover:shadow transition-all group"
+            className="w-full sm:w-auto justify-center inline-flex items-center gap-2 bg-white hover:bg-neutral-900 text-neutral-800 hover:text-white border border-neutral-300 hover:border-neutral-900 px-6 sm:px-7 py-3 sm:py-3.5 text-xs font-bold uppercase tracking-wider rounded shadow-sm hover:shadow transition-all group"
           >
-            <span>View Full Executive Committee &amp; Office Bearers (17+)</span>
+            <span>View Executive Committee &amp; Office Bearers</span>
             <ArrowRight className="w-4 h-4 text-[#B70D2B] group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

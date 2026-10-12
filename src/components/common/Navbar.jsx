@@ -109,7 +109,7 @@ export const Navbar = () => {
                 <Clock className="w-5 h-5 text-neutral-800" />
               </div>
               <div>
-                <p className="text-sm font-bold text-neutral-900 leading-tight">09:00 am - 06:00 pm</p>
+                <p className="text-sm font-bold text-neutral-900 leading-tight lining-nums">09:00 am - 06:00 pm</p>
                 <p className="text-xs text-neutral-500">We Serve with Pleasure</p>
               </div>
             </div>
@@ -119,7 +119,7 @@ export const Navbar = () => {
                 <Phone className="w-5 h-5 text-neutral-800" />
               </div>
               <div>
-                <a href="tel:05222740152" className="text-sm font-bold text-neutral-900 leading-tight hover:text-red-600 transition-colors">
+                <a href="tel:05222740152" className="text-sm font-bold text-neutral-900 leading-tight hover:text-red-600 transition-colors lining-nums">
                   0522-2740152
                 </a>
                 <p className="text-xs text-neutral-500">Discuss any Queries</p>

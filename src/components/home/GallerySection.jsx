@@ -213,12 +213,12 @@ export const GallerySection = () => {
           </p>
 
           {/* Filter Tabs */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
+          <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
             {categories.map((cat) => (
               <button
                 key={cat.key}
                 onClick={() => setActiveCategory(cat.key)}
-                className={`px-4 py-2 rounded-full text-xs font-bold transition-all uppercase tracking-wider ${
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-bold transition-all uppercase tracking-wider ${
                   activeCategory === cat.key
                     ? 'bg-red-600 text-white shadow-lg shadow-red-600/30 ring-2 ring-red-400/40'
                     : 'bg-neutral-100 border border-neutral-200 text-neutral-700 hover:border-red-500/50 hover:text-red-600'
@@ -233,14 +233,16 @@ export const GallerySection = () => {
         {/* ========================================================
             GALLERY GRID
         ======================================================== */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
           {filteredItems.map((item, index) => (
             <div
               key={item.id}
               onClick={() => openLightbox(index)}
-              className="group cursor-pointer relative bg-white rounded-xl overflow-hidden border border-neutral-200 hover:border-red-500/70 transition-all duration-300 hover:shadow-2xl hover:shadow-red-100 hover:-translate-y-1"
+              className={`group cursor-pointer relative bg-white rounded-xl overflow-hidden border border-neutral-200 hover:border-red-500/70 transition-all duration-300 hover:shadow-2xl hover:shadow-red-100 hover:-translate-y-1 ${
+                index >= 6 ? 'hidden sm:block' : ''
+              }`}
             >
-              <div className="p-3 bg-white">
+              <div className="p-2.5 sm:p-3 bg-white">
                 <div className="relative overflow-hidden rounded-lg bg-neutral-100 aspect-[4/3]">
                   <img
                     src={item.src}
@@ -263,7 +265,7 @@ export const GallerySection = () => {
                 </div>
 
                 {/* Bottom Card Caption */}
-                <div className="pt-3 px-1 flex items-center justify-between">
+                <div className="pt-2.5 sm:pt-3 px-1 flex items-center justify-between">
                   <div className="truncate pr-2">
                     <p className="text-xs font-bold text-neutral-800 group-hover:text-red-600 transition-colors truncate">
                       {item.title}
@@ -282,28 +284,28 @@ export const GallerySection = () => {
         {/* ========================================================
             BOTTOM ACTIONS
         ======================================================== */}
-        <div className="mt-14 text-center">
-          <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-neutral-50 border border-neutral-200 p-4 sm:p-5 rounded-2xl shadow-sm">
+        <div className="mt-10 sm:mt-14 text-center">
+          <div className="inline-flex flex-col md:flex-row items-center gap-4 bg-neutral-50 border border-neutral-200 p-4 sm:p-5 rounded-2xl shadow-sm w-full md:w-auto">
             <div className="flex items-center gap-3 text-left">
               <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-200 text-red-600 flex items-center justify-center shrink-0">
                 <Sparkles className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-sm font-bold text-neutral-900">Have photos from past Dharohar meets or college days?</p>
-                <p className="text-xs text-neutral-600">Share your batch photos to be featured in the official GCAAA archive.</p>
+                <p className="text-xs sm:text-sm font-bold text-neutral-900">Have photos from past Dharohar meets or college days?</p>
+                <p className="text-[11px] sm:text-xs text-neutral-600">Share your batch photos to be featured in the official GCAAA archive.</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 sm:ml-6 shrink-0">
+            <div className="flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3 w-full md:w-auto md:ml-6 shrink-0">
               <Link
                 to="/gallery"
-                className="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider rounded-lg transition-all shadow-md shadow-red-600/30"
+                className="w-full sm:w-auto text-center px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider rounded-lg transition-all shadow-md shadow-red-600/30"
               >
                 View Full Gallery
               </Link>
               <Link
                 to="/contact"
-                className="px-5 py-2.5 border border-neutral-300 hover:border-neutral-900 hover:bg-neutral-900 hover:text-white text-neutral-700 text-xs font-bold uppercase tracking-wider rounded-lg transition-all"
+                className="w-full sm:w-auto text-center px-5 py-2.5 border border-neutral-300 hover:border-neutral-900 hover:bg-neutral-900 hover:text-white text-neutral-700 text-xs font-bold uppercase tracking-wider rounded-lg transition-all"
               >
                 Contribute Photos
               </Link>
@@ -318,64 +320,64 @@ export const GallerySection = () => {
       {selectedPhotoIndex !== null && filteredItems[selectedPhotoIndex] && (
         <div
           onClick={closeLightbox}
-          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-fadeIn"
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center p-3 sm:p-8 animate-fadeIn"
         >
           {/* Top Bar with Title & Close */}
-          <div className="absolute top-4 left-4 right-4 flex items-center justify-between text-white z-20">
-            <div className="flex items-center gap-3">
-              <span className="px-2.5 py-1 rounded bg-red-600 text-white text-[10px] font-black uppercase tracking-wider">
+          <div className="absolute top-3 sm:top-4 left-3 sm:left-4 right-3 sm:right-4 flex items-center justify-between text-white z-20">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <span className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded bg-red-600 text-white text-[9px] sm:text-[10px] font-black uppercase tracking-wider">
                 {filteredItems[selectedPhotoIndex].badge}
               </span>
-              <span className="text-xs font-semibold text-neutral-300">
+              <span className="text-[11px] sm:text-xs font-semibold text-neutral-300">
                 {selectedPhotoIndex + 1} / {filteredItems.length}
               </span>
             </div>
             <button
               onClick={closeLightbox}
-              className="p-2 rounded-full bg-neutral-900 border border-neutral-700 text-white hover:bg-red-600 transition-colors"
+              className="p-1.5 sm:p-2 rounded-full bg-neutral-900 border border-neutral-700 text-white hover:bg-red-600 transition-colors"
               aria-label="Close"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
 
           {/* Previous Button */}
           <button
             onClick={prevPhoto}
-            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-neutral-900/80 border border-neutral-700 text-white hover:bg-red-600 transition-colors z-20"
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-2 sm:p-3 rounded-full bg-neutral-900/80 border border-neutral-700 text-white hover:bg-red-600 transition-colors z-20"
             aria-label="Previous Photo"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
           {/* Next Button */}
           <button
             onClick={nextPhoto}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-neutral-900/80 border border-neutral-700 text-white hover:bg-red-600 transition-colors z-20"
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-2 sm:p-3 rounded-full bg-neutral-900/80 border border-neutral-700 text-white hover:bg-red-600 transition-colors z-20"
             aria-label="Next Photo"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
           {/* Image Container */}
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative max-w-4xl max-h-[85vh] flex flex-col items-center justify-center"
+            className="relative max-w-4xl max-h-[85vh] flex flex-col items-center justify-center px-2"
           >
-            <div className="relative p-2 bg-neutral-900 rounded-2xl border-2 border-red-600/50 shadow-2xl overflow-hidden">
+            <div className="relative p-1.5 sm:p-2 bg-neutral-900 rounded-xl sm:rounded-2xl border-2 border-red-600/50 shadow-2xl overflow-hidden">
               <img
                 src={filteredItems[selectedPhotoIndex].src}
                 alt={filteredItems[selectedPhotoIndex].title}
-                className="max-h-[70vh] max-w-full object-contain rounded-lg"
+                className="max-h-[60vh] sm:max-h-[70vh] max-w-full object-contain rounded-lg"
               />
             </div>
 
             {/* Caption below image */}
-            <div className="mt-4 text-center max-w-xl">
-              <h3 className="text-lg font-bold text-white">
+            <div className="mt-3 sm:mt-4 text-center max-w-xl">
+              <h3 className="text-sm sm:text-lg font-bold text-white">
                 {filteredItems[selectedPhotoIndex].title}
               </h3>
-              <p className="text-xs text-neutral-400 mt-1">
+              <p className="text-[11px] sm:text-xs text-neutral-400 mt-0.5 sm:mt-1">
                 {filteredItems[selectedPhotoIndex].subtitle}
               </p>
             </div>

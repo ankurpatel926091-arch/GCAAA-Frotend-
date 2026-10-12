@@ -1,5 +1,6 @@
 import heroBg from '@/assets/images/clg.png';
 import { AboutSection } from '@/components/home/AboutSection';
+import { NoticesSection } from '@/components/home/NoticesSection';
 import { DharoharSection } from '@/components/home/DharoharSection';
 import { EventSection } from '@/components/home/EventSection';
 import { WelcomeMessagesSection } from '@/components/home/WelcomeMessagesSection';
@@ -20,7 +21,7 @@ export const HomePage = () => {
       {/* ========================================================
           1. HERO SECTION (IMAGE ONLY)
       ======================================================== */}
-      <section className="relative w-full h-[55vh] sm:h-[65vh] md:h-[75vh] lg:h-[85vh] min-h-[380px] sm:min-h-[480px] overflow-hidden">
+      <section className="relative w-full h-[45vh] sm:h-[65vh] md:h-[75vh] lg:h-[85vh] min-h-[260px] sm:min-h-[440px] overflow-hidden">
         {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat brightness-105 contrast-100 saturate-125"
@@ -59,7 +60,12 @@ export const HomePage = () => {
       <AboutSection />
 
       {/* ========================================================
-          4. DHAROHAR 2026 SECTION
+          8. ALUMNI LEGACY
+      ======================================================== */}
+      <AlumniLegacySection />
+
+      {/* ========================================================
+          5. DHAROHAR 2026 SECTION
       ======================================================== */}
       <DharoharSection />
 
@@ -78,10 +84,11 @@ export const HomePage = () => {
       ======================================================== */}
       <WelcomeMessagesSection />
 
+      
       {/* ========================================================
-          8. ALUMNI LEGACY
+          4. NOTICES & ANNOUNCEMENTS SECTION (CIRCULARS & NOTICES)
       ======================================================== */}
-      <AlumniLegacySection />
+      <NoticesSection />
     </div>
   );
 };

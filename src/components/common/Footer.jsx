@@ -54,9 +54,9 @@ export const Footer = () => {
               </div>
             </Link>
 
-            <p className="text-neutral-400 text-sm leading-relaxed text-justify">
-  GCAAA unites seasoned architects, graduates, and faculty under one collaborative umbrella — fostering brotherhood, design excellence, and our timeless campus heritage.
-</p>
+            <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed text-left sm:text-justify">
+              GCAAA unites seasoned architects, graduates, and faculty under one collaborative umbrella — fostering brotherhood, design excellence, and our timeless campus heritage.
+            </p>
 
             {/* Affiliation Badge */}
             <div className="p-3 rounded-lg bg-neutral-950 border border-neutral-900 text-neutral-400 text-sm space-y-1.5">
