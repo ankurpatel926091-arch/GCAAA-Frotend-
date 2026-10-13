@@ -1,13 +1,22 @@
-import { Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 import { Navbar } from '@/components/common/Navbar';
 import { Footer } from '@/components/common/Footer';
 import { FloatingSidePills } from '@/components/common/FloatingSidePills';
+import { DharoharInviteModal } from '@/components/common/DharoharInviteModal';
 
 export const MainLayout = () => {
+  const { pathname, search } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [pathname, search]);
+
   return (
     <div className="min-h-screen flex flex-col bg-neutral-950 text-neutral-100 selection:bg-red-600 selection:text-white relative">
       <Navbar />
       <FloatingSidePills />
+      <DharoharInviteModal />
       <main className="flex-1">
         <Outlet />
       </main>
@@ -15,3 +24,5 @@ export const MainLayout = () => {
     </div>
   );
 };
+
+

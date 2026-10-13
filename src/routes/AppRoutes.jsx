@@ -17,6 +17,7 @@ export const AppRoutes = () => {
         <Route path="events" element={<EventsPage />} />
         <Route path="gallery" element={<GalleryPage />} />
         <Route path="committee" element={<CommitteePage />} />
+        <Route path="committee/:section" element={<CommitteePage />} />
         <Route path="contact" element={<ContactPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>

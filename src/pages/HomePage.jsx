@@ -6,6 +6,8 @@ import { EventSection } from '@/components/home/EventSection';
 import { WelcomeMessagesSection } from '@/components/home/WelcomeMessagesSection';
 import { GallerySection } from '@/components/home/GallerySection';
 import { AlumniLegacySection } from '@/components/home/AlumniLegacySection';
+import { PastSponsorsSection } from '@/components/home/PastSponsorsSection';
+import { HeritageCtaSection } from '@/components/common/HeritageCtaSection';
 
 export const HomePage = () => {
   const tickerItems = [
@@ -54,15 +56,17 @@ export const HomePage = () => {
         </div>
       </div>
 
-      {/* ========================================================
-          3. ABOUT SECTION
-      ======================================================== */}
-      <AboutSection />
+      
 
       {/* ========================================================
           8. ALUMNI LEGACY
       ======================================================== */}
       <AlumniLegacySection />
+
+      {/* ========================================================
+          4. NOTICES & ANNOUNCEMENTS SECTION (CIRCULARS & NOTICES)
+      ======================================================== */}
+      <NoticesSection />
 
       {/* ========================================================
           5. DHAROHAR 2026 SECTION
@@ -84,11 +88,21 @@ export const HomePage = () => {
       ======================================================== */}
       <WelcomeMessagesSection />
 
-      
       {/* ========================================================
-          4. NOTICES & ANNOUNCEMENTS SECTION (CIRCULARS & NOTICES)
+          3. ABOUT SECTION
       ======================================================== */}
-      <NoticesSection />
+      <AboutSection />
+      
+
+      {/* ========================================================
+          9. PAST SPONSORS SECTION
+      ======================================================== */}
+      <PastSponsorsSection />
+
+      {/* ========================================================
+          10. HERITAGE STAMP & SKYLINE CTA SECTION
+      ======================================================== */}
+      <HeritageCtaSection />
     </div>
   );
 };

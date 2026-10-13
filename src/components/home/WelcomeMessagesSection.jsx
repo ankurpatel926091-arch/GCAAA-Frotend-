@@ -42,7 +42,7 @@ export const WelcomeMessagesSection = () => {
             Leadership &amp; Vision
           </p>
           <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-neutral-900 leading-tight">
-            Welcome <span className="text-[#B70D2B]">Messages</span>
+            OUR <span className="text-[#B70D2B]">PATRON</span>
           </h2>
           <div className="mt-2.5 sm:mt-3.5 h-1 w-16 bg-[#B70D2B] mx-auto mb-3 sm:mb-4" />
           <p className="text-xs sm:text-base text-neutral-600">

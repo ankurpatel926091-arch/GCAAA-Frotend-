@@ -284,8 +284,8 @@ export const GallerySection = () => {
         {/* ========================================================
             BOTTOM ACTIONS
         ======================================================== */}
-        <div className="mt-10 sm:mt-14 text-center">
-          <div className="inline-flex flex-col md:flex-row items-center gap-4 bg-neutral-50 border border-neutral-200 p-4 sm:p-5 rounded-2xl shadow-sm w-full md:w-auto">
+        <div className="mt-10 sm:mt-14 w-full">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-neutral-50 border border-neutral-200 p-4 sm:p-5 rounded-2xl shadow-sm w-full">
             <div className="flex items-center gap-3 text-left">
               <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-200 text-red-600 flex items-center justify-center shrink-0">
                 <Sparkles className="w-5 h-5" />
@@ -296,7 +296,7 @@ export const GallerySection = () => {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3 w-full md:w-auto md:ml-6 shrink-0">
+            <div className="flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3 w-full md:w-auto shrink-0">
               <Link
                 to="/gallery"
                 className="w-full sm:w-auto text-center px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider rounded-lg transition-all shadow-md shadow-red-600/30"
