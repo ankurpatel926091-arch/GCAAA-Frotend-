@@ -46,7 +46,7 @@ export const FloatingSidePills = () => {
       <div className="hidden md:flex fixed right-0 top-[45%] -translate-y-1/2 z-40 flex-col gap-3.5 pointer-events-auto select-none">
         {/* Right Pill 1: Alumni Register / Join GCAAA */}
         <Link
-          to="/contact"
+          to="/registration"
           title="Alumni Registration & Life Membership"
           className="group relative bg-[#B70D2B] hover:bg-red-700 text-white font-bold text-[11px] sm:text-xs tracking-wider uppercase py-3.5 sm:py-4 px-1.5 sm:px-2 rounded-l-xl shadow-xl shadow-red-950/40 border-l-2 border-y-2 border-red-500/80 transition-all duration-300 hover:-translate-x-1.5 hover:shadow-red-600/60 flex items-center justify-center cursor-pointer"
         >

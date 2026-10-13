@@ -116,7 +116,7 @@ export const AlumniLegacySection = ({ showTimelineAndImpact = false }) => {
                 </Link>
               )}
               <Link
-                to="/contact"
+                to="/registration"
                 className="w-full sm:w-auto text-center justify-center inline-flex items-center gap-2 border border-neutral-300 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 text-neutral-800 font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-lg transition-all"
               >
                 Join Alumni Directory

@@ -183,10 +183,7 @@ export const ExecutiveCommitteeSection = ({ activeSection }) => {
                 <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#B70D2B] block mb-1">
                   Governing Council
                 </span>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-neutral-900 flex items-center gap-2.5">
-                  <Users className="w-6 h-6 text-[#B70D2B]" />
-                  <span>Executive Members</span>
-                </h3>
+                
               </div>
               <p className="text-xs sm:text-sm text-neutral-500 mt-1 sm:mt-0">
                 Active council members representing diverse cohorts of our alumni fraternity
@@ -244,10 +241,7 @@ export const ExecutiveCommitteeSection = ({ activeSection }) => {
                 <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#B70D2B] block mb-1">
                   Event &amp; Initiative Coordination
                 </span>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-neutral-900 flex items-center gap-2.5">
-                  <Award className="w-6 h-6 text-[#B70D2B]" />
-                  <span>Convenor</span>
-                </h3>
+                
               </div>
               <p className="text-xs sm:text-sm text-neutral-500 mt-1 sm:mt-0">
                 Dedicated convenors spearheading alumni engagements and conclaves

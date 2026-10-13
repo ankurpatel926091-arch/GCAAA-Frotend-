@@ -27,13 +27,13 @@ export const HeritageCtaSection = () => {
 
             {/* Subtitle Description */}
             <p className="text-xs sm:text-sm md:text-base text-neutral-300 leading-relaxed font-normal max-w-2xl mx-auto">
-              Reconnect with batchmates and mentors, explore the global architectural alumni network, stay updated with chapter events, and participate in . Register today to stay connected!
+              Reconnect with batchmates and mentors, explore the global architectural alumni network, stay updated with chapter events, and participate in Dharohar 2026. Register today to stay connected!
             </p>
 
             {/* Action Buttons */}
             <div className="pt-1 sm:pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
               <Link
-                to="/contact"
+                to="/registration"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#B70D2B] hover:bg-red-700 active:scale-[0.98] text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider px-8 py-3 rounded-xl shadow-lg shadow-red-950/40 hover:-translate-y-0.5 transition-all"
               >
                 <span>Register As Alumnus</span>

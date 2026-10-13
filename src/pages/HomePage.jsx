@@ -63,7 +63,7 @@ export const HomePage = () => {
           {/* Action CTA Buttons */}
           <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
             <Link
-              to="/contact"
+              to="/registration"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-[#B70D2B] hover:bg-red-700 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider px-7 py-3.5 rounded-full shadow-xl shadow-red-950/50 hover:shadow-red-600/50 hover:-translate-y-0.5 transition-all"
             >
               <span>Register As Alumnus</span>

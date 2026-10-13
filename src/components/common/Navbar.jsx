@@ -262,8 +262,8 @@ export const Navbar = () => {
                 </button>
                 {desktopDropdown === 'join' && (
                   <div className="absolute top-full left-0 bg-neutral-900 border border-neutral-800 text-white shadow-xl min-w-[200px] py-2 z-50">
-                    <Link to="/contact" onClick={closeAllMenus} className="block px-4 py-2 hover:bg-red-600 text-xs">Alumni Registration</Link>
-                    <Link to="/contact" onClick={closeAllMenus} className="block px-4 py-2 hover:bg-red-600 text-xs">Life Membership</Link>
+                    <Link to="/registration" onClick={closeAllMenus} className="block px-4 py-2 hover:bg-red-600 text-xs">Alumni Registration</Link>
+                    <Link to="/registration?tab=membership" onClick={closeAllMenus} className="block px-4 py-2 hover:bg-red-600 text-xs">Life Membership</Link>
                   </div>
                 )}
               </div>
@@ -311,8 +311,8 @@ export const Navbar = () => {
                   </button>
                   {activeDropdown === 'join' && (
                     <div className="pl-6 space-y-1 py-1 bg-red-800/50">
-                      <Link to="/contact" onClick={closeAllMenus} className="block py-1 text-xs">Alumni Registration</Link>
-                      <Link to="/contact" onClick={closeAllMenus} className="block py-1 text-xs">Life Membership</Link>
+                      <Link to="/registration" onClick={closeAllMenus} className="block py-1 text-xs">Alumni Registration</Link>
+                      <Link to="/registration?tab=membership" onClick={closeAllMenus} className="block py-1 text-xs">Life Membership</Link>
                     </div>
                   )}
                 </div>
