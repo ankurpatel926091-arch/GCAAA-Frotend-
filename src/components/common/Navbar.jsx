@@ -205,7 +205,7 @@ export const Navbar = () => {
               RESOURCES
             </NavLink>
             <NavLink to="/blog" className={({ isActive }) => `px-4 py-3.5 hover:bg-red-700 transition-colors ${isActive ? 'bg-red-700 text-white' : ''}`}>
-              BLOG
+              BLOGS
             </NavLink>
 
             <div className="relative group">
