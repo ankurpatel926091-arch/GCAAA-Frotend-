@@ -131,11 +131,11 @@ export const galleryItems = [
 ];
 
 const categories = [
-  { key: 'all', label: 'All Photos (सभी तस्वीरें)' },
-  { key: 'dharohar', label: 'Dharohar Meets (धरोहर उत्सव)' },
-  { key: 'campus', label: 'Campus & Steps (परिसर एवं बैच)' },
-  { key: 'cohort', label: 'Silver Jubilee 2001 (बैच 2001)' },
-  { key: 'tradition', label: 'Ceremonies & Gala (परंपरा एवं डिनर)' },
+  { key: 'all', label: 'All Photos' },
+  { key: 'dharohar', label: 'Dharohar Meets' },
+  { key: 'campus', label: 'Campus & Steps' },
+  { key: 'cohort', label: 'Silver Jubilee 2001' },
+  { key: 'tradition', label: 'Ceremonies & Gala' },
 ];
 
 export const GallerySection = () => {
@@ -194,7 +194,7 @@ export const GallerySection = () => {
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 border border-red-200 text-red-600 text-xs font-bold tracking-widest uppercase mb-4 shadow-sm">
             <Camera className="w-3.5 h-3.5 text-red-500" />
-            <span>MEMORIES & REUNIONS • यादें और धरोहर</span>
+            <span>MEMORIES & REUNIONS </span>
           </div>
 
           <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-neutral-900 tracking-tight uppercase">
@@ -207,10 +207,6 @@ export const GallerySection = () => {
             <div className="h-0.5 w-16 bg-gradient-to-l from-transparent to-red-600" />
           </div>
 
-          <p className="text-neutral-600 text-sm sm:text-base leading-relaxed">
-            Relive cherished moments from past Dharohar conclaves, batch silver & ruby jubilees,
-            traditional lamp lightings, and timeless reunions at the Government College of Architecture Lucknow.
-          </p>
 
           {/* Filter Tabs */}
           <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">

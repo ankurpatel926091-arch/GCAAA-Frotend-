@@ -47,9 +47,10 @@ export const HomePage = () => {
           </div>
 
           {/* Main Hero Headline */}
-          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black font-serif tracking-tight leading-[1.15] text-white max-w-4xl drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]">
-            Uniting Generations of Architects,{' '}
-            <span className="block mt-1 sm:mt-2 text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-amber-200 to-white">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black font-serif tracking-tight leading-[1.15] text-white max-w-5xl drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]">
+            <span className="block">Uniting Generations of</span>
+            <span className="block">Architects,</span>
+            <span className="block mt-1 sm:mt-2 text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-amber-200 to-white lg:whitespace-nowrap">
               Honoring Our Timeless Legacy
             </span>
           </h1>

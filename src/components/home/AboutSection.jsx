@@ -37,16 +37,6 @@ export const AboutSection = () => {
                 Lucknow (now AKTU) for all academic matters.
               </p>
             </div>
-
-            {/* Solid Rectangular Action Button */}
-            <div>
-              <Link
-                to="/about"
-                className="w-full text-center sm:w-auto inline-block bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider px-8 py-3.5 shadow-md hover:shadow-lg transition-all active:scale-95"
-              >
-                READ MORE
-              </Link>
-            </div>
           </div>
 
           {/* ========================================================

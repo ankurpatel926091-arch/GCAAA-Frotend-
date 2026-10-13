@@ -68,15 +68,21 @@ export const Navbar = () => {
       <div className="bg-white border-b border-neutral-200 ">
         <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row items-stretch justify-between text-xs">
           {/* Left info items */}
-          <div className="flex flex-wrap items-center gap-4 sm:gap-6 py-2 px-4 text-neutral-700">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6 py-2 px-4 text-neutral-700 text-base">
             <div className="flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-red-600 shrink-0" />
-              <span>Tagore Marg, Hazratganj, Lucknow – 226007, Uttar Pradesh</span>
+              <MapPin className="w-4 h-4 text-red-600 shrink-0" />
+              <span>
+                <b>Tagore Marg, Hazratganj, Lucknow – 226007, Uttar Pradesh</b>
+              </span>
             </div>
+
             <div className="hidden sm:flex items-center gap-1.5">
-              <Mail className="w-3.5 h-3.5 text-red-600 shrink-0" />
-              <a href="mailto:gca_lko@rediffmail.com" className="hover:text-red-600 transition-colors">
-                gcaaa072@gmail.com
+              <Mail className="w-4 h-4 text-red-600 shrink-0" />
+              <a
+                href="mailto:gcaaa072@gmail.com"
+                className="hover:text-red-600 transition-colors"
+              >
+                <b>gcaaa072@gmail.com</b>
               </a>
             </div>
           </div>
@@ -269,25 +275,13 @@ export const Navbar = () => {
                 BLOGS
               </NavLink>
 
-              <div
-                className="relative"
-                onMouseEnter={() => setDesktopDropdown('contact')}
-                onMouseLeave={() => setDesktopDropdown(null)}
+              {/* CONTACT US — submenu removed, plain NavLink */}
+              <NavLink
+                to="/contact"
+                className={({ isActive }) => `px-4 py-3.5 hover:bg-red-700 transition-colors uppercase ${isActive ? 'bg-red-700 text-white' : ''}`}
               >
-                <Link
-                  to="/contact"
-                  onClick={closeAllMenus}
-                  className="px-4 py-3.5 flex items-center gap-1 hover:bg-red-700 transition-colors uppercase"
-                >
-                  CONTACT US <ChevronDown className="w-3.5 h-3.5" />
-                </Link>
-                {desktopDropdown === 'contact' && (
-                  <div className="absolute top-full right-0 bg-neutral-900 border border-neutral-800 text-white shadow-xl min-w-[180px] py-2 z-50">
-                    <Link to="/contact" onClick={closeAllMenus} className="block px-4 py-2 hover:bg-red-600 text-xs">Office Location</Link>
-                    <Link to="/contact" onClick={closeAllMenus} className="block px-4 py-2 hover:bg-red-600 text-xs">Send Query</Link>
-                  </div>
-                )}
-              </div>
+                CONTACT US
+              </NavLink>
             </div>
 
             {/* Mobile Nav */}

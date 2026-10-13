@@ -131,7 +131,7 @@ export const NoticesSection = () => {
         <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-red-100 border border-red-300 text-red-700 text-xs font-bold uppercase tracking-widest mb-3">
             <Bell className="w-3.5 h-3.5 text-red-600" />
-            <span>Official Notices &amp; Announcements · सूचना पट्ट</span>
+            <span>Official Notices &amp; Announcements </span>
           </div>
 
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-neutral-900 tracking-tight uppercase">

@@ -42,9 +42,13 @@ export const EventSection = () => {
   ];
 
   return (
-    <section id="events" className="bg-white text-neutral-900 py-10 sm:py-16 border-b border-neutral-200">
+    <section
+      id="events"
+      className="bg-white text-neutral-900 py-10 sm:py-16 border-b border-neutral-200 antialiased"
+      style={{ fontFamily: '"Inter", "Segoe UI", system-ui, -apple-system, sans-serif' }}
+    >
       <div className="mx-auto max-w-[1400px] px-4 sm:px-8 lg:px-14">
-        
+
         {/* ========================================================
             1. SECTION HEADER
         ======================================================== */}
@@ -52,7 +56,7 @@ export const EventSection = () => {
           <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.18em] text-[#B70D2B] mb-1.5">
             Flagship Gathering · 2026
           </p>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-neutral-900 leading-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-neutral-900 leading-tight tracking-tight">
             Alumni GBM &amp; <span className="text-[#B70D2B]">Dharohar 2026</span>
           </h2>
           <div className="mt-2.5 h-1 w-14 bg-[#B70D2B]" />
@@ -73,12 +77,12 @@ export const EventSection = () => {
                 Mark Your Calendars
               </div>
 
-              <h3 className="text-xl sm:text-3xl font-extrabold text-white leading-tight">
+              <h3 className="text-xl sm:text-3xl font-extrabold text-white leading-tight tracking-tight">
                 Celebrate Milestone Jubilees at Your Alma Mater
               </h3>
 
               <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed max-w-xl">
-                Join alumni and faculty on <strong>November 28, 2026</strong> to celebrate the 
+                Join alumni and faculty on <strong>November 28, 2026</strong> to celebrate the
                 <strong> Ruby Jubilee (1986)</strong> &amp; <strong>Silver Jubilee (2001)</strong> at FOAP Lucknow.
               </p>
 
@@ -105,19 +109,19 @@ export const EventSection = () => {
               {/* Countdown Numbers */}
               <div className="grid grid-cols-4 gap-1.5 sm:gap-2 text-center mb-3.5 sm:mb-4">
                 <div className="bg-black/80 border border-neutral-800 py-2 sm:py-2.5 px-0.5 sm:px-1 rounded-lg">
-                  <span className="block text-lg sm:text-2xl font-extrabold text-white font-mono">{timeLeft.days}</span>
+                  <span className="block text-lg sm:text-2xl font-extrabold text-white font-mono tabular-nums">{timeLeft.days}</span>
                   <span className="text-[8px] sm:text-[9px] uppercase font-bold text-neutral-400">Days</span>
                 </div>
                 <div className="bg-black/80 border border-neutral-800 py-2 sm:py-2.5 px-0.5 sm:px-1 rounded-lg">
-                  <span className="block text-lg sm:text-2xl font-extrabold text-white font-mono">{timeLeft.hours}</span>
+                  <span className="block text-lg sm:text-2xl font-extrabold text-white font-mono tabular-nums">{timeLeft.hours}</span>
                   <span className="text-[8px] sm:text-[9px] uppercase font-bold text-neutral-400">Hours</span>
                 </div>
                 <div className="bg-black/80 border border-neutral-800 py-2 sm:py-2.5 px-0.5 sm:px-1 rounded-lg">
-                  <span className="block text-lg sm:text-2xl font-extrabold text-white font-mono">{timeLeft.minutes}</span>
+                  <span className="block text-lg sm:text-2xl font-extrabold text-white font-mono tabular-nums">{timeLeft.minutes}</span>
                   <span className="text-[8px] sm:text-[9px] uppercase font-bold text-neutral-400">Mins</span>
                 </div>
                 <div className="bg-black/80 border border-neutral-800 py-2 sm:py-2.5 px-0.5 sm:px-1 rounded-lg">
-                  <span className="block text-lg sm:text-2xl font-extrabold text-red-500 font-mono">{timeLeft.seconds}</span>
+                  <span className="block text-lg sm:text-2xl font-extrabold text-red-500 font-mono tabular-nums">{timeLeft.seconds}</span>
                   <span className="text-[8px] sm:text-[9px] uppercase font-bold text-neutral-400">Secs</span>
                 </div>
               </div>
@@ -136,60 +140,108 @@ export const EventSection = () => {
         {/* ========================================================
             3. TWO CARDS: JUBILEE SPOTLIGHT (LEFT) & SCHEDULE (RIGHT)
         ======================================================== */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
-          
-          {/* LEFT: JUBILEE HONORS */}
-          <div className="lg:col-span-5 space-y-3 sm:space-y-4">
-            <h3 className="text-lg sm:text-xl font-extrabold text-neutral-900">
-              Milestone Jubilees in Focus
-            </h3>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
 
-            {/* Ruby Jubilee Card */}
-            <div className="bg-neutral-50 border-l-4 border-red-600 border border-neutral-200 p-3.5 sm:p-4 rounded-r shadow-sm">
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-red-700">40th Anniversary</span>
-                <span className="bg-red-100 text-red-800 text-[10px] sm:text-[11px] font-black px-2 py-0.5 rounded">BATCH 1986</span>
+          {/* LEFT: JUBILEE HONORS */}
+          <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1.5">
+                <Award className="w-4 h-4 text-[#B70D2B]" />
+                <span className="text-xs font-bold uppercase tracking-wider text-[#B70D2B]">
+                  Landmark Cohorts
+                </span>
               </div>
-              <h4 className="text-sm sm:text-base font-bold text-neutral-900">Ruby Jubilee Batch</h4>
-              <p className="text-xs text-neutral-600 mt-0.5 leading-relaxed">
-                Honoring 40 years of pioneering architectural practice across India.
+              <h3 className="text-xl sm:text-2xl font-black text-neutral-900 tracking-tight">
+                Milestone Jubilees in Focus
+              </h3>
+              <p className="text-xs text-neutral-500 mt-1">
+                Special stage recognition and felicitation honors for landmark anniversary batches.
               </p>
             </div>
 
-            {/* Silver Jubilee Card */}
-            <div className="bg-neutral-50 border-l-4 border-amber-500 border border-neutral-200 p-3.5 sm:p-4 rounded-r shadow-sm">
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-amber-700">25th Anniversary</span>
-                <span className="bg-amber-100 text-amber-900 text-[10px] sm:text-[11px] font-black px-2 py-0.5 rounded">BATCH 2001</span>
+            {/* Ruby Jubilee Card — red border */}
+            <div className="bg-white border-2 border-[#B70D2B] hover:border-red-700 rounded-2xl p-4 sm:p-5 shadow-xs hover:shadow-md transition-all group relative overflow-hidden">
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className="text-[11px] font-black uppercase tracking-wider text-red-700 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
+                  40th Anniversary
+                </span>
+                <span className="bg-[#B70D2B] text-white text-[10px] sm:text-[11px] font-black px-2.5 py-0.5 rounded-full shadow-xs tracking-wider">
+                  BATCH 1986
+                </span>
               </div>
-              <h4 className="text-sm sm:text-base font-bold text-neutral-900">Silver Jubilee Batch</h4>
-              <p className="text-xs text-neutral-600 mt-0.5 leading-relaxed">
-                Celebrating 25 years of design innovation and leadership.
+              <h4 className="text-base sm:text-lg font-bold text-neutral-900 group-hover:text-red-700 transition-colors tracking-tight">
+                Ruby Jubilee Batch
+              </h4>
+              <p className="text-xs text-neutral-600 mt-1 leading-relaxed">
+                Honoring 40 years of pioneering architectural leadership, campus mentorship, and landmark urban projects built across India.
+              </p>
+            </div>
+
+            {/* Silver Jubilee Card — red border (was amber) */}
+            <div className="bg-white border-2 border-[#B70D2B] hover:border-red-700 rounded-2xl p-4 sm:p-5 shadow-xs hover:shadow-md transition-all group relative overflow-hidden">
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className="text-[11px] font-black uppercase tracking-wider text-red-700 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
+                  25th Anniversary
+                </span>
+                <span className="bg-[#B70D2B] text-white text-[10px] sm:text-[11px] font-black px-2.5 py-0.5 rounded-full shadow-xs tracking-wider">
+                  BATCH 2001
+                </span>
+              </div>
+              <h4 className="text-base sm:text-lg font-bold text-neutral-900 group-hover:text-red-700 transition-colors tracking-tight">
+                Silver Jubilee Batch
+              </h4>
+              <p className="text-xs text-neutral-600 mt-1 leading-relaxed">
+                Celebrating 25 years of design innovation, global practice, and lifelong brotherhood rooted in the halls of FOAP Lucknow.
+              </p>
+            </div>
+
+            {/* Felicitation Memento Note */}
+            <div className="bg-neutral-950 text-white rounded-2xl p-3.5 sm:p-4 border border-neutral-800 shadow-sm flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-red-950/80 border border-red-800/80 text-red-400 flex items-center justify-center shrink-0">
+                <Sparkles className="w-4 h-4 text-red-400" />
+              </div>
+              <p className="text-[11px] sm:text-xs text-neutral-300 leading-snug">
+                Attending alumni of both jubilee cohorts will receive personalized <strong className="text-white font-semibold">Commemorative Jubilee Medallions</strong> on stage.
               </p>
             </div>
           </div>
 
           {/* RIGHT: TENTATIVE DAY SCHEDULE / ITINERARY */}
-          <div className="lg:col-span-7 bg-neutral-50 border border-neutral-200 p-4 sm:p-6 rounded-xl shadow-sm">
-            <div className="flex items-center justify-between border-b border-neutral-200 pb-3 mb-3.5 sm:mb-4">
+          <div className="lg:col-span-7 bg-white border border-neutral-200/90 rounded-2xl p-5 sm:p-7 shadow-xs flex flex-col justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-neutral-100 pb-4 mb-4">
               <div>
-                <h3 className="text-base sm:text-lg font-extrabold text-neutral-900">Event Day Itinerary</h3>
-                <p className="text-[10px] sm:text-[11px] text-neutral-500">Saturday, 28 November 2026</p>
+                <h3 className="text-lg sm:text-xl font-black text-neutral-900 tracking-tight">
+                  Event Day Itinerary
+                </h3>
+                <p className="text-xs text-neutral-500 mt-0.5 flex items-center gap-1.5 font-medium">
+                  <Calendar className="w-3.5 h-3.5 text-[#B70D2B]" />
+                  <span>Saturday, 28 November 2026 · FOAP Campus, Tagore Marg</span>
+                </p>
               </div>
-              <span className="bg-neutral-200 text-neutral-800 text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded">
-                Full Day
+              <span className="self-start sm:self-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 border border-red-200 text-[#B70D2B] text-xs font-bold uppercase tracking-wider">
+                <Clock className="w-3.5 h-3.5" /> Full Day Conclave
               </span>
             </div>
 
-            <div className="space-y-2.5">
+            <div className="space-y-3">
               {scheduleItems.map((item, idx) => (
-                <div key={idx} className="flex items-center gap-3 p-2.5 bg-white border border-neutral-200 rounded hover:border-red-600/40 transition-colors">
-                  <span className="text-[11px] font-mono font-bold text-red-600 shrink-0 bg-red-50 px-2 py-0.5 rounded border border-red-200">
+                <div
+                  key={idx}
+                  className="flex items-center gap-3 sm:gap-4 p-3 rounded-xl bg-neutral-50/80 border border-neutral-200/80 hover:bg-white hover:border-[#B70D2B]/40 hover:shadow-sm transition-all group"
+                >
+                  {/* Time badge — RED */}
+                  <span className="w-24 sm:w-28 py-1.5 px-2 rounded-lg bg-[#B70D2B] text-white text-[11px] font-mono font-bold text-center shrink-0 shadow-sm group-hover:bg-red-700 transition-colors tabular-nums">
                     {item.time}
                   </span>
-                  <div className="truncate">
-                    <h5 className="text-xs font-bold text-neutral-900 truncate">{item.title}</h5>
-                    <p className="text-[11px] text-neutral-500 truncate">{item.desc}</p>
+                  <div className="min-w-0 flex-1">
+                    <h5 className="text-xs sm:text-sm font-bold text-neutral-900 group-hover:text-[#B70D2B] transition-colors leading-snug">
+                      {item.title}
+                    </h5>
+                    <p className="text-[11px] sm:text-xs text-neutral-500 mt-0.5 leading-relaxed">
+                      {item.desc}
+                    </p>
                   </div>
                 </div>
               ))}

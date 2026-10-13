@@ -84,7 +84,7 @@ export const WelcomeMessagesSection = () => {
                 {/* Message Quote */}
                 <div className="space-y-2.5 sm:space-y-3 text-xs sm:text-sm leading-relaxed text-neutral-600 border-t border-neutral-100 pt-4 sm:pt-5">
                   {item.quote.split('\n\n').map((para, pIdx) => (
-                    <p key={pIdx} className={pIdx > 0 ? 'hidden sm:block' : ''}>
+                    <p key={pIdx} className={`text-justify ${pIdx > 0 ? 'hidden sm:block' : ''}`}>
                       {para}
                     </p>
                   ))}

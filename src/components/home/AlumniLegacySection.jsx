@@ -80,23 +80,26 @@ export const AlumniLegacySection = ({ showTimelineAndImpact = false }) => {
               Living Legacy of Excellence
             </div>
 
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-neutral-900 leading-tight font-serif">
-              GCA Alumni Association
-            </h2>
+            {/* Heading + Subheading (gap reduced) */}
+            <div className="space-y-2 sm:space-y-3">
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-neutral-900 leading-tight font-serif">
+                GCA Alumni Association
+              </h2>
 
-            <div className="h-1 w-16 sm:w-20 bg-red-600 rounded-full" />
+              <div className="h-1 w-16 sm:w-20 bg-red-600 rounded-full" />
 
-            <h3 className="text-lg sm:text-2xl font-bold text-neutral-700">
-              A Community Connected by a Shared Legacy & Global Footprint
-            </h3>
+              <h3 className="text-lg sm:text-2xl font-bold text-neutral-700">
+                A Community Connected by a Shared Legacy & Global Footprint
+              </h3>
+            </div>
 
-            <p className="text-neutral-700 text-xs sm:text-base leading-relaxed">
+            <p className="text-neutral-700 text-xs sm:text-base leading-relaxed text-justify">
               The alumni of <strong className="text-neutral-900">Government College of Architecture, Lucknow</strong>{' '}
               (now <em>Faculty of Architecture & Planning, AKTU</em>) are the foundation of its rich legacy and
               continued excellence.
             </p>
 
-            <p className="hidden sm:block text-neutral-600 text-sm sm:text-base leading-relaxed">
+            <p className="hidden sm:block text-neutral-600 text-sm sm:text-base leading-relaxed text-justify">
               Over the years, our alumni have become leaders, innovators, educators, and changemakers in the
               fields of architecture, urban planning, sustainable design, and construction. They have achieved
               remarkable milestones leaving their mark not just in India, but across the globe. Their journeys
