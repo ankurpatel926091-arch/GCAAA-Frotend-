@@ -6,7 +6,6 @@ import {
   Calendar,
   RefreshCw,
   ChevronDown,
-  CheckCircle2,
   ArrowUpDown,
   Mail,
   Phone,
@@ -55,7 +54,6 @@ export const AlumniDataListPage = () => {
 
   const [activeTab, setActiveTab] = useState('all');
   const [selectedYear, setSelectedYear] = useState('ALL');
-  const [statusFilter, setStatusFilter] = useState('ALL'); // 'ALL' | 'PAID' | 'PENDING'
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('year-asc');
   const [currentPage, setCurrentPage] = useState(1);
@@ -101,14 +99,6 @@ export const AlumniDataListPage = () => {
           return false;
         }
 
-        // Status filter
-        if (statusFilter === 'PAID' && item.reg !== 'PAID') {
-          return false;
-        }
-        if (statusFilter === 'PENDING' && item.reg === 'PAID') {
-          return false;
-        }
-
         // Search Query (name, email, mobile, year)
         if (searchQuery.trim()) {
           const q = searchQuery.toLowerCase().trim();
@@ -140,16 +130,9 @@ export const AlumniDataListPage = () => {
         if (sortBy === 'name-desc') {
           return b.name.localeCompare(a.name);
         }
-        if (sortBy === 'status-paid') {
-          if (a.reg === 'PAID' && b.reg !== 'PAID') return -1;
-          if (a.reg !== 'PAID' && b.reg === 'PAID') return 1;
-          const ya = parseInt(a.year, 10) || 1980;
-          const yb = parseInt(b.year, 10) || 1980;
-          return ya - yb;
-        }
         return 0;
       });
-  }, [currentRecords, selectedYear, statusFilter, searchQuery, sortBy]);
+  }, [currentRecords, selectedYear, searchQuery, sortBy]);
 
   // Pagination calculation
   const totalItems = filteredData.length;
@@ -178,13 +161,12 @@ export const AlumniDataListPage = () => {
   // Export to CSV helper
   const handleExportCSV = () => {
     if (!filteredData.length) return;
-    const headers = ['S.No.', 'Cohort', 'Batch Year', 'Alumni Name', 'Induction Fee Status', 'Email Address', 'Mobile Number', 'Deceased'];
+    const headers = ['S.No.', 'Cohort', 'Batch Year', 'Alumni Name', 'Email Address', 'Mobile Number', 'Deceased'];
     const rows = filteredData.map((d, index) => [
       index + 1,
       `"${currentCohort.course.replace(/"/g, '""')}"`,
       `"${d.year}"`,
       `"${d.name.replace(/"/g, '""')}"`,
-      d.reg === 'PAID' ? 'PAID' : 'Pending',
       `"${d.email || ''}"`,
       `"${d.mobile || ''}"`,
       d.deceased ? 'Yes' : 'No'
@@ -214,7 +196,7 @@ export const AlumniDataListPage = () => {
                 ALUMNI <span className="text-[#E31E24]">DATA LIST</span>
               </h1>
               <p className="text-xs sm:text-sm text-neutral-400 mt-1 max-w-2xl">
-                Official Directory of Government College of Architecture Alumni who registered & paid induction fee. Complete master records for B.Arch, M.Arch, MURP, MIEND, and MIND cohorts.
+                Official Directory of Government College of Architecture Alumni. Complete master records for B.Arch, M.Arch, MURP, MIEND, and MIND cohorts.
               </p>
             </div>
 
@@ -294,47 +276,13 @@ export const AlumniDataListPage = () => {
               </p>
             </div>
 
-            {/* Quick Year Filter Pills */}
-            <div className="flex flex-wrap items-center gap-1.5 max-h-28 overflow-y-auto">
-              <span className="text-xs font-bold text-neutral-500 mr-1">Quick Select:</span>
-              <button
-                onClick={() => {
-                  setSelectedYear('ALL');
-                  setCurrentPage(1);
-                }}
-                style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
-                className={`px-2.5 py-1 text-xs font-bold rounded-md transition-colors cursor-pointer ${
-                  selectedYear === 'ALL'
-                    ? 'bg-neutral-900 text-white'
-                    : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
-                }`}
-              >
-                All Batches ({currentRecords.length})
-              </button>
-              {activeBatches.map((yr) => (
-                <button
-                  key={yr}
-                  onClick={() => {
-                    setSelectedYear(yr);
-                    setCurrentPage(1);
-                  }}
-                  style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
-                  className={`px-2.5 py-1 text-xs font-bold rounded-md transition-colors cursor-pointer ${
-                    selectedYear === yr
-                      ? 'bg-red-600 text-white shadow-xs'
-                      : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
-                  }`}
-                >
-                  {yr} <span className="opacity-75">({batchStats[yr] || 0})</span>
-                </button>
-              ))}
-            </div>
+            
           </div>
 
-          {/* Filter Controls: Search, Year Dropdown, Status, Sort, Reset */}
+          {/* Filter Controls: Search, Year Dropdown, Sort, Reset */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center">
             {/* Search */}
-            <div className="lg:col-span-4 relative">
+            <div className="lg:col-span-5 relative">
               <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
@@ -382,25 +330,8 @@ export const AlumniDataListPage = () => {
               </div>
             </div>
 
-            {/* Fee Status Dropdown */}
-            <div className="lg:col-span-2">
-              <select
-                value={statusFilter}
-                onChange={(e) => {
-                  setStatusFilter(e.target.value);
-                  setCurrentPage(1);
-                }}
-                style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
-                className="w-full px-3 py-2.5 rounded-lg border border-neutral-300 text-xs sm:text-sm font-semibold text-neutral-800 focus:outline-hidden focus:border-red-600 bg-white cursor-pointer"
-              >
-                <option value="ALL" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Status: All Records</option>
-                <option value="PAID" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Induction Fee: PAID</option>
-                <option value="PENDING" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Induction Fee: Pending</option>
-              </select>
-            </div>
-
             {/* Sort By Dropdown */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-3">
               <div className="relative">
                 <ArrowUpDown className="w-4 h-4 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <select
@@ -413,7 +344,6 @@ export const AlumniDataListPage = () => {
                   <option value="year-desc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Year: Recent First</option>
                   <option value="name-asc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Name: A to Z</option>
                   <option value="name-desc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Name: Z to A</option>
-                  <option value="status-paid" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Paid Status First</option>
                 </select>
                 <ChevronDown className="w-4 h-4 text-neutral-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
@@ -424,7 +354,6 @@ export const AlumniDataListPage = () => {
               <button
                 onClick={() => {
                   setSelectedYear('ALL');
-                  setStatusFilter('ALL');
                   setSearchQuery('');
                   setSortBy('year-asc');
                   setCurrentPage(1);
@@ -445,11 +374,6 @@ export const AlumniDataListPage = () => {
               <span className="px-2.5 py-0.5 rounded-md bg-neutral-900 text-white font-bold text-[11px]">
                 {selectedYear === 'ALL' ? 'All Batches' : `Batch ${selectedYear}`}
               </span>
-              {statusFilter !== 'ALL' && (
-                <span className="px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-bold text-[11px]">
-                  Status: {statusFilter}
-                </span>
-              )}
               {searchQuery && (
                 <span className="px-2.5 py-0.5 rounded-md bg-blue-100 text-blue-800 font-bold text-[11px]">
                   &quot;{searchQuery}&quot;
@@ -472,7 +396,6 @@ export const AlumniDataListPage = () => {
                   <th className="py-3.5 px-4 w-14 text-center">S.No.</th>
                   <th className="py-3.5 px-4 w-32 text-center">Batch Year</th>
                   <th className="py-3.5 px-4">Alumni Name</th>
-                  <th className="py-3.5 px-4 text-center w-36">Induction Fee</th>
                   <th className="py-3.5 px-4">Email Address</th>
                   <th className="py-3.5 px-4">Mobile Number</th>
                 </tr>
@@ -481,7 +404,6 @@ export const AlumniDataListPage = () => {
                 {paginatedData.length > 0 ? (
                   paginatedData.map((alumnus, idx) => {
                     const globalIndex = (currentPage - 1) * itemsPerPage + idx + 1;
-                    const isPaid = alumnus.reg === 'PAID';
                     const isDeceased = alumnus.deceased || alumnus.name.includes('[Deceased]') || alumnus.email?.toLowerCase().includes('no more with us');
 
                     return (
@@ -536,20 +458,6 @@ export const AlumniDataListPage = () => {
                           </div>
                         </td>
 
-                        {/* Induction Fee Status */}
-                        <td className="py-3 px-4 text-center">
-                          {isPaid ? (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-extrabold shadow-2xs border border-emerald-200">
-                              <CheckCircle2 className="w-3.5 h-3.5" />
-                              <span>PAID</span>
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-600 text-[11px] font-semibold border border-neutral-200">
-                              <span>Pending</span>
-                            </span>
-                          )}
-                        </td>
-
                         {/* Email Address */}
                         <td className="py-3 px-4 font-mono text-xs">
                           {alumnus.email ? (
@@ -589,7 +497,7 @@ export const AlumniDataListPage = () => {
                   })
                 ) : (
                   <tr>
-                    <td colSpan={6} className="py-12 text-center text-neutral-500">
+                    <td colSpan={5} className="py-12 text-center text-neutral-500">
                       <AlertCircle className="w-8 h-8 text-neutral-400 mx-auto mb-2" />
                       <p className="font-semibold text-sm">No alumni records found matching the criteria.</p>
                       <p className="text-xs text-neutral-400 mt-1">

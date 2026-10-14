@@ -232,7 +232,7 @@ export const Navbar = () => {
         {/* 3. MAIN NAV BAR (DESKTOP RED BAR) */}
         <nav className="hidden lg:block bg-red-600">
           <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-14">
-            <div className="flex items-center justify-center space-x-1 font-bold text-xs tracking-wider text-white">
+            <div className="flex items-center justify-between font-bold text-xs tracking-wider text-white">
               <NavLink
                 to="/"
                 className={({ isActive }) =>
@@ -336,15 +336,15 @@ export const Navbar = () => {
                       to="/registration"
                       onClick={closeAllMenus}
                       className="block px-4 py-2 hover:bg-red-600 text-xs"
-          Aluminus    >
-                      Alumni Registration
+                    >
+                      Aluminus Registration
                     </Link>
                     <Link
                       to="/alumni-data-list"
                       onClick={closeAllMenus}
                       className="block px-4 py-2 hover:bg-red-600 text-xs"
                     >
-                      Alumni Data List
+                      All Batches Of GCAAA
                     </Link>
                   </div>
                 )}
@@ -591,7 +591,7 @@ export const Navbar = () => {
                   >
                     <span className="flex items-center gap-2">
                       <ChevronRight className="w-3.5 h-3.5 shrink-0" />
-                      Alumni Registration
+                      Aluminus Registration
                     </span>
                     <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">
                       Active
@@ -632,7 +632,7 @@ export const Navbar = () => {
                 }
               >
                 <FileText className="w-4 h-4 text-red-600 shrink-0" />
-                <span>RESOURCES</span>
+                <span>RESOURCES </span>
               </NavLink>
             </div>
 

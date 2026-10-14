@@ -8,53 +8,35 @@ import {
   Eye
 } from 'lucide-react';
 
+import { gbmGalleryItems } from '@/data/gbmPhotos';
+
 import imgCourtyard from '@/assets/gallery/gallery_1_courtyard.png';
 import imgDharoharStage from '@/assets/gallery/gallery_2_dharohar_stage.png';
-import imgAlumniGathering from '@/assets/gallery/gallery_3_alumni_gathering.png';
 import imgLampLighting from '@/assets/gallery/gallery_4_lamp_lighting.png';
 import imgYellowCelebration from '@/assets/gallery/gallery_5_yellow_celebration.png';
 import imgStampHeritage from '@/assets/gallery/gallery_6_stamp_heritage.png';
-import imgFacultyMeet from '@/assets/gallery/gallery_7_faculty_meet.png';
 import imgLawnReunion from '@/assets/gallery/gallery_8_lawn_reunion.png';
-import imgCheeringAlumni from '@/assets/gallery/gallery_9_cheering_alumni.png';
 import imgStageConclave from '@/assets/gallery/gallery_10_stage_conclave.png';
-import imgKurtaFellowship from '@/assets/gallery/gallery_11_kurta_fellowship.png';
-import imgTraditionalMeet from '@/assets/gallery/gallery_12_traditional_meet.png';
 import imgHeritageSteps from '@/assets/gallery/gallery_13_heritage_steps.png';
-import imgEveningDinner from '@/assets/gallery/gallery_14_evening_dinner.png';
 import imgBatch2001Cohort from '@/assets/gallery/gallery_15_batch_2001_cohort.png';
-import imgNiraj from '@/assets/gallery/gallery_16_alumni_niraj.png';
-import imgPooja from '@/assets/gallery/gallery_17_alumni_pooja.png';
-import imgSandeep from '@/assets/gallery/gallery_18_alumni_sandeep.png';
 
 export const allGalleryItems = [
-  { id: 1, src: imgHeritageSteps, category: 'campus' },
+  ...gbmGalleryItems,
+  { id: 1, src: imgHeritageSteps, category: 'dharohar' },
   { id: 2, src: imgDharoharStage, category: 'dharohar' },
-  { id: 3, src: imgBatch2001Cohort, category: 'cohort' },
-  { id: 4, src: imgCourtyard, category: 'campus' },
-  { id: 5, src: imgLampLighting, category: 'ceremony' },
+  { id: 3, src: imgBatch2001Cohort, category: 'dharohar' },
+  { id: 4, src: imgCourtyard, category: 'dharohar' },
+  { id: 5, src: imgLampLighting, category: 'dharohar' },
   { id: 6, src: imgYellowCelebration, category: 'dharohar' },
-  { id: 7, src: imgStampHeritage, category: 'heritage' },
-  { id: 8, src: imgLawnReunion, category: 'campus' },
+  { id: 7, src: imgStampHeritage, category: 'dharohar' },
+  { id: 8, src: imgLawnReunion, category: 'dharohar' },
   { id: 9, src: imgStageConclave, category: 'dharohar' },
-  { id: 10, src: imgAlumniGathering, category: 'campus' },
-  { id: 11, src: imgFacultyMeet, category: 'heritage' },
-  { id: 12, src: imgTraditionalMeet, category: 'ceremony' },
-  { id: 13, src: imgEveningDinner, category: 'ceremony' },
-  { id: 14, src: imgCheeringAlumni, category: 'dharohar' },
-  { id: 15, src: imgKurtaFellowship, category: 'ceremony' },
-  { id: 16, src: imgNiraj, category: 'cohort' },
-  { id: 17, src: imgPooja, category: 'cohort' },
-  { id: 18, src: imgSandeep, category: 'cohort' },
 ];
 
 const categoryTabs = [
   { key: 'all', label: 'All Photos' },
-  { key: 'dharohar', label: 'Dharohar Meets' },
-  { key: 'campus', label: 'Campus & Steps' },
-  { key: 'cohort', label: 'Silver Jubilee 2001' },
-  { key: 'ceremony', label: 'Ceremonies & Gala' },
-  { key: 'heritage', label: 'Heritage & Faculty' },
+  { key: 'gbm', label: 'GBM 2025' },
+  { key: 'dharohar', label: 'Dharohar & Reunions' },
 ];
 
 export const GalleryPage = () => {

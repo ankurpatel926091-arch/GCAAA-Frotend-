@@ -83,7 +83,7 @@ export const AlumniLegacySection = ({ showTimelineAndImpact = false }) => {
             {/* Heading + Subheading (gap reduced) */}
             <div className="space-y-2 sm:space-y-3">
               <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-neutral-900 leading-tight font-serif">
-                GCA Alumni Association
+                GCA Alumni Association 
               </h2>
 
               <div className="h-1 w-16 sm:w-20 bg-red-600 rounded-full" />

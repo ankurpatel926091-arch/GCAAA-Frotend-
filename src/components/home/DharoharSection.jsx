@@ -101,7 +101,7 @@ export const DharoharSection = () => {
                 to="/registration"
                 className="w-full sm:w-auto text-center justify-center bg-[#B70D2B] hover:bg-neutral-900 text-white font-bold text-xs uppercase tracking-wider px-5 py-3.5 rounded-lg shadow transition-all active:scale-95 flex items-center gap-2"
               >
-                <span>Aluminus Registration</span>
+                <span>Aluminus Registration</span>  
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
@@ -157,7 +157,7 @@ export const DharoharSection = () => {
               <p className="text-xs sm:text-[15px] leading-relaxed text-neutral-700">
                 The{" "}
                 <strong className="text-neutral-900">
-                  GCA Alumni Association
+                  GCA Alumni Association 
                 </strong>{" "}
                 invites you to its Annual General Body Meeting (GBM) on{" "}
                 <span className="bg-[#B70D2B] text-white font-extrabold px-2 py-0.5 rounded text-xs sm:text-sm whitespace-nowrap">

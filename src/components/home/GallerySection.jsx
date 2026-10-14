@@ -5,27 +5,58 @@ import { Maximize2, X, ChevronLeft, ChevronRight, Sparkles, Camera } from 'lucid
 // Extracted Authentic Reunion & Dharohar Photos
 import imgCourtyard from '@/assets/gallery/gallery_1_courtyard.png';
 import imgDharoharStage from '@/assets/gallery/gallery_2_dharohar_stage.png';
-import imgAlumniGathering from '@/assets/gallery/gallery_3_alumni_gathering.png';
 import imgLampLighting from '@/assets/gallery/gallery_4_lamp_lighting.png';
 import imgYellowCelebration from '@/assets/gallery/gallery_5_yellow_celebration.png';
 import imgStampHeritage from '@/assets/gallery/gallery_6_stamp_heritage.png';
-import imgFacultyMeet from '@/assets/gallery/gallery_7_faculty_meet.png';
 import imgLawnReunion from '@/assets/gallery/gallery_8_lawn_reunion.png';
-import imgCheeringAlumni from '@/assets/gallery/gallery_9_cheering_alumni.png';
 import imgStageConclave from '@/assets/gallery/gallery_10_stage_conclave.png';
-import imgKurtaFellowship from '@/assets/gallery/gallery_11_kurta_fellowship.png';
-import imgTraditionalMeet from '@/assets/gallery/gallery_12_traditional_meet.png';
 import imgHeritageSteps from '@/assets/gallery/gallery_13_heritage_steps.png';
-import imgEveningDinner from '@/assets/gallery/gallery_14_evening_dinner.png';
 import imgBatch2001Cohort from '@/assets/gallery/gallery_15_batch_2001_cohort.png';
+import { gbmGalleryItems } from '@/data/gbmPhotos';
 
 export const galleryItems = [
+  {
+    id: 'gbm-feat-1',
+    src: gbmGalleryItems[0].src,
+    title: 'GBM 2025 Alumni Assembly',
+    subtitle: 'Annual General Body Meeting of Government College of Architecture Alumni',
+    category: 'gbm',
+    badge: 'GBM 2025',
+    aspect: 'aspect-[4/3]',
+  },
+  {
+    id: 'gbm-feat-2',
+    src: gbmGalleryItems[5].src,
+    title: 'GBM 2025 Deliberations & Reunion',
+    subtitle: 'Alumni discussions, future roadmaps and community bonding',
+    category: 'gbm',
+    badge: 'GBM 2025',
+    aspect: 'aspect-[16/10]',
+  },
+  {
+    id: 'gbm-feat-3',
+    src: gbmGalleryItems[13].src,
+    title: 'GBM 2025 Executive Fellowship',
+    subtitle: 'Patrons, executive committee and members together',
+    category: 'gbm',
+    badge: 'GBM 2025',
+    aspect: 'aspect-[4/3]',
+  },
+  {
+    id: 'gbm-feat-4',
+    src: gbmGalleryItems[27].src,
+    title: 'GBM 2025 Memorable Moments',
+    subtitle: 'Celebrations and honoring distinguished alumni architects',
+    category: 'gbm',
+    badge: 'GBM 2025',
+    aspect: 'aspect-[4/3]',
+  },
   {
     id: 1,
     src: imgHeritageSteps,
     title: 'Heritage Steps Batch Reunion',
     subtitle: 'Classic gathering on the iconic red-brick steps of GCA Lucknow',
-    category: 'campus',
+    category: 'dharohar',
     badge: 'Reunion Classic',
     aspect: 'aspect-[4/3]',
   },
@@ -43,7 +74,7 @@ export const galleryItems = [
     src: imgBatch2001Cohort,
     title: 'Silver Jubilee 2001 Cohort Sheet',
     subtitle: 'Commemorative postal cohort — Leaders in Practice & Design',
-    category: 'cohort',
+    category: 'dharohar',
     badge: 'Batch 2001',
     aspect: 'aspect-[3/4]',
   },
@@ -52,7 +83,7 @@ export const galleryItems = [
     src: imgCourtyard,
     title: 'Courtyard Pergola Gathering',
     subtitle: 'Alumni sharing fond memories under the campus pergolas',
-    category: 'campus',
+    category: 'dharohar',
     badge: 'Campus Life',
     aspect: 'aspect-[4/3]',
   },
@@ -61,7 +92,7 @@ export const galleryItems = [
     src: imgLampLighting,
     title: 'Deep Prajjwalan Ceremony',
     subtitle: 'Auspicious lamp lighting by patron architects and faculty',
-    category: 'tradition',
+    category: 'dharohar',
     badge: 'Inauguration',
     aspect: 'aspect-square',
   },
@@ -79,7 +110,7 @@ export const galleryItems = [
     src: imgStampHeritage,
     title: 'Heritage Corridors Postal Stamp',
     subtitle: 'Official GCAAA commemorative philatelic stamp edition',
-    category: 'tradition',
+    category: 'dharohar',
     badge: 'Heritage Stamp',
     aspect: 'aspect-[3/4]',
   },
@@ -101,41 +132,12 @@ export const galleryItems = [
     badge: 'Grand Assembly',
     aspect: 'aspect-[16/9]',
   },
-  {
-    id: 10,
-    src: imgAlumniGathering,
-    title: 'Batch Brotherhood & Smiles',
-    subtitle: 'Moments of warmth and reconnecting across generations',
-    category: 'campus',
-    badge: 'Camaraderie',
-    aspect: 'aspect-[4/3]',
-  },
-  {
-    id: 11,
-    src: imgTraditionalMeet,
-    title: 'Traditional Saree & Kurta Gala',
-    subtitle: 'Celebrating Indian architectural culture and community',
-    category: 'tradition',
-    badge: 'Cultural Gala',
-    aspect: 'aspect-[4/3]',
-  },
-  {
-    id: 12,
-    src: imgEveningDinner,
-    title: 'Reunion Gala Dinner & Mementos',
-    subtitle: 'An evening of nostalgia, laughter, and lifelong connections',
-    category: 'tradition',
-    badge: 'Evening Gala',
-    aspect: 'aspect-[4/3]',
-  },
 ];
 
 const categories = [
   { key: 'all', label: 'All Photos' },
-  { key: 'dharohar', label: 'Dharohar Meets' },
-  { key: 'campus', label: 'Campus & Steps' },
-  { key: 'cohort', label: 'Silver Jubilee 2001' },
-  { key: 'tradition', label: 'Ceremonies & Gala' },
+  { key: 'gbm', label: 'GBM 2025' },
+  { key: 'dharohar', label: 'Dharohar & Reunions' },
 ];
 
 export const GallerySection = () => {

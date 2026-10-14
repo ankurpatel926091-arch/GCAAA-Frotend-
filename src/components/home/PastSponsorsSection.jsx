@@ -108,13 +108,13 @@ export const PastSponsorsSection = () => {
               <div key={index} className="px-2 sm:px-2.5 shrink-0">
                 <div
                   title={sponsor.name}
-                  className="group bg-white border border-neutral-200/90 rounded-xl px-4 py-2.5 w-40 sm:w-48 md:w-52 h-20 sm:h-22 flex items-center justify-center shadow-2xs hover:shadow-md hover:border-[#B70D2B]/40 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
+                  className="group bg-white border border-neutral-200/90 rounded-xl px-5 py-3 w-48 sm:w-56 md:w-60 h-24 sm:h-26 flex items-center justify-center shadow-2xs hover:shadow-md hover:border-[#B70D2B]/40 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
                 >
                   <img
                     src={sponsor.logo}
                     alt={sponsor.name}
                     loading="lazy"
-                    className="max-h-10 sm:max-h-12 max-w-[85%] w-auto h-auto object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-2xs"
+                    className="max-h-14 sm:max-h-16 max-w-[90%] w-auto h-auto object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-2xs"
                   />
                 </div>
               </div>
@@ -132,13 +132,13 @@ export const PastSponsorsSection = () => {
               <div key={index} className="px-2 sm:px-2.5 shrink-0">
                 <div
                   title={sponsor.name}
-                  className="group bg-white border border-neutral-200/90 rounded-xl px-4 py-2.5 w-40 sm:w-48 md:w-52 h-20 sm:h-22 flex items-center justify-center shadow-2xs hover:shadow-md hover:border-[#B70D2B]/40 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
+                  className="group bg-white border border-neutral-200/90 rounded-xl px-5 py-3 w-48 sm:w-56 md:w-60 h-24 sm:h-26 flex items-center justify-center shadow-2xs hover:shadow-md hover:border-[#B70D2B]/40 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
                 >
                   <img
                     src={sponsor.logo}
                     alt={sponsor.name}
                     loading="lazy"
-                    className="max-h-10 sm:max-h-12 max-w-[85%] w-auto h-auto object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-2xs"
+                    className="max-h-14 sm:max-h-16 max-w-[90%] w-auto h-auto object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-2xs"
                   />
                 </div>
               </div>
