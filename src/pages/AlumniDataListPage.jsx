@@ -1,0 +1,686 @@
+import { useState, useMemo } from 'react';
+import {
+  Search,
+  Users,
+  GraduationCap,
+  Calendar,
+  RefreshCw,
+  ChevronDown,
+  CheckCircle2,
+  ArrowUpDown,
+  Mail,
+  Phone,
+  Download,
+  AlertCircle,
+  FileSpreadsheet,
+  HeartHandshake
+} from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { allCohorts } from '../data/cohortRecords';
+
+export const AlumniDataListPage = () => {
+  // Course / Cohort Filter Tabs (from reference master excel sheet)
+  const cohortTabs = [
+    {
+      id: 'all',
+      label: 'ALL (85-2025)',
+      course: 'Bachelor of Architecture & Foundation (Prior to 1985 - 2025)',
+      count: allCohorts['all']?.records?.length || 1546,
+    },
+    {
+      id: 'm-arch',
+      label: 'm.arch 15-21',
+      course: 'Master of Architecture (M.Arch 2015-2023)',
+      count: allCohorts['m-arch']?.records?.length || 94,
+    },
+    {
+      id: 'murp',
+      label: 'MURP-20,21',
+      course: 'Master of Urban & Regional Planning (MURP 2020-2025)',
+      count: allCohorts['murp']?.records?.length || 100,
+    },
+    {
+      id: 'miend',
+      label: 'MIEND-20',
+      course: 'Master In Environmental Design (MIEND 2020-2025)',
+      count: allCohorts['miend']?.records?.length || 29,
+    },
+    {
+      id: 'mind',
+      label: 'MIND-23',
+      course: 'Master In Interior Design (MIND 2023-2025)',
+      count: allCohorts['mind']?.records?.length || 20,
+    },
+  ];
+
+  const [activeTab, setActiveTab] = useState('all');
+  const [selectedYear, setSelectedYear] = useState('ALL');
+  const [statusFilter, setStatusFilter] = useState('ALL'); // 'ALL' | 'PAID' | 'PENDING'
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState('year-asc');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(50);
+
+  // Active Cohort Dataset
+  const currentCohort = allCohorts[activeTab] || allCohorts['all'];
+  const currentRecords = currentCohort.records || [];
+
+  // Sorted list of unique batch years for active cohort
+  const activeBatches = useMemo(() => {
+    const years = Array.from(new Set(currentRecords.map((r) => r.year.toString())));
+    return years.sort((a, b) => {
+      if (a.toLowerCase().includes('prior')) return -1;
+      if (b.toLowerCase().includes('prior')) return 1;
+      if (a.toLowerCase().includes('diploma') && !b.toLowerCase().includes('diploma')) return -1;
+      if (b.toLowerCase().includes('diploma') && !a.toLowerCase().includes('diploma')) return 1;
+      const numA = parseInt(a, 10);
+      const numB = parseInt(b, 10);
+      if (!isNaN(numA) && !isNaN(numB)) {
+        return numA - numB;
+      }
+      return a.localeCompare(b);
+    });
+  }, [currentRecords]);
+
+  // Quick stats by year for active cohort
+  const batchStats = useMemo(() => {
+    const stats = {};
+    currentRecords.forEach((item) => {
+      const yr = item.year.toString();
+      stats[yr] = (stats[yr] || 0) + 1;
+    });
+    return stats;
+  }, [currentRecords]);
+
+  // Filtered & Sorted Alumni Records
+  const filteredData = useMemo(() => {
+    return currentRecords
+      .filter((item) => {
+        // Year filter
+        if (selectedYear !== 'ALL' && item.year.toString() !== selectedYear) {
+          return false;
+        }
+
+        // Status filter
+        if (statusFilter === 'PAID' && item.reg !== 'PAID') {
+          return false;
+        }
+        if (statusFilter === 'PENDING' && item.reg === 'PAID') {
+          return false;
+        }
+
+        // Search Query (name, email, mobile, year)
+        if (searchQuery.trim()) {
+          const q = searchQuery.toLowerCase().trim();
+          const matchName = item.name.toLowerCase().includes(q);
+          const matchEmail = item.email ? item.email.toLowerCase().includes(q) : false;
+          const matchMobile = item.mobile ? item.mobile.toLowerCase().includes(q) : false;
+          const matchYear = item.year.toString().toLowerCase().includes(q);
+          if (!matchName && !matchEmail && !matchMobile && !matchYear) {
+            return false;
+          }
+        }
+
+        return true;
+      })
+      .sort((a, b) => {
+        if (sortBy === 'year-asc') {
+          const ya = parseInt(a.year, 10) || 1980;
+          const yb = parseInt(b.year, 10) || 1980;
+          return ya - yb || a.sno - b.sno;
+        }
+        if (sortBy === 'year-desc') {
+          const ya = parseInt(a.year, 10) || 1980;
+          const yb = parseInt(b.year, 10) || 1980;
+          return yb - ya || a.sno - b.sno;
+        }
+        if (sortBy === 'name-asc') {
+          return a.name.localeCompare(b.name);
+        }
+        if (sortBy === 'name-desc') {
+          return b.name.localeCompare(a.name);
+        }
+        if (sortBy === 'status-paid') {
+          if (a.reg === 'PAID' && b.reg !== 'PAID') return -1;
+          if (a.reg !== 'PAID' && b.reg === 'PAID') return 1;
+          const ya = parseInt(a.year, 10) || 1980;
+          const yb = parseInt(b.year, 10) || 1980;
+          return ya - yb;
+        }
+        return 0;
+      });
+  }, [currentRecords, selectedYear, statusFilter, searchQuery, sortBy]);
+
+  // Pagination calculation
+  const totalItems = filteredData.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+  const paginatedData = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredData.slice(start, start + itemsPerPage);
+  }, [filteredData, currentPage, itemsPerPage]);
+
+  // Dynamic pagination range window (e.g. 1 ... 4 5 6 ... 30)
+  const paginationRange = useMemo(() => {
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+    const range = [];
+    if (currentPage <= 4) {
+      range.push(1, 2, 3, 4, 5, '...', totalPages);
+    } else if (currentPage >= totalPages - 3) {
+      range.push(1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+    } else {
+      range.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages);
+    }
+    return range;
+  }, [currentPage, totalPages]);
+
+  // Export to CSV helper
+  const handleExportCSV = () => {
+    if (!filteredData.length) return;
+    const headers = ['S.No.', 'Cohort', 'Batch Year', 'Alumni Name', 'Induction Fee Status', 'Email Address', 'Mobile Number', 'Deceased'];
+    const rows = filteredData.map((d, index) => [
+      index + 1,
+      `"${currentCohort.course.replace(/"/g, '""')}"`,
+      `"${d.year}"`,
+      `"${d.name.replace(/"/g, '""')}"`,
+      d.reg === 'PAID' ? 'PAID' : 'Pending',
+      `"${d.email || ''}"`,
+      `"${d.mobile || ''}"`,
+      d.deceased ? 'Yes' : 'No'
+    ]);
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `GCAAA_Alumni_${activeTab}_${selectedYear}_${Date.now()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  return (
+    <div className="min-h-screen bg-neutral-100 text-neutral-900 pb-24">
+      {/* 1. Header Banner */}
+      <div className="bg-[#0C0D12] text-white pt-10 pb-8 px-4 sm:px-8 border-b border-neutral-800">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-950/80 border border-red-800/80 text-red-400 text-xs font-bold uppercase tracking-wider mb-3">
+                <GraduationCap className="w-3.5 h-3.5" />
+                <span>GCAAA Official Member Directory</span>
+              </div>
+              <h1 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-white">
+                ALUMNI <span className="text-[#E31E24]">DATA LIST</span>
+              </h1>
+              <p className="text-xs sm:text-sm text-neutral-400 mt-1 max-w-2xl">
+                Official Directory of Government College of Architecture Alumni who registered & paid induction fee. Complete master records for B.Arch, M.Arch, MURP, MIEND, and MIND cohorts.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                onClick={handleExportCSV}
+                disabled={filteredData.length === 0}
+                className="bg-neutral-800 hover:bg-neutral-700 disabled:opacity-50 text-neutral-200 font-bold text-xs uppercase px-4 py-2.5 rounded-lg transition-colors border border-neutral-700 flex items-center gap-2 cursor-pointer shadow-xs"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Export CSV ({filteredData.length})</span>
+              </button>
+              <Link
+                to="/registration"
+                className="bg-[#E31E24] hover:bg-red-700 text-white font-bold text-xs uppercase px-4 py-2.5 rounded-lg transition-colors shadow-sm flex items-center gap-2"
+              >
+                <Users className="w-3.5 h-3.5" />
+                <span>Register New Alumni</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. Top Cohort Filter Strip (Matching master excel tabs) */}
+      <div className="bg-[#0B0F19] border-b-2 border-[#1E293B] shadow-lg sticky top-[57px] sm:top-[65px] z-30">
+        <div className="max-w-[1400px] mx-auto px-2 sm:px-4">
+          <div className="flex items-center overflow-x-auto no-scrollbar py-2">
+            <div className="flex items-stretch border-l border-neutral-800 shrink-0">
+              {cohortTabs.map((tab) => {
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => {
+                      setActiveTab(tab.id);
+                      setSelectedYear('ALL');
+                      setStatusFilter('ALL');
+                      setSearchQuery('');
+                      setCurrentPage(1);
+                    }}
+                    className={`px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-extrabold uppercase tracking-wide border-r border-neutral-800 transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+                      isActive
+                        ? 'bg-white text-neutral-950 rounded-t-lg shadow-md relative -bottom-2 border-b-2 border-emerald-600'
+                        : 'text-neutral-300 hover:text-white hover:bg-neutral-800/60'
+                    }`}
+                  >
+                    <span>{tab.label}</span>
+                    <span
+                      className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ml-1 ${
+                        isActive ? 'bg-red-600 text-white' : 'bg-neutral-800 text-neutral-300'
+                      }`}
+                    >
+                      {tab.count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content Area */}
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 pt-6">
+        
+        {/* Cohort Header & Batch Quick Filter Card */}
+        <div className="bg-white rounded-xl border border-neutral-200/90 p-4 sm:p-5 shadow-xs mb-6">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4 pb-4 border-b border-neutral-100">
+            <div>
+              <h2 className="text-sm sm:text-base font-bold text-neutral-900 flex items-center gap-2">
+                <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
+                <span>{currentCohort.course}</span>
+              </h2>
+              <p className="text-xs text-neutral-500 mt-0.5">
+                Displaying <strong>{currentRecords.length}</strong> verified alumni across {activeBatches.length} batch groups.
+              </p>
+            </div>
+
+            {/* Quick Year Filter Pills */}
+            <div className="flex flex-wrap items-center gap-1.5 max-h-28 overflow-y-auto">
+              <span className="text-xs font-bold text-neutral-500 mr-1">Quick Select:</span>
+              <button
+                onClick={() => {
+                  setSelectedYear('ALL');
+                  setCurrentPage(1);
+                }}
+                style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
+                className={`px-2.5 py-1 text-xs font-bold rounded-md transition-colors cursor-pointer ${
+                  selectedYear === 'ALL'
+                    ? 'bg-neutral-900 text-white'
+                    : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                }`}
+              >
+                All Batches ({currentRecords.length})
+              </button>
+              {activeBatches.map((yr) => (
+                <button
+                  key={yr}
+                  onClick={() => {
+                    setSelectedYear(yr);
+                    setCurrentPage(1);
+                  }}
+                  style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
+                  className={`px-2.5 py-1 text-xs font-bold rounded-md transition-colors cursor-pointer ${
+                    selectedYear === yr
+                      ? 'bg-red-600 text-white shadow-xs'
+                      : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                  }`}
+                >
+                  {yr} <span className="opacity-75">({batchStats[yr] || 0})</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Filter Controls: Search, Year Dropdown, Status, Sort, Reset */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center">
+            {/* Search */}
+            <div className="lg:col-span-4 relative">
+              <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1);
+                }}
+                style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
+                placeholder="Search alumni name, email, phone, year..."
+                className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-neutral-300 text-xs sm:text-sm focus:outline-hidden focus:border-red-600 focus:ring-1 focus:ring-red-600 bg-white"
+              />
+            </div>
+
+            {/* Year Dropdown */}
+            <div className="lg:col-span-3">
+              <div className="relative">
+                <Calendar className="w-4 h-4 text-red-600 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <select
+                  value={selectedYear}
+                  onChange={(e) => {
+                    setSelectedYear(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
+                  className="w-full pl-9 pr-8 py-2.5 rounded-lg border border-neutral-300 text-xs sm:text-sm font-semibold text-neutral-800 focus:outline-hidden focus:border-red-600 bg-white appearance-none cursor-pointer"
+                >
+                  <option
+                    value="ALL"
+                    style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
+                  >
+                    All Batches ({currentRecords.length} records)
+                  </option>
+                  {activeBatches.map((yr) => (
+                    <option
+                      key={yr}
+                      value={yr}
+                      style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
+                    >
+                      Batch: {yr} ({batchStats[yr] || 0} alumni)
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="w-4 h-4 text-neutral-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
+            </div>
+
+            {/* Fee Status Dropdown */}
+            <div className="lg:col-span-2">
+              <select
+                value={statusFilter}
+                onChange={(e) => {
+                  setStatusFilter(e.target.value);
+                  setCurrentPage(1);
+                }}
+                style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
+                className="w-full px-3 py-2.5 rounded-lg border border-neutral-300 text-xs sm:text-sm font-semibold text-neutral-800 focus:outline-hidden focus:border-red-600 bg-white cursor-pointer"
+              >
+                <option value="ALL" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Status: All Records</option>
+                <option value="PAID" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Induction Fee: PAID</option>
+                <option value="PENDING" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Induction Fee: Pending</option>
+              </select>
+            </div>
+
+            {/* Sort By Dropdown */}
+            <div className="lg:col-span-2">
+              <div className="relative">
+                <ArrowUpDown className="w-4 h-4 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
+                  className="w-full pl-9 pr-8 py-2.5 rounded-lg border border-neutral-300 text-xs sm:text-sm font-semibold text-neutral-800 focus:outline-hidden focus:border-red-600 bg-white appearance-none cursor-pointer"
+                >
+                  <option value="year-asc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Year: Oldest First</option>
+                  <option value="year-desc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Year: Recent First</option>
+                  <option value="name-asc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Name: A to Z</option>
+                  <option value="name-desc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Name: Z to A</option>
+                  <option value="status-paid" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Paid Status First</option>
+                </select>
+                <ChevronDown className="w-4 h-4 text-neutral-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
+            </div>
+
+            {/* Reset Filters */}
+            <div className="lg:col-span-1 flex justify-end">
+              <button
+                onClick={() => {
+                  setSelectedYear('ALL');
+                  setStatusFilter('ALL');
+                  setSearchQuery('');
+                  setSortBy('year-asc');
+                  setCurrentPage(1);
+                }}
+                title="Reset all filters"
+                className="w-full py-2.5 px-2 rounded-lg border border-neutral-300 hover:border-red-600 text-neutral-700 hover:text-red-600 text-xs font-bold transition-colors flex items-center justify-center gap-1 cursor-pointer bg-neutral-50"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline lg:hidden">Reset</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Filter tags & Counter */}
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-3 mt-3 border-t border-neutral-100 text-xs">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-neutral-500 font-semibold">Active:</span>
+              <span className="px-2.5 py-0.5 rounded-md bg-neutral-900 text-white font-bold text-[11px]">
+                {selectedYear === 'ALL' ? 'All Batches' : `Batch ${selectedYear}`}
+              </span>
+              {statusFilter !== 'ALL' && (
+                <span className="px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-bold text-[11px]">
+                  Status: {statusFilter}
+                </span>
+              )}
+              {searchQuery && (
+                <span className="px-2.5 py-0.5 rounded-md bg-blue-100 text-blue-800 font-bold text-[11px]">
+                  &quot;{searchQuery}&quot;
+                </span>
+              )}
+            </div>
+            <div className="text-neutral-500 font-medium text-xs">
+              Showing <strong className="text-neutral-900 font-bold">{filteredData.length}</strong> of{' '}
+              <strong className="text-neutral-900 font-bold">{currentRecords.length}</strong> alumni
+            </div>
+          </div>
+        </div>
+
+        {/* 3. Alumni Data Table */}
+        <div className="bg-white rounded-xl border border-neutral-200/90 shadow-xs overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs sm:text-sm border-collapse">
+              <thead className="bg-[#111827] text-white uppercase font-black text-[11px] tracking-wider border-b border-neutral-800">
+                <tr>
+                  <th className="py-3.5 px-4 w-14 text-center">S.No.</th>
+                  <th className="py-3.5 px-4 w-32 text-center">Batch Year</th>
+                  <th className="py-3.5 px-4">Alumni Name</th>
+                  <th className="py-3.5 px-4 text-center w-36">Induction Fee</th>
+                  <th className="py-3.5 px-4">Email Address</th>
+                  <th className="py-3.5 px-4">Mobile Number</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-neutral-200 text-neutral-800">
+                {paginatedData.length > 0 ? (
+                  paginatedData.map((alumnus, idx) => {
+                    const globalIndex = (currentPage - 1) * itemsPerPage + idx + 1;
+                    const isPaid = alumnus.reg === 'PAID';
+                    const isDeceased = alumnus.deceased || alumnus.name.includes('[Deceased]') || alumnus.email?.toLowerCase().includes('no more with us');
+
+                    return (
+                      <tr
+                        key={`${activeTab}-${alumnus.year}-${alumnus.sno}-${alumnus.name}-${idx}`}
+                        className={`hover:bg-red-50/40 transition-colors ${
+                          isDeceased ? 'bg-neutral-50/70' : ''
+                        }`}
+                      >
+                        {/* S.No. */}
+                        <td
+                          style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
+                          className="py-3 px-4 text-center font-bold text-neutral-400"
+                        >
+                          {globalIndex}
+                        </td>
+
+                        {/* Batch Year */}
+                        <td className="py-3 px-4 text-center">
+                          <span
+                            style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
+                            className="inline-block px-2.5 py-0.5 rounded-full text-xs font-black bg-neutral-100 border border-neutral-200 text-neutral-900 whitespace-nowrap"
+                          >
+                            {alumnus.year}
+                          </span>
+                        </td>
+
+                        {/* Alumni Name */}
+                        <td className="py-3 px-4 font-bold text-neutral-900">
+                          <div className="flex items-center gap-2.5">
+                            <div
+                              className={`w-8 h-8 rounded-full font-black text-xs flex items-center justify-center shrink-0 uppercase shadow-2xs ${
+                                isDeceased
+                                  ? 'bg-neutral-200 text-neutral-700'
+                                  : 'bg-red-100 text-red-700'
+                              }`}
+                            >
+                              {alumnus.name.replace(/Prof\.|Dr\.|Ar\.|\[Deceased\]/gi, '').trim().charAt(0) || 'A'}
+                            </div>
+                            <div className="flex flex-col">
+                              <span className={`text-xs sm:text-sm uppercase tracking-tight ${
+                                isDeceased ? 'text-neutral-600 line-through decoration-neutral-400' : 'text-neutral-900'
+                              }`}>
+                                {alumnus.name.replace('[Deceased]', '').trim()}
+                              </span>
+                              {isDeceased && (
+                                <span className="text-[10px] font-semibold text-neutral-500 italic">
+                                  No more with us (In Memoriam)
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+
+                        {/* Induction Fee Status */}
+                        <td className="py-3 px-4 text-center">
+                          {isPaid ? (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-extrabold shadow-2xs border border-emerald-200">
+                              <CheckCircle2 className="w-3.5 h-3.5" />
+                              <span>PAID</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-600 text-[11px] font-semibold border border-neutral-200">
+                              <span>Pending</span>
+                            </span>
+                          )}
+                        </td>
+
+                        {/* Email Address */}
+                        <td className="py-3 px-4 font-mono text-xs">
+                          {alumnus.email ? (
+                            isDeceased ? (
+                              <span className="text-neutral-400 italic">In Memoriam</span>
+                            ) : (
+                              <a
+                                href={`mailto:${alumnus.email}`}
+                                className="text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-1.5 break-all font-medium"
+                                title={`Email ${alumnus.name}`}
+                              >
+                                <Mail className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                                <span>{alumnus.email}</span>
+                              </a>
+                            )
+                          ) : (
+                            <span className="text-neutral-400 font-sans italic">-</span>
+                          )}
+                        </td>
+
+                        {/* Mobile Number */}
+                        <td
+                          style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
+                          className="py-3 px-4 text-xs"
+                        >
+                          {alumnus.mobile ? (
+                            <div className="flex items-center gap-1.5 text-neutral-700">
+                              <Phone className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
+                              <span>{alumnus.mobile}</span>
+                            </div>
+                          ) : (
+                            <span className="text-neutral-400 font-sans italic">-</span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan={6} className="py-12 text-center text-neutral-500">
+                      <AlertCircle className="w-8 h-8 text-neutral-400 mx-auto mb-2" />
+                      <p className="font-semibold text-sm">No alumni records found matching the criteria.</p>
+                      <p className="text-xs text-neutral-400 mt-1">
+                        Try changing the batch year filter or clear the search box.
+                      </p>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination / Item per page bar */}
+          {totalItems > 0 && (
+            <div className="p-4 border-t border-neutral-200 flex flex-col sm:flex-row items-center justify-between gap-3 bg-neutral-50/80 text-xs text-neutral-600">
+              <div className="flex items-center gap-2">
+                <span>Show per page:</span>
+                <select
+                  value={itemsPerPage}
+                  onChange={(e) => {
+                    setItemsPerPage(Number(e.target.value));
+                    setCurrentPage(1);
+                  }}
+                  style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
+                  className="border border-neutral-300 rounded px-2 py-1 bg-white font-semibold text-neutral-800 cursor-pointer"
+                >
+                  <option value={25} style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>25</option>
+                  <option value={50} style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>50</option>
+                  <option value={100} style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>100</option>
+                  <option value={200} style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>200</option>
+                  <option value={500} style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>500</option>
+                </select>
+                <span className="text-neutral-400">|</span>
+                <span style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}>
+                  Showing {Math.min((currentPage - 1) * itemsPerPage + 1, totalItems)} to{' '}
+                  {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems} alumni
+                </span>
+              </div>
+
+              {totalPages > 1 && (
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                    className="px-2.5 py-1 border border-neutral-300 rounded hover:bg-neutral-200 disabled:opacity-40 disabled:cursor-not-allowed font-semibold cursor-pointer"
+                  >
+                    Prev
+                  </button>
+                  {paginationRange.map((p, idx) => {
+                    if (p === '...') {
+                      return (
+                        <span key={`ellipsis-${idx}`} className="px-1.5 text-neutral-400">
+                          ...
+                        </span>
+                      );
+                    }
+                    return (
+                      <button
+                        key={p}
+                        onClick={() => setCurrentPage(p)}
+                        className={`w-7 h-7 rounded text-xs font-bold transition-colors cursor-pointer ${
+                          currentPage === p
+                            ? 'bg-neutral-900 text-white'
+                            : 'border border-neutral-300 hover:bg-neutral-100 text-neutral-700'
+                        }`}
+                      >
+                        {p}
+                      </button>
+                    );
+                  })}
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                    className="px-2.5 py-1 border border-neutral-300 rounded hover:bg-neutral-200 disabled:opacity-40 disabled:cursor-not-allowed font-semibold cursor-pointer"
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Bottom Status Note */}
+          <div className="p-3.5 bg-neutral-900 text-neutral-300 text-center text-xs flex items-center justify-center gap-2">
+            <HeartHandshake className="w-4 h-4 text-red-500 shrink-0" />
+            <span>
+              <strong>{currentRecords.length} Alumni Records</strong> loaded for <strong>{currentCohort.course}</strong> from official Master Directory.
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

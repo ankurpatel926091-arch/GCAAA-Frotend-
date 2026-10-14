@@ -1,25 +1,25 @@
-import logoApollo from '@/assets/sponsor logo/01_apl-apollo.webp';
-import logoManilam from '@/assets/sponsor logo/02_mani-lam.webp';
-import logoKohler from '@/assets/sponsor logo/03_kohler.webp';
-import logoJohnson from '@/assets/sponsor logo/04_johnson.webp';
-import logoArchitect from '@/assets/sponsor logo/05_architect-logo.webp';
-import logoEuronics from '@/assets/sponsor logo/06_euronics.webp';
-import logoAdharshila from '@/assets/sponsor logo/07_adharshila-power-corporation.webp';
-import logoKitchenWorld from '@/assets/sponsor logo/08_kitchen-world.webp';
-import logoGreenply from '@/assets/sponsor logo/09_greenply.webp';
-import logoCelestia from '@/assets/sponsor logo/10_celestia.webp';
-import logoJaquar from '@/assets/sponsor logo/11_jaquar.webp';
+import logoApollo from '@/assets/sponsor logo/01_apl-apollo.svg';
+import logoManilam from '@/assets/sponsor logo/02_mani-lam.svg';
+import logoKohler from '@/assets/sponsor logo/03_kohler.svg';
+import logoJohnson from '@/assets/sponsor logo/04_johnson.svg';
+import logoArchitect from '@/assets/sponsor logo/05_architect-logo.svg';
+import logoEuronics from '@/assets/sponsor logo/06_euronics.svg';
+import logoAdharshila from '@/assets/sponsor logo/07_adharshila-power-corporation.svg';
+import logoKitchenWorld from '@/assets/sponsor logo/08_kitchen-world.svg';
+import logoGreenply from '@/assets/sponsor logo/09_greenply.svg';
+import logoCelestia from '@/assets/sponsor logo/10_celestia.svg';
+import logoJaquar from '@/assets/sponsor logo/11_jaquar.svg';
 
-import logoDaikin from '@/assets/sponsor logo/12_daikin.webp';
-import logoProtostar from '@/assets/sponsor logo/13_protostar.webp';
-import logoHindware from '@/assets/sponsor logo/14_hindware.webp';
-import logoVijayElectricals from '@/assets/sponsor logo/15_vijay-electricals.webp';
-import logoTataSteel from '@/assets/sponsor logo/16_tata-steel.webp';
-import logoWindowMagic from '@/assets/sponsor logo/17_window-magic.webp';
-import logoInfraMarket from '@/assets/sponsor logo/18_infra-market.webp';
-import logoRakCeramics from '@/assets/sponsor logo/19_rak-ceramics.webp';
-import logoImpacLift from '@/assets/sponsor logo/20_inpac-lift.webp';
-import logoNewVicky from '@/assets/sponsor logo/21_new-vicky-enterprises.webp';
+import logoDaikin from '@/assets/sponsor logo/12_daikin.svg';
+import logoProtostar from '@/assets/sponsor logo/13_protostar.svg';
+import logoHindware from '@/assets/sponsor logo/14_hindware.svg';
+import logoVijayElectricals from '@/assets/sponsor logo/15_vijay-electricals.svg';
+import logoTataSteel from '@/assets/sponsor logo/16_tata-steel.svg';
+import logoWindowMagic from '@/assets/sponsor logo/17_window-magic.svg';
+import logoInfraMarket from '@/assets/sponsor logo/18_infra-market.svg';
+import logoRakCeramics from '@/assets/sponsor logo/19_rak-ceramics.svg';
+import logoImpacLift from '@/assets/sponsor logo/20_inpac-lift.svg';
+import logoNewVicky from '@/assets/sponsor logo/21_new-vicky-enterprises.svg';
 
 export const PastSponsorsSection = () => {
   // First Half (11 sponsors) - moves Left to Right
@@ -52,7 +52,7 @@ export const PastSponsorsSection = () => {
   ];
 
   return (
-    <section className="relative w-full bg-white text-neutral-900 pt-14 sm:pt-20 pb-0 border-t border-neutral-200 overflow-hidden select-none">
+    <section className="relative w-full bg-white text-neutral-900 pt-14 sm:pt-20 pb-0 border-t border-neutral-200 overflow-hidden">
       {/* Subtle Decorative Flowing Wave Lines in Background */}
       <svg
         className="absolute inset-0 w-full h-full text-red-500/[0.06] pointer-events-none"
@@ -113,11 +113,8 @@ export const PastSponsorsSection = () => {
                   <img
                     src={sponsor.logo}
                     alt={sponsor.name}
-                    className="max-h-8 sm:max-h-9 max-w-[75%] w-auto h-auto object-contain group-hover:scale-105 transition-transform duration-300"
-                    style={{
-                      imageRendering: '-webkit-optimize-contrast',
-                      transform: 'translateZ(0)',
-                    }}
+                    loading="lazy"
+                    className="max-h-10 sm:max-h-12 max-w-[85%] w-auto h-auto object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-2xs"
                   />
                 </div>
               </div>
@@ -140,11 +137,8 @@ export const PastSponsorsSection = () => {
                   <img
                     src={sponsor.logo}
                     alt={sponsor.name}
-                    className="max-h-8 sm:max-h-9 max-w-[75%] w-auto h-auto object-contain group-hover:scale-105 transition-transform duration-300"
-                    style={{
-                      imageRendering: '-webkit-optimize-contrast',
-                      transform: 'translateZ(0)',
-                    }}
+                    loading="lazy"
+                    className="max-h-10 sm:max-h-12 max-w-[85%] w-auto h-auto object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-2xs"
                   />
                 </div>
               </div>

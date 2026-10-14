@@ -70,7 +70,7 @@ export const DharoharInviteModal = () => {
         {/* Clickable Image Banner Area */}
         <div
           onClick={handleNavigateToRegister}
-          className="relative cursor-pointer overflow-hidden select-none bg-neutral-900 flex items-center justify-center"
+          className="relative cursor-pointer overflow-hidden bg-neutral-900 flex items-center justify-center"
           title="Click to Register / RSVP for Dharohar 2026"
         >
           <img

@@ -24,7 +24,7 @@ export const Footer = () => {
       {/* ========================================================
           MAIN FOOTER MULTI-COLUMN GRID
       ======================================================== */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-14 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-9 lg:gap-7">
 
           {/* COLUMN 1: BRAND IDENTITY & ABOUT */}
@@ -184,8 +184,8 @@ export const Footer = () => {
       {/* ========================================================
           BOTTOM COPYRIGHT BAR
       ======================================================== */}
-      <div className="border-t border-neutral-900 bg-neutral-950/90 py-5 px-4 sm:px-6 lg:px-8 text-sm text-neutral-500">
-        <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="border-t border-neutral-900 bg-neutral-950/90 py-5 text-sm text-neutral-500">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-14 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-center md:text-left">
             &copy; {new Date().getFullYear()} <strong>Government College of Architecture Alumni Association (GCAAA)</strong>. All Rights Reserved.
           </p>

@@ -6,7 +6,7 @@ export const FloatingSidePills = () => {
       {/* ========================================================
           1. LEFT SIDE FLOATING ACTION PILLS
       ======================================================== */}
-      <div className="hidden md:flex fixed left-0 top-[45%] -translate-y-1/2 z-40 flex-col gap-3.5 pointer-events-auto select-none">
+      <div className="hidden md:flex fixed left-0 top-[45%] -translate-y-1/2 z-40 flex-col gap-3.5 pointer-events-auto">
         {/* Left Pill 1: Dharohar 2026 */}
         <Link
           to="/events"
@@ -43,7 +43,7 @@ export const FloatingSidePills = () => {
       {/* ========================================================
           2. RIGHT SIDE FLOATING ACTION PILLS
       ======================================================== */}
-      <div className="hidden md:flex fixed right-0 top-[45%] -translate-y-1/2 z-40 flex-col gap-3.5 pointer-events-auto select-none">
+      <div className="hidden md:flex fixed right-0 top-[45%] -translate-y-1/2 z-40 flex-col gap-3.5 pointer-events-auto">
         {/* Right Pill 1: Alumni Register / Join GCAAA */}
         <Link
           to="/registration"

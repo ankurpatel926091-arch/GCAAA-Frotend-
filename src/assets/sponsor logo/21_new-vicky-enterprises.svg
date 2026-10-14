@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 80" fill="none">
+  <!-- Segmented NE Monogram -->
+  <g transform="translate(15, 12)">
+    <path d="M 6 48 L 6 8 L 14 8 L 32 36 L 32 8 L 40 8 L 40 48 L 32 48 L 14 20 L 14 48 Z" fill="#0D47A1"/>
+    <path d="M 46 8 L 68 8 L 68 15 L 54 15 L 54 24 L 66 24 L 66 31 L 54 31 L 54 41 L 68 41 L 68 48 L 46 48 Z" fill="#1565C0"/>
+  </g>
+  <g transform="translate(95, 22)">
+    <text x="0" y="18" font-family="'Arial Black', Impact, sans-serif" font-weight="900" font-size="16" fill="#0D47A1" letter-spacing="0.5">NEW VICKY</text>
+    <text x="0" y="34" font-family="'Arial Black', Impact, sans-serif" font-weight="900" font-size="15" fill="#1565C0" letter-spacing="0.5">ENTERPRISES</text>
+    <text x="1" y="47" font-family="Arial, sans-serif" font-weight="600" font-size="7.5" fill="#546E7A" letter-spacing="1">ARCHITECTURAL SOLUTIONS</text>
+  </g>
+</svg>

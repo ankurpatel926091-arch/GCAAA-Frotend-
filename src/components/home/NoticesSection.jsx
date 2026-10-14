@@ -123,7 +123,7 @@ export const NoticesSection = () => {
 
   return (
     <section className="w-full bg-neutral-100 text-neutral-900 py-10 sm:py-16 md:py-20 border-b border-neutral-300 ">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-14">
         
         {/* ========================================================
             SECTION HEADER

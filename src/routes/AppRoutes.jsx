@@ -7,6 +7,7 @@ import { CommitteePage } from '@/pages/CommitteePage';
 import { GalleryPage } from '@/pages/GalleryPage';
 import { ContactPage } from '@/pages/ContactPage';
 import { AlumniRegistrationPage } from '@/pages/AlumniRegistrationPage';
+import { AlumniDataListPage } from '@/pages/AlumniDataListPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 
 export const AppRoutes = () => {
@@ -21,6 +22,7 @@ export const AppRoutes = () => {
         <Route path="committee/:section" element={<CommitteePage />} />
         <Route path="registration" element={<AlumniRegistrationPage />} />
         <Route path="alumni-registration" element={<AlumniRegistrationPage />} />
+        <Route path="alumni-data-list" element={<AlumniDataListPage />} />
         <Route path="contact" element={<ContactPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>

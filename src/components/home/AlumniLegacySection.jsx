@@ -62,7 +62,7 @@ export const AlumniLegacySection = ({ showTimelineAndImpact = false }) => {
       <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-red-500/5 blur-[150px] pointer-events-none rounded-full" />
       <div className="absolute bottom-10 left-0 w-[450px] h-[450px] bg-amber-200/20 blur-[140px] pointer-events-none rounded-full" />
 
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-14 relative z-10">
 
         {/* ========================================================
             1. TOP: GCA ALUMNI ASSOCIATION HEADLINE & STAMP CARD

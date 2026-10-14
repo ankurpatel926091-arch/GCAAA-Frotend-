@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 100" fill="none">
+  <g transform="translate(10, 10)">
+    <!-- Crescent rings -->
+    <path d="M 40 4 C 18 4 4 18 4 40 C 4 62 18 76 40 76 C 54 76 66 69 72 58 C 66 64 54 68 42 68 C 26 68 14 56 14 40 C 14 24 26 12 42 12 C 54 12 66 16 72 22 C 66 11 54 4 40 4 Z" fill="#0097A7"/>
+    <path d="M 42 16 C 28 16 18 26 18 40 C 18 54 28 64 42 64 C 52 64 60 59 64 51 C 60 55 52 58 44 58 C 34 58 26 50 26 40 C 26 30 34 22 44 22 C 52 22 60 25 64 29 C 60 21 52 16 42 16 Z" fill="#F47B20"/>
+    <text x="36" y="47" font-family="'Arial Black', Impact, sans-serif" font-weight="900" font-size="20" fill="#0097A7" text-anchor="middle">APL</text>
+  </g>
+  <g transform="translate(95, 20)">
+    <text x="0" y="28" font-family="'Arial Black', Impact, sans-serif" font-weight="900" font-size="28" fill="#F47B20" letter-spacing="1">APOLLO</text>
+    <text x="0" y="44" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="12" fill="#231F20" letter-spacing="2.5">STEEL PIPES</text>
+    <text x="1" y="58" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="8" fill="#707070" letter-spacing="1.2">APL APOLLO TUBES LIMITED</text>
+  </g>
+</svg>

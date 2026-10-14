@@ -270,7 +270,7 @@ export const GallerySection = () => {
                       {item.badge}
                     </p>
                   </div>
-                  <span className="text-red-600 font-bold text-xs select-none">◆</span>
+                  <span className="text-red-600 font-bold text-xs">◆</span>
                 </div>
               </div>
             </div>

@@ -96,7 +96,7 @@ export const HomePage = () => {
                   <span className="text-red-500 font-extrabold ml-1">{item.highlight}</span>
                 )}
               </span>
-              <span className="text-red-500 mx-4 sm:mx-6 md:mx-8 text-xs sm:text-sm select-none drop-shadow-[0_0_8px_rgba(239,68,68,0.7)]">
+              <span className="text-red-500 mx-4 sm:mx-6 md:mx-8 text-xs sm:text-sm drop-shadow-[0_0_8px_rgba(239,68,68,0.7)]">
                 ◆
               </span>
             </div>

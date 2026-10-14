@@ -9,7 +9,7 @@ const getNameInitial = (fullName = '') => {
 };
 
 // Reusable circular avatar component (photo if available, otherwise styled initial letter)
-const MemberAvatar = ({ name, image, size = 'lg' }) => {
+const MemberAvatar = ({ name, image, size = 'lg', className = 'mb-2' }) => {
   const initial = getNameInitial(name);
   const sizeClasses =
     size === 'lg'
@@ -17,7 +17,7 @@ const MemberAvatar = ({ name, image, size = 'lg' }) => {
       : 'w-20 h-20 sm:w-22 sm:h-22 text-2xl sm:text-3xl';
 
   return (
-    <div className="relative mx-auto mb-4 inline-flex items-center justify-center">
+    <div className={`relative mx-auto ${className} inline-flex items-center justify-center`}>
       {/* Outer decorative ring */}
       <div
         className={`${sizeClasses} rounded-full p-1 bg-gradient-to-tr from-[#B70D2B] via-red-500 to-amber-500 shadow-lg group-hover:scale-105 transition-transform duration-300`}
@@ -29,7 +29,7 @@ const MemberAvatar = ({ name, image, size = 'lg' }) => {
             className="w-full h-full rounded-full object-cover bg-white border-2 border-white"
           />
         ) : (
-          <div className="w-full h-full rounded-full bg-gradient-to-br from-neutral-900 via-neutral-800 to-[#B70D2B] text-white font-black flex items-center justify-center border-2 border-white select-none tracking-tight shadow-inner">
+          <div className="w-full h-full rounded-full bg-gradient-to-br from-neutral-900 via-neutral-800 to-[#B70D2B] text-white font-black flex items-center justify-center border-2 border-white tracking-tight shadow-inner">
             {initial}
           </div>
         )}
@@ -141,11 +141,11 @@ export const ExecutiveCommitteeSection = ({ activeSection }) => {
                   <div className="p-6 sm:p-7 flex-1 flex flex-col items-center">
                     <MemberAvatar name={person.name} image={person.image} size="lg" />
 
-                    <span className="inline-block bg-red-50 text-[#B70D2B] border border-red-200/80 text-[11px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full mb-2.5">
+                    <span className="inline-block bg-red-50 text-[#B70D2B] border border-red-200/80 text-[11px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
                       {person.role}
                     </span>
 
-                    <h4 className="text-lg font-extrabold text-neutral-900 leading-snug mb-5">
+                    <h4 className="text-lg font-extrabold text-neutral-900 leading-snug mb-4">
                       {person.name}
                     </h4>
 
@@ -259,11 +259,11 @@ export const ExecutiveCommitteeSection = ({ activeSection }) => {
                   <div className="p-6 sm:p-7 flex-1 flex flex-col items-center">
                     <MemberAvatar name={person.name} image={person.image} size="lg" />
 
-                    <span className="inline-block bg-red-50 text-[#B70D2B] border border-red-200/80 text-[11px] font-extrabold uppercase tracking-wider px-3.5 py-1 rounded-full mb-2.5">
+                    <span className="inline-block bg-red-50 text-[#B70D2B] border border-red-200/80 text-[11px] font-extrabold uppercase tracking-wider px-3.5 py-1 rounded-full mb-2">
                       {person.role}
                     </span>
 
-                    <h4 className="text-lg font-extrabold text-neutral-900 leading-snug mb-5">
+                    <h4 className="text-lg font-extrabold text-neutral-900 leading-snug mb-4">
                       {person.name}
                     </h4>
 
