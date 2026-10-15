@@ -1,5 +1,6 @@
 import { EventSection } from '@/components/home/EventSection';
 import { DharoharSection } from '@/components/home/DharoharSection';
+import { GallerySection } from '@/components/home/GallerySection';
 
 export const EventsPage = () => {
   return (
@@ -13,6 +14,7 @@ export const EventsPage = () => {
       </div>
       <DharoharSection />
       <EventSection />
+      <GallerySection />
     </div>
   );
 };
