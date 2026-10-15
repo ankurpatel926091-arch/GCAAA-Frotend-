@@ -230,7 +230,7 @@ export const AlumniDataListPage = () => {
       </div>
 
       {/* 2. Top Cohort Filter Strip (Matching master excel tabs) */}
-      <div className="bg-[#0B0F19] border-b-2 border-[#1E293B] shadow-lg sticky top-[57px] sm:top-[65px] z-30">
+      <div className="bg-[#0B0F19] border-b-2 border-[#1E293B] shadow-lg sticky top-[92px] lg:top-[144px] z-30">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-10 md:px-14 lg:px-16">
           <div className="flex items-center overflow-x-auto no-scrollbar py-2 touch-pan-x">
             <div className="flex items-stretch border-l border-neutral-800 shrink-0">

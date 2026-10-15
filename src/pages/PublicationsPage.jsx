@@ -100,7 +100,7 @@ export const PublicationsPage = () => {
           <section
             key={pub.id}
             id={pub.id}
-            className="scroll-mt-24 relative bg-white rounded-3xl border border-neutral-200/90 shadow-sm hover:shadow-xl transition-all duration-300 p-6 sm:p-10 lg:p-12 overflow-hidden"
+            className="scroll-mt-36 lg:scroll-mt-40 relative bg-white rounded-3xl border border-neutral-200/90 shadow-sm hover:shadow-xl transition-all duration-300 p-6 sm:p-10 lg:p-12 overflow-hidden"
           >
             {/* Background Watermark Section Number */}
             <div className="absolute top-2 right-4 sm:top-6 sm:right-8 text-7xl sm:text-9xl font-black text-neutral-100/90 select-none pointer-events-none -z-0">

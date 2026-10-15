@@ -1403,7 +1403,7 @@ export const AlumniRegistrationPage = () => {
                 {/* --------------------------------------------------
                     RIGHT COLUMN: EXISTING MEMBERS & MEMBERSHIP PROCESS
                 -------------------------------------------------- */}
-                <div className="space-y-6 lg:sticky lg:top-24">
+                <div className="space-y-6 lg:sticky lg:top-40">
                   {/* Top Two Action Cards (Matches Reference Site Top Right) */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     {/* Red Card: Existing Members */}

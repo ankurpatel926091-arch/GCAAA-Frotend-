@@ -14,8 +14,10 @@ export const MainLayout = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-neutral-950 text-neutral-100 selection:bg-red-600 selection:text-white relative print:bg-white print:text-neutral-900 print:min-h-0">
-      <div className="print:hidden">
+      <div className="sticky top-0 z-50 w-full print:hidden bg-white">
         <Navbar />
+      </div>
+      <div className="print:hidden">
         <FloatingSidePills />
         <DharoharInviteModal />
       </div>

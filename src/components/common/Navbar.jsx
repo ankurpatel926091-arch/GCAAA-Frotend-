@@ -106,10 +106,10 @@ export const Navbar = () => {
         </div>
       </div>
 
-      {/* STICKY HEADER */}
+      {/* HEADER */}
       <header
         ref={headerRef}
-        className={`sticky top-0 z-40 w-full transition-shadow duration-300 ${
+        className={`w-full transition-shadow duration-300 ${
           isScrolled ? 'shadow-2xl' : 'shadow-md'
         }`}
       >
