@@ -291,7 +291,7 @@ export const alumniRecords = [
   {
     "sno": 37,
     "year": "Prior to 1985",
-    "name": "Virendra Agarwal",
+    "name": "Late Virendra Agarwal",
     "reg": "PAID",
     "email": "",
     "mobile": "9415020285",
@@ -356,7 +356,7 @@ export const alumniRecords = [
   {
     "sno": 4,
     "year": "Diploma 1988-91",
-    "name": "ANURAG MALL",
+    "name": "Late ANURAG MALL",
     "reg": "",
     "email": "",
     "mobile": "",
@@ -421,7 +421,7 @@ export const alumniRecords = [
   {
     "sno": 12,
     "year": "Diploma 1988-91",
-    "name": "RAHUL SRIVASTAVA",
+    "name": "Late RAHUL SRIVASTAVA",
     "reg": "",
     "email": "",
     "mobile": "",
@@ -814,7 +814,7 @@ export const alumniRecords = [
   {
     "sno": 10,
     "year": 1986,
-    "name": "CHANDRA K. SHUKLA",
+    "name": "Late CHANDRA K. SHUKLA",
     "reg": "",
     "email": "",
     "mobile": "",
@@ -871,7 +871,7 @@ export const alumniRecords = [
   {
     "sno": 17,
     "year": 1986,
-    "name": "MANOJ TANWAR",
+    "name": "Late MANOJ TANWAR",
     "reg": "",
     "email": "",
     "mobile": "",
@@ -960,7 +960,7 @@ export const alumniRecords = [
   {
     "sno": 28,
     "year": 1986,
-    "name": "SANJAY SHARMA",
+    "name": "Late SANJAY SHARMA",
     "reg": "",
     "email": "",
     "mobile": "",
@@ -1321,7 +1321,7 @@ export const alumniRecords = [
   {
     "sno": 4,
     "year": 1989,
-    "name": "A.K.S. CHAHAR",
+    "name": "Late A.K.S. CHAHAR",
     "reg": "",
     "email": "",
     "mobile": "",
@@ -1474,7 +1474,7 @@ export const alumniRecords = [
   {
     "sno": 23,
     "year": 1989,
-    "name": "PALLAV SEN GUPTA",
+    "name": "Late PALLAV SEN GUPTA",
     "reg": "",
     "email": "",
     "mobile": "93112 48662",
@@ -1491,7 +1491,7 @@ export const alumniRecords = [
   {
     "sno": 25,
     "year": 1989,
-    "name": "PRAGYAN DARBARI",
+    "name": "Late PRAGYAN DARBARI",
     "reg": "PAID",
     "email": "",
     "mobile": "",
@@ -1620,7 +1620,7 @@ export const alumniRecords = [
   {
     "sno": 6,
     "year": 1990,
-    "name": "HARISH SHARMA",
+    "name": "Late HARISH SHARMA",
     "reg": "PAID",
     "email": "",
     "mobile": "",
@@ -1701,7 +1701,7 @@ export const alumniRecords = [
   {
     "sno": 16,
     "year": 1990,
-    "name": "RAJEEV K. SRIVASTAVA",
+    "name": "Late RAJEEV K. SRIVASTAVA",
     "reg": "PAID",
     "email": "",
     "mobile": "",
@@ -1782,7 +1782,7 @@ export const alumniRecords = [
   {
     "sno": 26,
     "year": 1990,
-    "name": "VIPIN BALI",
+    "name": "Late VIPIN BALI",
     "reg": "PAID",
     "email": "",
     "mobile": "",
@@ -1879,7 +1879,7 @@ export const alumniRecords = [
   {
     "sno": 12,
     "year": 1991,
-    "name": "PARESH DAS",
+    "name": "Late PARESH DAS",
     "reg": "",
     "email": "",
     "mobile": "",
@@ -2312,10 +2312,11 @@ export const alumniRecords = [
   {
     "sno": 26,
     "year": 1993,
-    "name": "SANDEEP BHATNAGAR (LATE)",
+    "name": "Late SANDEEP BHATNAGAR",
     "reg": "",
     "email": "archinfosys1@gmail.com",
-    "mobile": "9899599881"
+    "mobile": "9899599881",
+    "deceased": true
   },
   {
     "sno": 27,
@@ -3080,7 +3081,7 @@ export const alumniRecords = [
   {
     "sno": 24,
     "year": 1996,
-    "name": "SUDHANSHU BANSAL",
+    "name": "Late SUDHANSHU BANSAL",
     "reg": "PAID",
     "email": "",
     "mobile": "",
@@ -3321,7 +3322,7 @@ export const alumniRecords = [
   {
     "sno": 20,
     "year": 1997,
-    "name": "RAKESH TIWARI",
+    "name": "Late RAKESH TIWARI",
     "reg": "",
     "email": "",
     "mobile": "",
@@ -3706,7 +3707,7 @@ export const alumniRecords = [
   {
     "sno": 1,
     "year": 1999,
-    "name": "ARUN KUMAR SINGH",
+    "name": "Late ARUN KUMAR SINGH",
     "reg": "PAID",
     "email": "",
     "mobile": "",
@@ -3787,7 +3788,7 @@ export const alumniRecords = [
   {
     "sno": 11,
     "year": 1999,
-    "name": "GYNENDRA PRAKASH",
+    "name": "Late GYNENDRA PRAKASH",
     "reg": "",
     "email": "",
     "mobile": "",
@@ -3948,7 +3949,7 @@ export const alumniRecords = [
   {
     "sno": 31,
     "year": 1999,
-    "name": "SUMIT KUMAR GOEL",
+    "name": "Late SUMIT KUMAR GOEL",
     "reg": "",
     "email": "",
     "mobile": "",
@@ -3981,10 +3982,11 @@ export const alumniRecords = [
   {
     "sno": 35,
     "year": 1999,
-    "name": "VIVEKANAND",
+    "name": "Late VIVEKANAND",
     "reg": "",
     "email": "N/A",
-    "mobile": "N/A"
+    "mobile": "N/A",
+    "deceased": true
   },
   {
     "sno": 36,
@@ -4061,7 +4063,7 @@ export const alumniRecords = [
   {
     "sno": 9,
     "year": 2000,
-    "name": "LATE DHARMENDRA SINGH",
+    "name": "Late DHARMENDRA SINGH",
     "reg": "PAID",
     "email": "",
     "mobile": "",
@@ -4382,7 +4384,7 @@ export const alumniRecords = [
   {
     "sno": 20,
     "year": 2001,
-    "name": "LATE PRAVAINVIT NAGLAKAR",
+    "name": "Late PRAVAINVIT NAGLAKAR",
     "reg": "",
     "email": "",
     "mobile": "9630099564",
@@ -4871,10 +4873,11 @@ export const alumniRecords = [
   {
     "sno": 21,
     "year": 2003,
-    "name": "PANKAJ KR. KUREEL (LATE)",
+    "name": "Late PANKAJ KR. KUREEL",
     "reg": "",
     "email": "",
-    "mobile": "9336233054"
+    "mobile": "9336233054",
+    "deceased": true
   },
   {
     "sno": 22,
@@ -5159,10 +5162,11 @@ export const alumniRecords = [
   {
     "sno": 22,
     "year": 2004,
-    "name": "RAJENDRA KUMAR SRIVASTAVA",
+    "name": "Late RAJENDRA KUMAR SRIVASTAVA",
     "reg": "",
     "email": "raj10srivastava@gmail.com",
-    "mobile": ""
+    "mobile": "",
+    "deceased": true
   },
   {
     "sno": 23,
@@ -5623,7 +5627,7 @@ export const alumniRecords = [
   {
     "sno": 22,
     "year": 2006,
-    "name": "SHWETA CHAUDHARY",
+    "name": "Late SHWETA CHAUDHARY",
     "reg": "",
     "email": "",
     "mobile": "",
@@ -6560,7 +6564,7 @@ export const alumniRecords = [
   {
     "sno": 13,
     "year": 2010,
-    "name": "MAHESH KUMAR",
+    "name": "Late MAHESH KUMAR",
     "reg": "",
     "email": "",
     "mobile": "",

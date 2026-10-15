@@ -101,7 +101,7 @@ export const DharoharSection = () => {
                 to="/registration"
                 className="w-full sm:w-auto text-center justify-center bg-[#B70D2B] hover:bg-neutral-900 text-white font-bold text-xs uppercase tracking-wider px-5 py-3.5 rounded-lg shadow transition-all active:scale-95 flex items-center gap-2"
               >
-                <span>Aluminus Registration</span>  
+                <span>Alumni Registration</span>  
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link

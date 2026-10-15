@@ -15,7 +15,7 @@ import {
   HeartHandshake
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { allCohorts } from '../data/cohortRecords';
+import { allCohorts, getBatchNo } from '../data/cohortRecords';
 
 export const AlumniDataListPage = () => {
   // Course / Cohort Filter Tabs (from reference master excel sheet)
@@ -28,7 +28,7 @@ export const AlumniDataListPage = () => {
     },
     {
       id: 'm-arch',
-      label: 'm.arch 15-21',
+      label: 'M.ARCH 15-21',
       course: 'Master of Architecture (M.Arch 2015-2023)',
       count: allCohorts['m-arch']?.records?.length || 94,
     },
@@ -99,15 +99,14 @@ export const AlumniDataListPage = () => {
           return false;
         }
 
-        // Search Query (name, email, mobile, year, membershipNo)
+        // Search Query (name, year, batch)
         if (searchQuery.trim()) {
           const q = searchQuery.toLowerCase().trim();
           const matchName = item.name.toLowerCase().includes(q);
-          const matchEmail = item.email ? item.email.toLowerCase().includes(q) : false;
-          const matchMobile = item.mobile ? item.mobile.toLowerCase().includes(q) : false;
           const matchYear = item.year.toString().toLowerCase().includes(q);
-          const matchMembership = item.membershipNo ? item.membershipNo.toLowerCase().includes(q) : false;
-          if (!matchName && !matchEmail && !matchMobile && !matchYear && !matchMembership) {
+          const batchStr = (item.batchNo || getBatchNo(item.year, activeTab)).toLowerCase();
+          const matchBatch = batchStr.includes(q);
+          if (!matchName && !matchYear && !matchBatch) {
             return false;
           }
         }
@@ -125,12 +124,6 @@ export const AlumniDataListPage = () => {
           const yb = parseInt(b.year, 10) || 1980;
           return yb - ya || a.sno - b.sno;
         }
-        if (sortBy === 'membership-asc') {
-          return (a.membershipNo || '').localeCompare(b.membershipNo || '');
-        }
-        if (sortBy === 'membership-desc') {
-          return (b.membershipNo || '').localeCompare(a.membershipNo || '');
-        }
         if (sortBy === 'name-asc') {
           return a.name.localeCompare(b.name);
         }
@@ -139,7 +132,7 @@ export const AlumniDataListPage = () => {
         }
         return 0;
       });
-  }, [currentRecords, selectedYear, searchQuery, sortBy]);
+  }, [currentRecords, selectedYear, searchQuery, sortBy, activeTab]);
 
   // Pagination calculation
   const totalItems = filteredData.length;
@@ -165,19 +158,15 @@ export const AlumniDataListPage = () => {
     return range;
   }, [currentPage, totalPages]);
 
-  // Export to CSV helper
+  // Export to CSV helper (Sr No, Batch No, Year, Name)
   const handleExportCSV = () => {
     if (!filteredData.length) return;
-    const headers = ['S.No.', 'Membership No.', 'Cohort', 'Batch Year', 'Alumni Name', 'Email Address', 'Mobile Number', 'Deceased'];
+    const headers = ['Sr No.', 'Batch No.', 'Year', 'Name'];
     const rows = filteredData.map((d, index) => [
       index + 1,
-      `"${d.membershipNo || ''}"`,
-      `"${currentCohort.course.replace(/"/g, '""')}"`,
+      `"${d.batchNo || getBatchNo(d.year, activeTab)}"`,
       `"${d.year}"`,
-      `"${d.name.replace(/"/g, '""')}"`,
-      `"${d.email || ''}"`,
-      `"${d.mobile || ''}"`,
-      d.deceased ? 'Yes' : 'No'
+      `"${d.name.replace(/"/g, '""')}"`
     ]);
     const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
     const encodedUri = encodeURI(csvContent);
@@ -297,7 +286,7 @@ export const AlumniDataListPage = () => {
                   setCurrentPage(1);
                 }}
                 style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
-                placeholder="Search membership no., name, email, phone, year..."
+                placeholder="Search alumni name or batch year..."
                 className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-neutral-300 text-xs sm:text-sm focus:outline-hidden focus:border-red-600 focus:ring-1 focus:ring-red-600 bg-white"
               />
             </div>
@@ -321,15 +310,22 @@ export const AlumniDataListPage = () => {
                   >
                     All Batches ({currentRecords.length} records)
                   </option>
-                  {activeBatches.map((yr) => (
-                    <option
-                      key={yr}
-                      value={yr}
-                      style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
-                    >
-                      Batch: {yr} ({batchStats[yr] || 0} alumni)
-                    </option>
-                  ))}
+                  {activeBatches.map((yr) => {
+                    const code = getBatchNo(yr, activeTab);
+                    const count = batchStats[yr] || 0;
+                    const label = yr.toLowerCase().includes('prior') || yr.toLowerCase().includes('diploma')
+                      ? `${code} (${yr}) — ${count} alumni`
+                      : `${code} — ${count} alumni`;
+                    return (
+                      <option
+                        key={yr}
+                        value={yr}
+                        style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
+                      >
+                        {label}
+                      </option>
+                    );
+                  })}
                 </select>
                 <ChevronDown className="w-4 h-4 text-neutral-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
@@ -347,8 +343,6 @@ export const AlumniDataListPage = () => {
                 >
                   <option value="year-asc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Year: Oldest First</option>
                   <option value="year-desc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Year: Recent First</option>
-                  <option value="membership-asc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Membership No: Low to High</option>
-                  <option value="membership-desc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Membership No: High to Low</option>
                   <option value="name-asc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Name: A to Z</option>
                   <option value="name-desc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Name: Z to A</option>
                 </select>
@@ -379,7 +373,7 @@ export const AlumniDataListPage = () => {
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-neutral-500 font-semibold">Active:</span>
               <span className="px-2.5 py-0.5 rounded-md bg-neutral-900 text-white font-bold text-[11px]">
-                {selectedYear === 'ALL' ? 'All Batches' : `Batch ${selectedYear}`}
+                {selectedYear === 'ALL' ? 'All Batches' : `${getBatchNo(selectedYear, activeTab)}`}
               </span>
               {searchQuery && (
                 <span className="px-2.5 py-0.5 rounded-md bg-blue-100 text-blue-800 font-bold text-[11px]">
@@ -397,22 +391,21 @@ export const AlumniDataListPage = () => {
         {/* 3. Alumni Data Table */}
         <div className="bg-white rounded-xl border border-neutral-200/90 shadow-xs overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[760px] text-left text-xs sm:text-sm border-collapse">
+            <table className="w-full table-fixed min-w-[760px] text-left text-xs sm:text-sm border-collapse">
               <thead className="bg-[#111827] text-white uppercase font-black text-[11px] tracking-wider border-b border-neutral-800">
                 <tr>
-                  <th className="py-3.5 px-4 w-14 text-center">S.No.</th>
-                  <th className="py-3.5 px-4 w-36 text-center whitespace-nowrap">Membership No.</th>
-                  <th className="py-3.5 px-4 w-32 text-center whitespace-nowrap">Batch Year</th>
-                  <th className="py-3.5 px-4">Alumni Name</th>
-                  <th className="py-3.5 px-4">Email Address</th>
-                  <th className="py-3.5 px-4">Mobile Number</th>
+                  <th className="py-4 px-4 w-[12%] text-center">SR NO.</th>
+                  <th className="py-4 px-4 w-[24%] text-center">BATCH NO.</th>
+                  <th className="py-4 px-4 w-[24%] text-center">YEAR</th>
+                  <th className="py-4 px-6 w-[40%] text-left">NAME</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-neutral-200 text-neutral-800">
                 {paginatedData.length > 0 ? (
                   paginatedData.map((alumnus, idx) => {
                     const globalIndex = (currentPage - 1) * itemsPerPage + idx + 1;
-                    const isDeceased = alumnus.deceased || alumnus.name.includes('[Deceased]') || alumnus.email?.toLowerCase().includes('no more with us');
+                    const isDeceased = alumnus.deceased || alumnus.name.toLowerCase().startsWith('late ') || alumnus.name.includes('[Deceased]') || alumnus.email?.toLowerCase().includes('no more with us');
+                    const batchNo = alumnus.batchNo || getBatchNo(alumnus.year, activeTab);
 
                     return (
                       <tr
@@ -421,52 +414,51 @@ export const AlumniDataListPage = () => {
                           isDeceased ? 'bg-neutral-50/70' : ''
                         }`}
                       >
-                        {/* S.No. */}
+                        {/* Sr No. */}
                         <td
                           style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
-                          className="py-3 px-4 text-center font-bold text-neutral-400"
+                          className="py-3.5 px-4 text-center font-bold text-neutral-400"
                         >
                           {globalIndex}
                         </td>
 
-                        {/* Membership No. */}
-                        <td className="py-3 px-4 text-center whitespace-nowrap">
+                        {/* Batch No. */}
+                        <td className="py-3.5 px-4 text-center whitespace-nowrap">
                           <span
-                            style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace", fontVariantNumeric: 'lining-nums tabular-nums' }}
-                            className="inline-block px-2.5 py-1 rounded-md text-xs font-black bg-red-50 text-[#B70D2B] border border-red-200/90 tracking-wide select-all"
-                            title={`GCAAA Membership ID: ${alumnus.membershipNo}`}
+                            style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
+                            className="inline-flex items-center justify-center px-3 py-1 rounded-md text-xs font-black bg-red-50 text-red-700 border border-red-200 uppercase tracking-wide shadow-2xs"
                           >
-                            {alumnus.membershipNo}
+                            {batchNo}
                           </span>
                         </td>
 
-                        {/* Batch Year */}
-                        <td className="py-3 px-4 text-center">
+                        {/* Year */}
+                        <td className="py-3.5 px-4 text-center whitespace-nowrap">
                           <span
                             style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
-                            className="inline-block px-2.5 py-0.5 rounded-full text-xs font-black bg-neutral-100 border border-neutral-200 text-neutral-900 whitespace-nowrap"
+                            className="inline-flex items-center justify-center px-3 py-1 rounded-md text-xs font-black bg-neutral-100 border border-neutral-200 text-neutral-900"
                           >
                             {alumnus.year}
                           </span>
                         </td>
 
-                        {/* Alumni Name */}
-                        <td className="py-3 px-4 font-bold text-neutral-900">
-                          <div className="flex items-center gap-2.5">
+                        {/* Name */}
+                        <td className="py-3.5 px-6 font-bold text-neutral-900">
+                          <div className="flex items-center gap-3">
                             <div
                               className={`w-8 h-8 rounded-full font-black text-xs flex items-center justify-center shrink-0 uppercase shadow-2xs ${
                                 isDeceased
-                                  ? 'bg-neutral-200 text-neutral-700'
+                                  ? 'bg-neutral-200 text-neutral-700 border border-neutral-300'
                                   : 'bg-red-100 text-red-700'
                               }`}
                             >
-                              {alumnus.name.replace(/Prof\.|Dr\.|Ar\.|\[Deceased\]/gi, '').trim().charAt(0) || 'A'}
+                              {alumnus.name.replace(/^Late\s+/i, '').replace(/Prof\.|Dr\.|Ar\.|\[Deceased\]/gi, '').trim().charAt(0) || 'A'}
                             </div>
-                            <div className="flex flex-col">
-                              <span className={`text-xs sm:text-sm uppercase tracking-tight ${
-                                isDeceased ? 'text-neutral-600 line-through decoration-neutral-400' : 'text-neutral-900'
+                            <div className="flex flex-col min-w-0">
+                              <span className={`text-xs sm:text-sm uppercase tracking-tight truncate ${
+                                isDeceased ? 'text-neutral-800 font-extrabold' : 'text-neutral-900'
                               }`}>
-                                {alumnus.name.replace('[Deceased]', '').trim()}
+                                {alumnus.name}
                               </span>
                               {isDeceased && (
                                 <span className="text-[10px] font-semibold text-neutral-500 italic">
@@ -476,47 +468,12 @@ export const AlumniDataListPage = () => {
                             </div>
                           </div>
                         </td>
-
-                        {/* Email Address */}
-                        <td className="py-3 px-4 font-mono text-xs">
-                          {alumnus.email ? (
-                            isDeceased ? (
-                              <span className="text-neutral-400 italic">In Memoriam</span>
-                            ) : (
-                              <a
-                                href={`mailto:${alumnus.email}`}
-                                className="text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-1.5 break-all font-medium"
-                                title={`Email ${alumnus.name}`}
-                              >
-                                <Mail className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-                                <span>{alumnus.email}</span>
-                              </a>
-                            )
-                          ) : (
-                            <span className="text-neutral-400 font-sans italic">-</span>
-                          )}
-                        </td>
-
-                        {/* Mobile Number */}
-                        <td
-                          style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
-                          className="py-3 px-4 text-xs"
-                        >
-                          {alumnus.mobile ? (
-                            <div className="flex items-center gap-1.5 text-neutral-700">
-                              <Phone className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
-                              <span>{alumnus.mobile}</span>
-                            </div>
-                          ) : (
-                            <span className="text-neutral-400 font-sans italic">-</span>
-                          )}
-                        </td>
                       </tr>
                     );
                   })
                 ) : (
                   <tr>
-                    <td colSpan={6} className="py-12 text-center text-neutral-500">
+                    <td colSpan={4} className="py-12 text-center text-neutral-500">
                       <AlertCircle className="w-8 h-8 text-neutral-400 mx-auto mb-2" />
                       <p className="font-semibold text-sm">No alumni records found matching the criteria.</p>
                       <p className="text-xs text-neutral-400 mt-1">

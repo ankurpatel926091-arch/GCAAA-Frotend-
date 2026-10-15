@@ -8,6 +8,7 @@ import { GalleryPage } from '@/pages/GalleryPage';
 import { ContactPage } from '@/pages/ContactPage';
 import { AlumniRegistrationPage } from '@/pages/AlumniRegistrationPage';
 import { AlumniDataListPage } from '@/pages/AlumniDataListPage';
+import { RegisteredMembersPage } from '@/pages/RegisteredMembersPage';
 import { PublicationsPage } from '@/pages/PublicationsPage';
 import { BlogPage } from '@/pages/BlogPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
@@ -25,6 +26,8 @@ export const AppRoutes = () => {
         <Route path="registration" element={<AlumniRegistrationPage />} />
         <Route path="alumni-registration" element={<AlumniRegistrationPage />} />
         <Route path="alumni-data-list" element={<AlumniDataListPage />} />
+        <Route path="registered-members" element={<RegisteredMembersPage />} />
+        <Route path="members-list" element={<RegisteredMembersPage />} />
         <Route path="publications" element={<PublicationsPage />} />
         <Route path="resources" element={<PublicationsPage />} />
         <Route path="blog" element={<BlogPage />} />

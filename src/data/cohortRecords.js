@@ -1957,6 +1957,49 @@ export const mindRecords = [
   }
 ];
 
+// Function to determine official Batch No in alphanumeric format (e.g., B-1985, B-1986, FB-1984, DIP-1988)
+export const getBatchNo = (year, cohortId = 'all') => {
+  const yrStr = String(year || '').trim();
+  const yrLower = yrStr.toLowerCase();
+
+  if (yrLower.includes('prior') || yrLower.includes('bfore') || yrLower.includes('before')) {
+    return 'FB-1984';
+  }
+  if (yrLower.includes('diploma 1988') || yrLower.includes('1988-91')) {
+    return 'DIP-1988';
+  }
+  if (yrLower.includes('diploma 1989') || yrLower.includes('1989-92')) {
+    return 'DIP-1989';
+  }
+  if (yrLower.includes('diploma')) {
+    const dMatch = yrStr.match(/\b(19\d\d|20\d\d)\b/);
+    return dMatch ? `DIP-${dMatch[0]}` : 'DIP';
+  }
+
+  const match = yrStr.match(/\b(19\d\d|20\d\d)\b/);
+  const yrNum = match ? parseInt(match[0], 10) : parseInt(yrStr, 10);
+
+  if (!isNaN(yrNum)) {
+    if (cohortId === 'm-arch') {
+      return `MARCH-${yrNum}`;
+    }
+    if (cohortId === 'murp') {
+      return `MURP-${yrNum}`;
+    }
+    if (cohortId === 'miend') {
+      return `MIEND-${yrNum}`;
+    }
+    if (cohortId === 'mind') {
+      return `MIND-${yrNum}`;
+    }
+
+    // Default: B.Arch
+    return `B-${yrNum}`;
+  }
+
+  return yrStr ? `B-${yrStr}` : '—';
+};
+
 // Function to generate standardized Membership No: GCA + year + (100 + sno)
 // e.g. Year 2026 S.No 1 -> GCA2026101, Year 2020 S.No 1 -> GCA2020101
 export const getMembershipNo = (record) => {
@@ -1968,9 +2011,10 @@ export const getMembershipNo = (record) => {
   return `GCA${yearCode}${seq}`;
 };
 
-const enrichRecords = (records = []) =>
+const enrichRecords = (records = [], cohortId = 'all') =>
   records.map((r) => ({
     ...r,
+    batchNo: r.batchNo || getBatchNo(r.year, cohortId),
     membershipNo: r.membershipNo || getMembershipNo(r),
   }));
 
@@ -1979,30 +2023,31 @@ export const allCohorts = {
     id: 'all',
     label: 'ALL (85-2025)',
     course: 'Bachelor of Architecture & Foundation (Prior to 1985 - 2025)',
-    records: enrichRecords(alumniRecords),
+    records: enrichRecords(alumniRecords, 'all'),
   },
   'm-arch': {
     id: 'm-arch',
     label: 'm.arch 15-21',
     course: 'Master of Architecture (M.Arch 2015-2023)',
-    records: enrichRecords(marchRecords),
+    records: enrichRecords(marchRecords, 'm-arch'),
   },
   'murp': {
     id: 'murp',
     label: 'MURP-20,21',
     course: 'Master of Urban & Regional Planning (MURP 2020-2025)',
-    records: enrichRecords(murpRecords),
+    records: enrichRecords(murpRecords, 'murp'),
   },
   'miend': {
     id: 'miend',
     label: 'MIEND-20',
     course: 'Master In Environmental Design (MIEND 2020-2025)',
-    records: enrichRecords(miendRecords),
+    records: enrichRecords(miendRecords, 'miend'),
   },
   'mind': {
     id: 'mind',
     label: 'MIND-23',
     course: 'Master In Interior Design (MIND 2023-2025)',
-    records: enrichRecords(mindRecords),
+    records: enrichRecords(mindRecords, 'mind'),
   },
 };
+

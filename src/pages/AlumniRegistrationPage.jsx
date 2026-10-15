@@ -458,7 +458,7 @@ export const AlumniRegistrationPage = () => {
       {/* ========================================================
           2. QUICK BENEFIT PILLARS
       ======================================================== */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
+      <section className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-14 -mt-8 relative z-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           <div className="bg-white rounded-2xl p-6 shadow-xl border border-neutral-200/90 flex items-start gap-4">
             <div className="w-12 h-12 rounded-xl bg-red-50 text-[#B70D2B] flex items-center justify-center shrink-0 shadow-xs">
@@ -504,53 +504,23 @@ export const AlumniRegistrationPage = () => {
       {/* ========================================================
           3. MAIN INTERACTIVE FORM SECTION (LIFE MEMBERSHIP FORM)
       ======================================================== */}
-      <section className="mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 max-w-[1440px]">
-        <div className="bg-white rounded-2xl shadow-2xl border border-neutral-200 overflow-hidden">
-          <div className="p-4 sm:p-7 lg:p-9">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+      <section className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-14 py-8 sm:py-12">
+        <div className="bg-white rounded-2xl shadow-xl border border-neutral-200 overflow-hidden">
+          <div className="p-4 sm:p-6 lg:p-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
                 {/* --------------------------------------------------
-                    LEFT COLUMN: OFFICIAL GCAAA REGISTRATION FORM
+                    LEFT COLUMN: OFFICIAL GCAAA REGISTRATION FORM (>50% width)
                 -------------------------------------------------- */}
-                <div className="space-y-6">
+                <div className="lg:col-span-7 flex flex-col justify-between space-y-6">
                   {/* Official Paper Form Header Badge */}
                   <div className="border-2 border-neutral-800 rounded-2xl p-4 sm:p-6 bg-neutral-50/80 shadow-sm relative overflow-hidden">
-                    {/* Decorative top red strip */}
-                    <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-600 via-[#B70D2B] to-neutral-900" />
+  {/* Decorative top red strip */}
+  <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-600 via-[#B70D2B] to-neutral-900" />
 
-                  <div className="flex flex-col md:flex-row items-center justify-between gap-5 border-b border-neutral-300 pb-5">
-                    <div className="flex items-center gap-4 text-center md:text-left">
-                      <img
-                        src={logoImg}
-                        alt="GCAAA Logo"
-                        className="h-14 sm:h-16 w-auto object-contain shrink-0 drop-shadow-xs"
-                      />
-                      <div>
-                        <h2 className="text-xl sm:text-2xl font-black text-neutral-900 tracking-tight font-serif uppercase">
-                          GCA Alumni Association
-                        </h2>
-                        <p className="text-xs sm:text-sm text-neutral-700 font-medium">
-                          Faculty of Architecture, GBTU (now FOAP, AKTU), Tagore Marg, Lucknow, U.P. – 226007
-                        </p>
-                        <p className="text-xs text-[#B70D2B] font-bold">
-                          Contact: contact.gcaaa@gmail.com
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="shrink-0 text-center">
-                      <span className="inline-block px-4 py-2 bg-neutral-900 text-white text-xs sm:text-sm font-black uppercase tracking-widest rounded-lg shadow-sm">
-                        MEMBERSHIP REGISTRATION FORM
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="pt-3.5 flex items-start gap-2 text-xs sm:text-sm text-neutral-800 italic leading-relaxed">
-                    <span className="font-bold text-neutral-900 not-italic shrink-0">Declaration:</span>
-                    <span>
-                      &ldquo;Kindly enroll me as member of GCA Alumni Association. I hereby agree to abide by the rules &amp; regulations of GCAAA.&rdquo;
-                    </span>
-                  </div>
-                </div>
+  <h2 className="pt-3.5 text-center text-lg sm:text-xl font-black text-neutral-900 uppercase tracking-widest">
+    Membership Registration Form
+  </h2>
+</div>
 
                 {membershipSubmitted ? (
                   <div className="text-center py-12 px-6 bg-emerald-50/80 border-2 border-emerald-300 rounded-2xl space-y-5">
@@ -646,7 +616,7 @@ export const AlumniRegistrationPage = () => {
                     </div>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmitMembership} id="membership-form-box" className="space-y-6">
+                  <form onSubmit={handleSubmitMembership} id="membership-form-box" className="flex-1 flex flex-col justify-between space-y-6">
                     {/* Stepper Tabs */}
                     <div className="grid grid-cols-2 gap-3 pb-2 border-b border-neutral-200">
                       <button
@@ -691,7 +661,7 @@ export const AlumniRegistrationPage = () => {
                     </div>
 
                     {currentStep === 1 ? (
-                      <div className="space-y-7">
+                      <div className="flex-1 flex flex-col justify-between space-y-7">
                     <div className="flex flex-col sm:flex-row gap-5 items-start bg-white p-5 sm:p-6 rounded-2xl border border-neutral-200 shadow-xs">
                       <div className="flex-1 space-y-4 w-full">
                         <div className="border-b border-neutral-200 pb-2">
@@ -1176,7 +1146,7 @@ export const AlumniRegistrationPage = () => {
                     )}
 
                     {/* Step 1: NEXT BUTTON */}
-                    <div className="pt-2">
+                    <div className="mt-auto pt-4">
                       <button
                         type="button"
                         onClick={handleNextStep}
@@ -1188,7 +1158,7 @@ export const AlumniRegistrationPage = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="space-y-7 animate-in fade-in duration-300">
+                  <div className="flex-1 flex flex-col justify-between space-y-7 animate-in fade-in duration-300">
                     {/* Step 2 Header & Applicant Information Summary */}
                     <div className="bg-gradient-to-r from-neutral-50 to-red-50/40 rounded-2xl p-4 sm:p-5 border border-neutral-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
                       <div>
@@ -1528,7 +1498,7 @@ export const AlumniRegistrationPage = () => {
                     )}
 
                     {/* Step 2 Bottom Actions: BACK & SUBMIT BUTTONS */}
-                    <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+                    <div className="flex flex-col sm:flex-row items-center gap-3 pt-4 mt-auto">
                       <button
                         type="button"
                         onClick={() => { setStepError(''); setCurrentStep(1); }}
@@ -1552,14 +1522,15 @@ export const AlumniRegistrationPage = () => {
                 </div>
 
                 {/* --------------------------------------------------
-                    RIGHT COLUMN: EXISTING MEMBERS & MEMBERSHIP PROCESS
+                    RIGHT COLUMN: EXISTING MEMBERS & MEMBERSHIP PROCESS (<50% width)
                 -------------------------------------------------- */}
-                <div className="space-y-6 lg:sticky lg:top-32">
+                <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
+                  <div className="space-y-6">
                   {/* Top Two Action Cards (Matches Reference Site Top Right) */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     {/* Red Card: Existing Members */}
                     <Link
-                      to="/alumni-data-list"
+                      to="/registered-members"
                       className="group relative overflow-hidden rounded-xl bg-[#D32F2F] hover:bg-[#B71C1C] p-4 sm:p-5 text-white shadow-md hover:shadow-xl hover:scale-[1.02] active:scale-[0.99] transition-all flex flex-col justify-between min-h-[135px] border border-red-600 cursor-pointer"
                     >
                       <div>
@@ -1778,24 +1749,27 @@ export const AlumniRegistrationPage = () => {
                       <strong className="font-extrabold text-red-700">Note:</strong> Before filling the form get ready with the COA certificate / academic degree, Payment proof (Cheque / UTR number), and Passport size photo for upload.
                     </p>
                   </div>
+                </div>
 
-                  {/* Directory Search Quick Banner */}
-                  <div className="p-4 sm:p-5 rounded-xl bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md">
-                    <div>
-                      <h5 className="text-xs font-black uppercase tracking-wider text-amber-400">
-                        Already Registered?
-                      </h5>
-                      <p className="text-xs text-neutral-300 mt-0.5">
-                        Verify your details or search for batchmates in the directory.
-                      </p>
+                  {/* Directory Search Quick Banner (pinned to bottom to match left column ending) */}
+                  <div className="mt-auto pt-4">
+                    <div className="p-4 sm:p-5 rounded-xl bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md">
+                      <div>
+                        <h5 className="text-xs font-black uppercase tracking-wider text-amber-400">
+                          Already Registered?
+                        </h5>
+                        <p className="text-xs text-neutral-300 mt-0.5">
+                          Verify your details or search for batchmates in the directory.
+                        </p>
+                      </div>
+                      <Link
+                        to="/registered-members"
+                        className="shrink-0 px-4 py-2 bg-white text-neutral-900 hover:bg-neutral-100 font-extrabold text-xs uppercase tracking-wider rounded-lg transition-all flex items-center gap-1.5 shadow-sm"
+                      >
+                        <Search className="w-3.5 h-3.5" />
+                        <span>View Directory</span>
+                      </Link>
                     </div>
-                    <Link
-                      to="/alumni-data-list"
-                      className="shrink-0 px-4 py-2 bg-white text-neutral-900 hover:bg-neutral-100 font-extrabold text-xs uppercase tracking-wider rounded-lg transition-all flex items-center gap-1.5 shadow-sm"
-                    >
-                      <Search className="w-3.5 h-3.5" />
-                      <span>View Directory</span>
-                    </Link>
                   </div>
                 </div>
               </div>

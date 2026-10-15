@@ -54,9 +54,7 @@ export const PublicationsPage = () => {
             GCAAA <span className="text-[#B70D2B]">PUBLICATIONS</span> &amp; SOUVENIRS
           </h1>
 
-          {/* <p className="mt-4 text-sm sm:text-base md:text-lg text-neutral-600 max-w-3xl mx-auto leading-relaxed">
-            Preserving the timeless heritage, memoirs, directory rolls, and milestone reunions of Government College of Architecture, Lucknow. Browse online or download the official print souvenir editions below.
-          </p> */}
+          
 
           {/* Metric Stats Pills */}
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs sm:text-sm font-semibold text-neutral-700">
@@ -230,11 +228,15 @@ export const PublicationsPage = () => {
                   {/* Share Link Button */}
                   <button
                     onClick={() => handleShare(pub)}
-                    className="p-3.5 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-700 border border-neutral-200 transition-colors cursor-pointer flex items-center justify-center"
-                    title="Copy Link to this Edition"
+                    className="p-3.5 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-700 border border-neutral-200 transition-colors cursor-pointer flex items-center justify-center shrink-0"
+                    title={copiedId === pub.id ? "Link Copied!" : "Copy Link to this Edition"}
                     aria-label="Share Publication"
                   >
-                    
+                    {copiedId === pub.id ? (
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                    ) : (
+                      <Share2 className="w-4 h-4 text-neutral-600" />
+                    )}
                   </button>
                 </div>
 

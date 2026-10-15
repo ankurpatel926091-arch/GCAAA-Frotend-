@@ -441,13 +441,13 @@ export const BlogPage = () => {
             </div>
 
             {/* Modal Footer */}
-            <div className="p-4 bg-neutral-100 border-t border-neutral-200 flex items-center justify-between">
+            <div className="p-4 bg-neutral-100 border-t border-neutral-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
               <span className="text-xs text-neutral-500 font-semibold">
                 Published on Government College Alumni Association Official Portal
               </span>
               <button
                 onClick={() => setActiveBlogModal(null)}
-                className="px-5 py-2 bg-neutral-900 hover:bg-red-600 text-white font-bold text-xs rounded-xl transition-colors cursor-pointer"
+                className="w-full sm:w-auto px-5 py-2.5 bg-neutral-900 hover:bg-red-600 text-white font-bold text-xs rounded-xl transition-colors cursor-pointer shrink-0"
               >
                 Close Article
               </button>

@@ -340,6 +340,7 @@ export const Navbar = () => {
                     >
                       Life Membership Registration
                     </Link>
+                    
                     <Link
                       to="/alumni-data-list"
                       onClick={closeAllMenus}
@@ -564,7 +565,10 @@ export const Navbar = () => {
               <button
                 onClick={() => toggleDropdown('join')}
                 className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all text-left ${
-                  activeDropdown === 'join' || location.pathname.startsWith('/registration') || location.pathname.startsWith('/alumni-data-list')
+                  activeDropdown === 'join' ||
+                  location.pathname.startsWith('/registration') ||
+                  location.pathname.startsWith('/registered-members') ||
+                  location.pathname.startsWith('/alumni-data-list')
                     ? 'bg-neutral-50 text-red-600'
                     : 'hover:bg-neutral-50 text-neutral-800'
                 }`}
@@ -598,6 +602,7 @@ export const Navbar = () => {
                       Active
                     </span>
                   </Link>
+                  
                   <Link
                     to="/alumni-data-list"
                     onClick={closeAllMenus}
