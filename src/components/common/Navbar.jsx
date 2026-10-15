@@ -54,12 +54,13 @@ export const Navbar = () => {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 40);
+          setIsScrolled(window.scrollY > 20);
           ticking = false;
         });
         ticking = true;
       }
     };
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -76,8 +77,14 @@ export const Navbar = () => {
 
   return (
     <>
-      {/* 1. TOP INFO BAR */}
-      <div className="bg-white border-b border-neutral-200">
+      {/* 1. TOP INFO BAR (Smoothly hides on scroll) */}
+      <div
+        className={`bg-white overflow-hidden transition-all duration-300 ease-in-out border-neutral-200 ${
+          isScrolled
+            ? 'max-h-0 opacity-0 border-b-0 -translate-y-2 pointer-events-none'
+            : 'max-h-16 opacity-100 border-b translate-y-0 pointer-events-auto'
+        }`}
+      >
         <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-14 flex flex-col md:flex-row items-stretch justify-between text-xs">
           {/* Left info items */}
           <div className="flex flex-wrap items-center gap-3 sm:gap-6 py-2 text-neutral-700 text-xs sm:text-sm">
