@@ -54,7 +54,7 @@ export const Navbar = () => {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 20);
+          setIsScrolled(window.scrollY > 40);
           ticking = false;
         });
         ticking = true;
@@ -77,14 +77,8 @@ export const Navbar = () => {
 
   return (
     <>
-      {/* 1. TOP INFO BAR (Smoothly hides on scroll) */}
-      <div
-        className={`bg-white overflow-hidden transition-all duration-300 ease-in-out border-neutral-200 ${
-          isScrolled
-            ? 'max-h-0 opacity-0 border-b-0 -translate-y-2 pointer-events-none'
-            : 'max-h-16 opacity-100 border-b translate-y-0 pointer-events-auto'
-        }`}
-      >
+      {/* 1. TOP INFO BAR (Scrolls off naturally with page) */}
+      <div className="bg-white border-b border-neutral-200 print:hidden">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-14 flex flex-col md:flex-row items-stretch justify-between text-xs">
           {/* Left info items */}
           <div className="flex flex-wrap items-center gap-3 sm:gap-6 py-2 text-neutral-700 text-xs sm:text-sm">
@@ -113,11 +107,11 @@ export const Navbar = () => {
         </div>
       </div>
 
-      {/* HEADER */}
+      {/* 2. STICKY HEADER (Stays firmly pinned at top-0 with zero jitter) */}
       <header
         ref={headerRef}
-        className={`w-full transition-shadow duration-300 ${
-          isScrolled ? 'shadow-2xl' : 'shadow-md'
+        className={`sticky top-0 z-50 w-full bg-white print:hidden transition-shadow duration-300 ${
+          isScrolled ? 'shadow-xl' : 'shadow-sm'
         }`}
       >
         {/* 2. MIDDLE BRANDING BAR */}

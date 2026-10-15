@@ -255,21 +255,11 @@ export const PublicationsPage = () => {
                     title="Copy Link to this Edition"
                     aria-label="Share Publication"
                   >
-                    {copiedId === pub.id ? (
-                      <span className="text-[10px] font-bold text-emerald-700 px-1">Copied!</span>
-                    ) : (
-                      <Share2 className="w-4 h-4" />
-                    )}
+                    
                   </button>
                 </div>
 
-                {/* File Size Notice for large downloads */}
-                {parseInt(pub.fileSize) > 50 && (
-                  <div className="flex items-center gap-2 text-[11px] text-amber-800 bg-amber-50/80 border border-amber-200 px-3 py-2 rounded-lg">
-                    <Info className="w-3.5 h-3.5 shrink-0 text-amber-600" />
-                    <span>High-resolution print master ({pub.fileSize}). We recommend downloading over a stable Wi-Fi connection.</span>
-                  </div>
-                )}
+                
               </div>
             </div>
           </section>

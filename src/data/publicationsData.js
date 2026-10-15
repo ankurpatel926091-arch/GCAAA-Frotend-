@@ -24,7 +24,7 @@ export const publications = [
     highlights: [
       'Presidential & Patron addresses from eminent architectural leaders',
       'Comprehensive alumni directory roll and batchwise rosters',
-      'Architectural practice portfolios and design contributions by alumni',
+      
       'Photo gallery archives from campus life to the grand Dharohar stage',
       'Executive committee reports and strategic roadmaps for GCAAA',
     ],
@@ -57,9 +57,7 @@ export const publications = [
       'Silver Jubilee commemoration of Batch 1994 with cohort retrospective',
       'From the Desk of Patron: Prof. Dr. Vandana Sehgal (Dean, FOA AKTU)',
       'Messages from President Ar. Mohammad Sabahat & Gen. Sec. Ar. Anupam Mittal',
-      'Voyage Through Old Memories: Photo collages of 1st–4th GBMs (2013 to 2018)',
-      'Distinguished Alumni Awards, architectural essays, and audited accounts',
-    ],
+      'Voyage Through Old Memories: Photo collages of 1st–4th GBMs (2013 to 2018)',    ],
     sectionsCovered: [
       { title: 'Silver Jubilee Batch 1994', desc: '25-year practice retrospective & milestone cohort roll' },
       { title: 'Voyage Through Old Memories', desc: 'Photo archives of 1st, 2nd, 3rd, and 4th GBM meets' },
@@ -90,7 +88,6 @@ export const publications = [
       'Rare photographic chronicle of Tagore Marg campus from the 1970s onwards',
       'Foundational charters, bylaws, and vision statements of the alumni association',
       'Batch memoirs, nostalgic hostel anecdotes, and sketches by senior alumni',
-      'Directory of founding life members and patrons across four decades',
     ],
     sectionsCovered: [
       { title: 'The Founding Genesis', desc: 'Story of how the 1st GCA reunion was conceived and organized' },
