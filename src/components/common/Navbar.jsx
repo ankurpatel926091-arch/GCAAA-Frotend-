@@ -365,7 +365,7 @@ export const Navbar = () => {
                 to="/blog"
                 className={({ isActive }) =>
                   `px-4 py-3.5 hover:bg-red-700 transition-colors ${
-                    isActive ? 'bg-red-700 text-white' : ''
+                    isActive || location.pathname.startsWith('/blog') ? 'bg-red-700 text-white' : ''
                   }`
                 }
               >
@@ -644,14 +644,14 @@ export const Navbar = () => {
                 onClick={closeAllMenus}
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all ${
-                    isActive
+                    isActive || location.pathname.startsWith('/blog')
                       ? 'bg-red-50 text-red-600 font-extrabold border-l-4 border-red-600 pl-3'
                       : 'hover:bg-neutral-50 text-neutral-800 hover:text-red-600'
                   }`
                 }
               >
                 <BookOpen className="w-4 h-4 text-red-600 shrink-0" />
-                <span>BLOG</span>
+                <span>BLOGS</span>
               </NavLink>
             </div>
 

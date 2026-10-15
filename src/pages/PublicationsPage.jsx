@@ -54,9 +54,9 @@ export const PublicationsPage = () => {
             GCAAA <span className="text-[#B70D2B]">PUBLICATIONS</span> &amp; SOUVENIRS
           </h1>
 
-          <p className="mt-4 text-sm sm:text-base md:text-lg text-neutral-600 max-w-3xl mx-auto leading-relaxed">
+          {/* <p className="mt-4 text-sm sm:text-base md:text-lg text-neutral-600 max-w-3xl mx-auto leading-relaxed">
             Preserving the timeless heritage, memoirs, directory rolls, and milestone reunions of Government College of Architecture, Lucknow. Browse online or download the official print souvenir editions below.
-          </p>
+          </p> */}
 
           {/* Metric Stats Pills */}
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs sm:text-sm font-semibold text-neutral-700">
@@ -111,20 +111,14 @@ export const PublicationsPage = () => {
               {/* LEFT COLUMN: 3D BOOK COVER PREVIEW */}
               <div className="lg:col-span-5 flex flex-col items-center">
                 <div className="group relative w-full max-w-[340px] sm:max-w-[380px] rounded-2xl overflow-hidden bg-neutral-100 p-3 sm:p-4 border-2 border-neutral-200/90 hover:border-red-600 transition-all duration-300 shadow-md hover:shadow-2xl">
-                  {/* Aspect Box for Cover (Clean without overlay buttons) */}
-                  <a
-                    href={pub.pdfUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={`Click to open ${pub.title} PDF in new tab`}
-                    className="relative rounded-xl overflow-hidden bg-neutral-900 shadow-inner aspect-[3/4] flex items-center justify-center cursor-pointer block"
-                  >
+                  {/* Aspect Box for Cover */}
+                  <div className="relative rounded-xl overflow-hidden bg-neutral-900 shadow-inner aspect-[3/4] flex items-center justify-center">
                     <img
                       src={pub.coverImg}
                       alt={pub.title}
                       className="w-full h-full object-contain object-center group-hover:scale-103 transition-transform duration-500"
                     />
-                  </a>
+                  </div>
 
                   {/* Under Cover Label */}
                   <div className="mt-3 flex items-center justify-between text-[11px] font-semibold text-neutral-500 px-1">

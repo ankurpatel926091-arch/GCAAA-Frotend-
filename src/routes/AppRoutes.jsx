@@ -9,6 +9,7 @@ import { ContactPage } from '@/pages/ContactPage';
 import { AlumniRegistrationPage } from '@/pages/AlumniRegistrationPage';
 import { AlumniDataListPage } from '@/pages/AlumniDataListPage';
 import { PublicationsPage } from '@/pages/PublicationsPage';
+import { BlogPage } from '@/pages/BlogPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 
 export const AppRoutes = () => {
@@ -26,6 +27,8 @@ export const AppRoutes = () => {
         <Route path="alumni-data-list" element={<AlumniDataListPage />} />
         <Route path="publications" element={<PublicationsPage />} />
         <Route path="resources" element={<PublicationsPage />} />
+        <Route path="blog" element={<BlogPage />} />
+        <Route path="blogs" element={<BlogPage />} />
         <Route path="contact" element={<ContactPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
