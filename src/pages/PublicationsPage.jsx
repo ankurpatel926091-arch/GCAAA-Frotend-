@@ -111,35 +111,20 @@ export const PublicationsPage = () => {
               {/* LEFT COLUMN: 3D BOOK COVER PREVIEW */}
               <div className="lg:col-span-5 flex flex-col items-center">
                 <div className="group relative w-full max-w-[340px] sm:max-w-[380px] rounded-2xl overflow-hidden bg-neutral-100 p-3 sm:p-4 border-2 border-neutral-200/90 hover:border-red-600 transition-all duration-300 shadow-md hover:shadow-2xl">
-                  {/* Aspect Box for Cover */}
-                  <div className="relative rounded-xl overflow-hidden bg-neutral-900 shadow-inner aspect-[3/4] flex items-center justify-center">
+                  {/* Aspect Box for Cover (Clean without overlay buttons) */}
+                  <a
+                    href={pub.pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={`Click to open ${pub.title} PDF in new tab`}
+                    className="relative rounded-xl overflow-hidden bg-neutral-900 shadow-inner aspect-[3/4] flex items-center justify-center cursor-pointer block"
+                  >
                     <img
                       src={pub.coverImg}
                       alt={pub.title}
                       className="w-full h-full object-contain object-center group-hover:scale-103 transition-transform duration-500"
                     />
-
-                    {/* Hover Dark Overlay with Quick Action */}
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-3 p-4">
-                      <a
-                        href={pub.pdfUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-4 py-2 rounded-lg bg-white text-neutral-900 text-xs font-bold flex items-center gap-2 hover:bg-neutral-100 transition-colors shadow-lg"
-                      >
-                        <Eye className="w-4 h-4 text-red-600" />
-                        <span>Preview in Tab</span>
-                      </a>
-                      <a
-                        href={pub.pdfUrl}
-                        download={pub.downloadFilename}
-                        className="px-4 py-2 rounded-lg bg-red-600 text-white text-xs font-bold flex items-center gap-2 hover:bg-red-700 transition-colors shadow-lg"
-                      >
-                        <Download className="w-4 h-4" />
-                        <span>Download ({pub.fileSize})</span>
-                      </a>
-                    </div>
-                  </div>
+                  </a>
 
                   {/* Under Cover Label */}
                   <div className="mt-3 flex items-center justify-between text-[11px] font-semibold text-neutral-500 px-1">
