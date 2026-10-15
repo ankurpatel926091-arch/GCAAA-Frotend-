@@ -99,14 +99,15 @@ export const AlumniDataListPage = () => {
           return false;
         }
 
-        // Search Query (name, email, mobile, year)
+        // Search Query (name, email, mobile, year, membershipNo)
         if (searchQuery.trim()) {
           const q = searchQuery.toLowerCase().trim();
           const matchName = item.name.toLowerCase().includes(q);
           const matchEmail = item.email ? item.email.toLowerCase().includes(q) : false;
           const matchMobile = item.mobile ? item.mobile.toLowerCase().includes(q) : false;
           const matchYear = item.year.toString().toLowerCase().includes(q);
-          if (!matchName && !matchEmail && !matchMobile && !matchYear) {
+          const matchMembership = item.membershipNo ? item.membershipNo.toLowerCase().includes(q) : false;
+          if (!matchName && !matchEmail && !matchMobile && !matchYear && !matchMembership) {
             return false;
           }
         }
@@ -123,6 +124,12 @@ export const AlumniDataListPage = () => {
           const ya = parseInt(a.year, 10) || 1980;
           const yb = parseInt(b.year, 10) || 1980;
           return yb - ya || a.sno - b.sno;
+        }
+        if (sortBy === 'membership-asc') {
+          return (a.membershipNo || '').localeCompare(b.membershipNo || '');
+        }
+        if (sortBy === 'membership-desc') {
+          return (b.membershipNo || '').localeCompare(a.membershipNo || '');
         }
         if (sortBy === 'name-asc') {
           return a.name.localeCompare(b.name);
@@ -161,9 +168,10 @@ export const AlumniDataListPage = () => {
   // Export to CSV helper
   const handleExportCSV = () => {
     if (!filteredData.length) return;
-    const headers = ['S.No.', 'Cohort', 'Batch Year', 'Alumni Name', 'Email Address', 'Mobile Number', 'Deceased'];
+    const headers = ['S.No.', 'Membership No.', 'Cohort', 'Batch Year', 'Alumni Name', 'Email Address', 'Mobile Number', 'Deceased'];
     const rows = filteredData.map((d, index) => [
       index + 1,
+      `"${d.membershipNo || ''}"`,
       `"${currentCohort.course.replace(/"/g, '""')}"`,
       `"${d.year}"`,
       `"${d.name.replace(/"/g, '""')}"`,
@@ -184,7 +192,7 @@ export const AlumniDataListPage = () => {
   return (
     <div className="min-h-screen bg-neutral-100 text-neutral-900 pb-24">
       {/* 1. Header Banner */}
-      <div className="bg-[#0C0D12] text-white pt-10 pb-8 px-4 sm:px-8 border-b border-neutral-800">
+      <div className="bg-[#0C0D12] text-white pt-8 sm:pt-10 pb-6 sm:pb-8 px-6 sm:px-10 md:px-14 lg:px-16 border-b border-neutral-800">
         <div className="max-w-[1400px] mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
@@ -192,7 +200,7 @@ export const AlumniDataListPage = () => {
                 <GraduationCap className="w-3.5 h-3.5" />
                 <span>GCAAA Official Member Directory</span>
               </div>
-              <h1 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-white">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-white">
                 ALUMNI <span className="text-[#E31E24]">DATA LIST</span>
               </h1>
               <p className="text-xs sm:text-sm text-neutral-400 mt-1 max-w-2xl">
@@ -200,18 +208,18 @@ export const AlumniDataListPage = () => {
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
               <button
                 onClick={handleExportCSV}
                 disabled={filteredData.length === 0}
-                className="bg-neutral-800 hover:bg-neutral-700 disabled:opacity-50 text-neutral-200 font-bold text-xs uppercase px-4 py-2.5 rounded-lg transition-colors border border-neutral-700 flex items-center gap-2 cursor-pointer shadow-xs"
+                className="w-full sm:w-auto bg-neutral-800 hover:bg-neutral-700 disabled:opacity-50 text-neutral-200 font-bold text-xs uppercase px-4 py-2.5 rounded-lg transition-colors border border-neutral-700 flex items-center justify-center gap-2 cursor-pointer shadow-xs"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Export CSV ({filteredData.length})</span>
               </button>
               <Link
                 to="/registration"
-                className="bg-[#E31E24] hover:bg-red-700 text-white font-bold text-xs uppercase px-4 py-2.5 rounded-lg transition-colors shadow-sm flex items-center gap-2"
+                className="w-full sm:w-auto bg-[#E31E24] hover:bg-red-700 text-white font-bold text-xs uppercase px-4 py-2.5 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2"
               >
                 <Users className="w-3.5 h-3.5" />
                 <span>Register New Alumni</span>
@@ -223,8 +231,8 @@ export const AlumniDataListPage = () => {
 
       {/* 2. Top Cohort Filter Strip (Matching master excel tabs) */}
       <div className="bg-[#0B0F19] border-b-2 border-[#1E293B] shadow-lg sticky top-[57px] sm:top-[65px] z-30">
-        <div className="max-w-[1400px] mx-auto px-2 sm:px-4">
-          <div className="flex items-center overflow-x-auto no-scrollbar py-2">
+        <div className="max-w-[1400px] mx-auto px-6 sm:px-10 md:px-14 lg:px-16">
+          <div className="flex items-center overflow-x-auto no-scrollbar py-2 touch-pan-x">
             <div className="flex items-stretch border-l border-neutral-800 shrink-0">
               {cohortTabs.map((tab) => {
                 const isActive = activeTab === tab.id;
@@ -234,7 +242,6 @@ export const AlumniDataListPage = () => {
                     onClick={() => {
                       setActiveTab(tab.id);
                       setSelectedYear('ALL');
-                      setStatusFilter('ALL');
                       setSearchQuery('');
                       setCurrentPage(1);
                     }}
@@ -261,7 +268,7 @@ export const AlumniDataListPage = () => {
       </div>
 
       {/* Main Content Area */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 pt-6">
+      <div className="max-w-[1400px] mx-auto px-6 sm:px-10 md:px-14 lg:px-16 pt-6">
         
         {/* Cohort Header & Batch Quick Filter Card */}
         <div className="bg-white rounded-xl border border-neutral-200/90 p-4 sm:p-5 shadow-xs mb-6">
@@ -275,14 +282,12 @@ export const AlumniDataListPage = () => {
                 Displaying <strong>{currentRecords.length}</strong> verified alumni across {activeBatches.length} batch groups.
               </p>
             </div>
-
-            
           </div>
 
           {/* Filter Controls: Search, Year Dropdown, Sort, Reset */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center">
             {/* Search */}
-            <div className="lg:col-span-5 relative">
+            <div className="sm:col-span-2 lg:col-span-5 relative">
               <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
@@ -292,13 +297,13 @@ export const AlumniDataListPage = () => {
                   setCurrentPage(1);
                 }}
                 style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
-                placeholder="Search alumni name, email, phone, year..."
+                placeholder="Search membership no., name, email, phone, year..."
                 className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-neutral-300 text-xs sm:text-sm focus:outline-hidden focus:border-red-600 focus:ring-1 focus:ring-red-600 bg-white"
               />
             </div>
 
             {/* Year Dropdown */}
-            <div className="lg:col-span-3">
+            <div className="sm:col-span-1 lg:col-span-3">
               <div className="relative">
                 <Calendar className="w-4 h-4 text-red-600 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <select
@@ -331,7 +336,7 @@ export const AlumniDataListPage = () => {
             </div>
 
             {/* Sort By Dropdown */}
-            <div className="lg:col-span-3">
+            <div className="sm:col-span-1 lg:col-span-3">
               <div className="relative">
                 <ArrowUpDown className="w-4 h-4 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <select
@@ -342,6 +347,8 @@ export const AlumniDataListPage = () => {
                 >
                   <option value="year-asc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Year: Oldest First</option>
                   <option value="year-desc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Year: Recent First</option>
+                  <option value="membership-asc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Membership No: Low to High</option>
+                  <option value="membership-desc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Membership No: High to Low</option>
                   <option value="name-asc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Name: A to Z</option>
                   <option value="name-desc" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>Name: Z to A</option>
                 </select>
@@ -350,7 +357,7 @@ export const AlumniDataListPage = () => {
             </div>
 
             {/* Reset Filters */}
-            <div className="lg:col-span-1 flex justify-end">
+            <div className="sm:col-span-2 lg:col-span-1 flex justify-end">
               <button
                 onClick={() => {
                   setSelectedYear('ALL');
@@ -359,10 +366,10 @@ export const AlumniDataListPage = () => {
                   setCurrentPage(1);
                 }}
                 title="Reset all filters"
-                className="w-full py-2.5 px-2 rounded-lg border border-neutral-300 hover:border-red-600 text-neutral-700 hover:text-red-600 text-xs font-bold transition-colors flex items-center justify-center gap-1 cursor-pointer bg-neutral-50"
+                className="w-full py-2.5 px-3 rounded-lg border border-neutral-300 hover:border-red-600 text-neutral-700 hover:text-red-600 text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer bg-neutral-50"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline lg:hidden">Reset</span>
+                <span className="lg:hidden">Reset Filters</span>
               </button>
             </div>
           </div>
@@ -390,11 +397,12 @@ export const AlumniDataListPage = () => {
         {/* 3. Alumni Data Table */}
         <div className="bg-white rounded-xl border border-neutral-200/90 shadow-xs overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs sm:text-sm border-collapse">
+            <table className="w-full min-w-[760px] text-left text-xs sm:text-sm border-collapse">
               <thead className="bg-[#111827] text-white uppercase font-black text-[11px] tracking-wider border-b border-neutral-800">
                 <tr>
                   <th className="py-3.5 px-4 w-14 text-center">S.No.</th>
-                  <th className="py-3.5 px-4 w-32 text-center">Batch Year</th>
+                  <th className="py-3.5 px-4 w-36 text-center whitespace-nowrap">Membership No.</th>
+                  <th className="py-3.5 px-4 w-32 text-center whitespace-nowrap">Batch Year</th>
                   <th className="py-3.5 px-4">Alumni Name</th>
                   <th className="py-3.5 px-4">Email Address</th>
                   <th className="py-3.5 px-4">Mobile Number</th>
@@ -419,6 +427,17 @@ export const AlumniDataListPage = () => {
                           className="py-3 px-4 text-center font-bold text-neutral-400"
                         >
                           {globalIndex}
+                        </td>
+
+                        {/* Membership No. */}
+                        <td className="py-3 px-4 text-center whitespace-nowrap">
+                          <span
+                            style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace", fontVariantNumeric: 'lining-nums tabular-nums' }}
+                            className="inline-block px-2.5 py-1 rounded-md text-xs font-black bg-red-50 text-[#B70D2B] border border-red-200/90 tracking-wide select-all"
+                            title={`GCAAA Membership ID: ${alumnus.membershipNo}`}
+                          >
+                            {alumnus.membershipNo}
+                          </span>
                         </td>
 
                         {/* Batch Year */}
@@ -497,7 +516,7 @@ export const AlumniDataListPage = () => {
                   })
                 ) : (
                   <tr>
-                    <td colSpan={5} className="py-12 text-center text-neutral-500">
+                    <td colSpan={6} className="py-12 text-center text-neutral-500">
                       <AlertCircle className="w-8 h-8 text-neutral-400 mx-auto mb-2" />
                       <p className="font-semibold text-sm">No alumni records found matching the criteria.</p>
                       <p className="text-xs text-neutral-400 mt-1">
@@ -538,7 +557,7 @@ export const AlumniDataListPage = () => {
               </div>
 
               {totalPages > 1 && (
-                <div className="flex items-center gap-1">
+                <div className="flex flex-wrap items-center justify-center gap-1">
                   <button
                     onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                     disabled={currentPage === 1}

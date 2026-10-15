@@ -1,5 +1,5 @@
 // Postgraduate Cohort Alumni Records extracted from GCA Master Excel Directory
-import { alumniRecords } from './alumniRecords';
+import { alumniRecords } from './alumniRecords.js';
 
 export const marchRecords = [
   {
@@ -1957,35 +1957,52 @@ export const mindRecords = [
   }
 ];
 
+// Function to generate standardized Membership No: GCA + year + (100 + sno)
+// e.g. Year 2026 S.No 1 -> GCA2026101, Year 2020 S.No 1 -> GCA2020101
+export const getMembershipNo = (record) => {
+  if (record?.membershipNo) return record.membershipNo;
+  const yearStr = String(record?.year || '').trim();
+  const match = yearStr.match(/\b(19\d\d|20\d\d)\b/) || yearStr.match(/\d{4}/);
+  const yearCode = match ? match[0] : (parseInt(yearStr, 10) || 2026);
+  const seq = 100 + (Number(record?.sno) || 1);
+  return `GCA${yearCode}${seq}`;
+};
+
+const enrichRecords = (records = []) =>
+  records.map((r) => ({
+    ...r,
+    membershipNo: r.membershipNo || getMembershipNo(r),
+  }));
+
 export const allCohorts = {
   'all': {
     id: 'all',
     label: 'ALL (85-2025)',
     course: 'Bachelor of Architecture & Foundation (Prior to 1985 - 2025)',
-    records: alumniRecords,
+    records: enrichRecords(alumniRecords),
   },
   'm-arch': {
     id: 'm-arch',
     label: 'm.arch 15-21',
     course: 'Master of Architecture (M.Arch 2015-2023)',
-    records: marchRecords,
+    records: enrichRecords(marchRecords),
   },
   'murp': {
     id: 'murp',
     label: 'MURP-20,21',
     course: 'Master of Urban & Regional Planning (MURP 2020-2025)',
-    records: murpRecords,
+    records: enrichRecords(murpRecords),
   },
   'miend': {
     id: 'miend',
     label: 'MIEND-20',
     course: 'Master In Environmental Design (MIEND 2020-2025)',
-    records: miendRecords,
+    records: enrichRecords(miendRecords),
   },
   'mind': {
     id: 'mind',
     label: 'MIND-23',
     course: 'Master In Interior Design (MIND 2023-2025)',
-    records: mindRecords,
+    records: enrichRecords(mindRecords),
   },
 };
