@@ -26,6 +26,7 @@ import {
   ChevronDown,
   ChevronUp,
   Search,
+  Upload,
 } from 'lucide-react';
 import logoImg from '@/assets/images/logo.png';
 
@@ -61,10 +62,12 @@ export const AlumniRegistrationPage = () => {
     // 7. Membership Fee
     paymentMode: 'Cheque',
     amount: '2000',
-    // 8. Details of Cheque
+    // 8. Details of Cheque / Online
     chequeNo: '',
     drawnOnBank: '',
     chequeDate: '',
+    paymentProofPreview: null,
+    paymentProofName: '',
     // Photo & Signature
     photoPreview: null,
     applicantSignature: '',
@@ -189,8 +192,37 @@ export const AlumniRegistrationPage = () => {
     });
   };
 
+  const handlePaymentProofUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        setStepError('File size exceeds 10MB limit. Please upload a smaller image.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setMembershipData((prev) => ({
+          ...prev,
+          paymentProofPreview: reader.result,
+          paymentProofName: file.name,
+        }));
+        setStepError('');
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmitMembership = (e) => {
     e.preventDefault();
+    if (membershipData.paymentMode === 'Online' && !membershipData.paymentProofPreview) {
+      setStepError('Please upload your online payment screenshot or transfer receipt photo before submitting.');
+      const proofElem = document.getElementById('payment-proof-upload-box');
+      if (proofElem) {
+        proofElem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+    setStepError('');
     setMembershipSubmitted(true);
   };
 
@@ -327,7 +359,7 @@ export const AlumniRegistrationPage = () => {
             <h3 className="text-[10px] font-black uppercase tracking-wider text-neutral-900 border-b border-neutral-300 pb-1 mb-1.5">
               3. Life Membership Contribution &amp; Payment Record
             </h3>
-            <div className="grid grid-cols-3 gap-2 p-2 rounded bg-neutral-50 border border-neutral-200 text-[10px]">
+            <div className="grid grid-cols-4 gap-2 p-2 rounded bg-neutral-50 border border-neutral-200 text-[10px]">
               <div>
                 <span className="text-neutral-500 font-semibold block text-[9px] uppercase">Contribution Amount</span>
                 <strong className="text-xs text-neutral-900">₹ {membershipData.amount || '2,000'}/- (Lifetime)</strong>
@@ -343,6 +375,12 @@ export const AlumniRegistrationPage = () => {
                 <strong className="text-xs text-neutral-900">
                   {membershipData.chequeNo || (membershipData.paymentMode === 'Cash' ? 'Cash Receipt Pending' : 'N/A')}
                   {membershipData.chequeDate ? ` (${membershipData.chequeDate})` : ''}
+                </strong>
+              </div>
+              <div>
+                <span className="text-neutral-500 font-semibold block text-[9px] uppercase">Payment Proof</span>
+                <strong className="text-xs text-neutral-900">
+                  {membershipData.paymentProofPreview ? 'Screenshot Attached ✓' : membershipData.paymentMode === 'Cash' ? 'Cash Receipt' : 'Cheque Record'}
                 </strong>
               </div>
             </div>
@@ -566,6 +604,15 @@ export const AlumniRegistrationPage = () => {
                           </span>
                           <strong>{membershipData.chequeNo || 'Cash Receipt Pending'}</strong>
                         </div>
+                        {membershipData.paymentProofPreview && (
+                          <div className="col-span-2 pt-1.5 flex items-center gap-2">
+                            <span className="text-neutral-400 text-[10px] uppercase font-bold">Payment Proof:</span>
+                            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                              <span>Screenshot Attached ({membershipData.paymentProofName || 'screenshot.jpg'})</span>
+                            </span>
+                          </div>
+                        )}
                       </div>
 
                       <div className="pt-1">
@@ -1237,11 +1284,17 @@ export const AlumniRegistrationPage = () => {
                         </div>
                       </div>
 
-                      {/* 8. Details of Cheque */}
+                      {/* 8. Details of Payment / Cheque / Online */}
                       <div className="pt-2">
                         <h4 className="text-sm font-black text-neutral-900 uppercase tracking-wider flex items-center gap-2 border-b border-neutral-200 pb-2 mb-3">
                           <span className="w-6 h-6 rounded-full bg-[#B70D2B] text-white flex items-center justify-center text-xs font-bold shrink-0">8</span>
-                          <span>8. Details of Cheque:</span>
+                          <span>
+                            {membershipData.paymentMode === 'Cheque'
+                              ? '8. Details of Cheque:'
+                              : membershipData.paymentMode === 'Cash'
+                              ? '8. Details of Cash Payment:'
+                              : '8. Online Payment Details & Transfer Screenshot:'}
+                          </span>
                         </h4>
 
                         {membershipData.paymentMode === 'Cheque' ? (
@@ -1305,25 +1358,115 @@ export const AlumniRegistrationPage = () => {
                             </p>
                           </div>
                         ) : (
-                          <div className="bg-neutral-50 p-4 sm:p-5 rounded-xl border border-neutral-200 text-xs text-neutral-700 space-y-3">
-                            <p className="font-bold text-neutral-900 text-sm">🏦 GCAAA Bank Account for Online NEFT / RTGS / UPI:</p>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-white p-3.5 rounded-xl border border-neutral-200">
-                              <p><strong>Account Name:</strong> GCA Alumni Association</p>
-                              <p><strong>Bank:</strong> Central Bank of India</p>
-                              <p><strong>Branch:</strong> FOAP, Tagore Marg, Lucknow</p>
-                              <p><strong>Account Type:</strong> Current Account</p>
+                          <div className="bg-neutral-50 p-4 sm:p-5 rounded-xl border border-neutral-200 text-xs text-neutral-700 space-y-4">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-neutral-200 pb-2">
+                              <p className="font-bold text-neutral-900 text-sm flex items-center gap-2">
+                                <span>🏦</span>
+                                <span>GCAAA Bank Account for Online NEFT / RTGS / UPI:</span>
+                              </p>
+                              <span className="self-start sm:self-auto text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300">
+                                Verified Official Account
+                              </span>
                             </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs bg-white p-3.5 rounded-xl border border-neutral-200 shadow-2xs">
+                              <p><strong className="text-neutral-900">Account Name:</strong> GCA Alumni Association</p>
+                              <p><strong className="text-neutral-900">Bank:</strong> Central Bank of India</p>
+                              <p><strong className="text-neutral-900">Branch:</strong> FOAP, Tagore Marg, Lucknow</p>
+                              <p><strong className="text-neutral-900">Account Type:</strong> Current Account</p>
+                            </div>
+
+                            {/* UTR / Transaction Reference ID */}
                             <div>
                               <label className="block text-[11px] font-bold text-neutral-700 uppercase tracking-wider mb-1">
-                                UTR / Transaction Reference ID
+                                UTR / Transaction Reference ID <span className="text-red-600">*</span>
                               </label>
                               <input
                                 type="text"
+                                required={membershipData.paymentMode === 'Online'}
                                 value={membershipData.chequeNo}
                                 onChange={(e) => setMembershipData({ ...membershipData, chequeNo: e.target.value })}
-                                placeholder="Enter 12-digit UTR / UPI Reference Number"
-                                className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-white border border-neutral-300 rounded-xl focus:border-red-600 outline-hidden"
+                                placeholder="Enter 12-digit UTR / UPI Reference Number / Transaction ID"
+                                className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-white border border-neutral-300 rounded-xl focus:border-red-600 outline-hidden font-bold text-neutral-900"
                               />
+                            </div>
+
+                            {/* UPLOAD PAYMENT SCREENSHOT / RECEIPT PHOTO */}
+                            <div id="payment-proof-upload-box" className="pt-2 border-t border-neutral-200">
+                              <label className="block text-[11px] font-bold text-neutral-800 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                                <span className="flex items-center gap-1.5">
+                                  <Camera className="w-3.5 h-3.5 text-red-600" />
+                                  <span>Upload Online Payment Screenshot / Receipt Photo <span className="text-red-600">*</span></span>
+                                </span>
+                                <span className="text-[10px] font-semibold text-neutral-500 normal-case">
+                                  (JPG, PNG, WEBP max 10MB)
+                                </span>
+                              </label>
+
+                              {membershipData.paymentProofPreview ? (
+                                /* Uploaded Preview Card */
+                                <div className="bg-white p-3.5 rounded-xl border-2 border-emerald-500/80 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
+                                  <div className="flex items-center gap-3 w-full sm:w-auto">
+                                    <div className="relative w-16 h-16 rounded-lg overflow-hidden border border-neutral-200 bg-neutral-100 shrink-0 shadow-2xs">
+                                      <img
+                                        src={membershipData.paymentProofPreview}
+                                        alt="Payment Screenshot Preview"
+                                        className="w-full h-full object-cover"
+                                      />
+                                    </div>
+                                    <div className="min-w-0">
+                                      <div className="inline-flex items-center gap-1 text-[11px] font-black text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 mb-0.5">
+                                        <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                                        <span>Screenshot Uploaded ✓</span>
+                                      </div>
+                                      <p className="text-xs font-bold text-neutral-900 truncate max-w-[200px] sm:max-w-[260px]">
+                                        {membershipData.paymentProofName || 'payment_screenshot.jpg'}
+                                      </p>
+                                      <p className="text-[10px] text-neutral-500">Ready for committee verification</p>
+                                    </div>
+                                  </div>
+
+                                  <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                                    <label className="cursor-pointer text-xs font-bold text-neutral-700 hover:text-red-600 px-3 py-1.5 rounded-lg border border-neutral-300 hover:bg-neutral-50 transition-colors">
+                                      <span>Change Photo</span>
+                                      <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handlePaymentProofUpload}
+                                        className="hidden"
+                                      />
+                                    </label>
+                                    <button
+                                      type="button"
+                                      onClick={() => setMembershipData({ ...membershipData, paymentProofPreview: null, paymentProofName: '' })}
+                                      className="text-xs font-bold text-red-600 hover:text-red-800 px-3 py-1.5 rounded-lg border border-red-200 hover:bg-red-50 transition-colors cursor-pointer"
+                                    >
+                                      Remove
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : (
+                                /* Upload Dropzone */
+                                <label className="group relative flex flex-col items-center justify-center p-5 sm:p-6 rounded-xl border-2 border-dashed border-neutral-300 hover:border-red-600 bg-white hover:bg-red-50/20 transition-all cursor-pointer text-center">
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handlePaymentProofUpload}
+                                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                                  />
+                                  <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 group-hover:scale-110 flex items-center justify-center transition-transform mb-2">
+                                    <Upload className="w-5 h-5" />
+                                  </div>
+                                  <p className="text-xs sm:text-sm font-extrabold text-neutral-900">
+                                    Click or Drag to Upload Payment Screenshot / Receipt Photo
+                                  </p>
+                                  
+                                  <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#B70D2B] group-hover:bg-red-700 px-4 py-2 rounded-lg shadow-xs transition-colors">
+                                    <Camera className="w-3.5 h-3.5" />
+                                    <span>Select Screenshot / Photo</span>
+                                  </span>
+                                </label>
+                              )}
                             </div>
                           </div>
                         )}
@@ -1375,6 +1518,14 @@ export const AlumniRegistrationPage = () => {
                         </div>
                       </div>
                     </div>
+
+                    {/* Step 2 Error Banner */}
+                    {stepError && (
+                      <div className="p-3.5 rounded-xl bg-red-50 border-2 border-red-300 text-red-800 text-xs sm:text-sm font-bold flex items-center gap-2.5 shadow-sm">
+                        <AlertCircle className="w-5 h-5 text-red-600 shrink-0" />
+                        <span>{stepError}</span>
+                      </div>
+                    )}
 
                     {/* Step 2 Bottom Actions: BACK & SUBMIT BUTTONS */}
                     <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
