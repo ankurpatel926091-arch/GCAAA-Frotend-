@@ -111,6 +111,7 @@ export const Footer = () => {
               <li><Link to="/events" className="hover:text-red-400 hover:translate-x-1 transition-all inline-block">Dharohar 2026 Meet</Link></li>
               <li><Link to="/committee" className="hover:text-red-400 hover:translate-x-1 transition-all inline-block">Executive Committee</Link></li>
               <li><Link to="/gallery" className="hover:text-red-400 hover:translate-x-1 transition-all inline-block">Gallery &amp; Awards</Link></li>
+              <li><Link to="/publications" className="hover:text-red-400 hover:translate-x-1 transition-all inline-block">Souvenirs &amp; Publications</Link></li>
               <li><Link to="/contact" className="hover:text-red-400 hover:translate-x-1 transition-all inline-block">Contact Secretariat</Link></li>
             </ul>
           </div>

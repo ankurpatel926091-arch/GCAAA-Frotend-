@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Sparkles,
   Calendar,
-  Send,
   CheckCircle2,
   Award,
   Users,
@@ -11,6 +10,8 @@ import {
   Mail,
   Phone,
   ArrowRight,
+  ArrowLeft,
+  AlertCircle,
   ShieldCheck,
   FileCheck,
   Camera,
@@ -29,40 +30,6 @@ import {
 import logoImg from '@/assets/images/logo.png';
 
 export const AlumniRegistrationPage = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const urlTab = searchParams.get('tab');
-  const [activeTab, setActiveTab] = useState(urlTab === 'membership' ? 'membership' : 'register');
-
-  useEffect(() => {
-    if (urlTab === 'membership') {
-      setActiveTab('membership');
-    } else if (urlTab === 'register') {
-      setActiveTab('register');
-    }
-  }, [urlTab]);
-
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    setSearchParams({ tab });
-  };
-
-  // Alumni Registration & RSVP State
-  const [formData, setFormData] = useState({
-    salutation: 'Ar.',
-    fullName: '',
-    email: '',
-    phone: '',
-    batchYear: '',
-    degree: 'B.Arch',
-    city: '',
-    firm: '',
-    attendance: 'Attending Solo',
-    dietary: 'Vegetarian',
-    membershipInterest: true,
-    message: '',
-  });
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
   // Life Membership Form State (Based on Official GCAAA Membership Registration Form)
   const [membershipData, setMembershipData] = useState({
     // 1. Name in Full
@@ -104,10 +71,70 @@ export const AlumniRegistrationPage = () => {
     agreedToRules: true,
   });
   const [membershipSubmitted, setMembershipSubmitted] = useState(false);
-  const [openSection, setOpenSection] = useState('eligibility');
+  const [openSections, setOpenSections] = useState(() => {
+    const isDesktop = typeof window !== 'undefined' ? window.innerWidth >= 1024 : true;
+    return {
+      eligibility: isDesktop,
+      benefits: isDesktop,
+      fee: isDesktop,
+      remarks: isDesktop,
+    };
+  });
+
+  // 2-Step Registration Form State (Step 1: Alumni Details, Step 2: Fee & Payment)
+  const [currentStep, setCurrentStep] = useState(1);
+  const [stepError, setStepError] = useState('');
+
+  const handleNextStep = () => {
+    const missing = [];
+    if (!membershipData.firstName?.trim()) missing.push('First Name');
+    if (!membershipData.surName?.trim()) missing.push('Sur Name');
+    if (!membershipData.passingYear?.trim()) {
+      missing.push('Passing Year');
+    } else if (membershipData.passingYear.trim().length !== 4) {
+      missing.push('4-digit Passing Year (e.g. 1986)');
+    }
+    if (!membershipData.email?.trim() || !membershipData.email.includes('@')) {
+      missing.push('Valid Email Address');
+    }
+    const hasPhone = membershipData.sameAsOffice
+      ? Boolean(membershipData.officePhone?.trim())
+      : Boolean(membershipData.residencePhone?.trim());
+    if (!hasPhone) {
+      missing.push(membershipData.sameAsOffice ? 'Office Phone Number' : 'Residence Phone Number');
+    }
+
+    if (missing.length > 0) {
+      setStepError(`Please fill the following required details before proceeding: ${missing.join(', ')}`);
+      return;
+    }
+
+    setStepError('');
+    setCurrentStep(2);
+    // Smooth scroll to top of form box
+    const container = document.getElementById('membership-form-box');
+    if (container) {
+      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   const toggleSection = (id) => {
-    setOpenSection((prev) => (prev === id ? null : id));
+    setOpenSections((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const areAllOpen = Object.values(openSections).every(Boolean);
+
+  const toggleAllSections = () => {
+    const newState = !areAllOpen;
+    setOpenSections({
+      eligibility: newState,
+      benefits: newState,
+      fee: newState,
+      remarks: newState,
+    });
   };
 
   const handlePhotoUpload = (e) => {
@@ -162,11 +189,6 @@ export const AlumniRegistrationPage = () => {
     });
   };
 
-  const handleSubmitRegistration = (e) => {
-    e.preventDefault();
-    setIsSubmitted(true);
-  };
-
   const handleSubmitMembership = (e) => {
     e.preventDefault();
     setMembershipSubmitted(true);
@@ -175,28 +197,222 @@ export const AlumniRegistrationPage = () => {
   return (
     <div className="w-full bg-white text-neutral-900">
       {/* ========================================================
-          1. HERO HEADER BANNER
+          PRINT ONLY VIEW: DEDICATED 1-PAGE OFFICIAL MEMBERSHIP RECEIPT
+          (Only visible when window.print() or Ctrl+P is triggered)
       ======================================================== */}
-      <section className="relative py-16 sm:py-20 bg-neutral-950 text-white text-center border-b border-neutral-900 overflow-hidden">
-        {/* Glow Accent */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-red-600/15 blur-[140px] rounded-full pointer-events-none -z-10" />
+      <div className="hidden print:block w-full bg-white text-neutral-900 font-sans p-2 m-0 max-w-[210mm] mx-auto">
+        <div className="border-2 border-neutral-900 rounded-xl p-5 space-y-3.5">
+          {/* Header */}
+          <div className="flex items-center justify-between border-b-2 border-neutral-900 pb-3 gap-4">
+            <div className="flex items-center gap-3">
+              <img
+                src={logoImg}
+                alt="GCAAA Logo"
+                className="h-16 w-auto object-contain shrink-0"
+              />
+              <div>
+                <h1 className="text-base font-black tracking-tight text-neutral-900 uppercase font-serif leading-tight">
+                  Govt. College of Architecture Alumni Association
+                </h1>
+                <p className="text-[10px] text-neutral-700 font-medium">
+                  Faculty of Architecture, AKTU (formerly GCA Lucknow / GBTU), Tagore Marg, Lucknow – 226007
+                </p>
+                <p className="text-[10px] text-[#B70D2B] font-bold">
+                  Email: contact.gcaaa@gmail.com | Website: www.gcaaa.org
+                </p>
+              </div>
+            </div>
+            <div className="text-right shrink-0">
+              <span className="inline-block px-2.5 py-0.5 bg-neutral-900 text-white text-[9px] font-black uppercase tracking-wider rounded">
+                Official Enrollment Copy
+              </span>
+              <p className="text-[10px] font-bold text-neutral-700 mt-1">
+                Date: {new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+              </p>
+              <p className="text-[9px] font-mono font-bold text-neutral-500">
+                Ref: GCAAA/LM/{membershipData.passingYear || '2026'}/{Math.floor(1000 + Math.random() * 9000)}
+              </p>
+            </div>
+          </div>
+
+          {/* Title Banner */}
+          <div className="bg-neutral-100 py-1.5 px-3 rounded text-center border border-neutral-300">
+            <h2 className="text-xs font-black uppercase tracking-widest text-neutral-900">
+              Alumni Life Time Membership Application &amp; Acknowledgment Receipt
+            </h2>
+          </div>
+
+          {/* Section 1: Member Credentials */}
+          <div>
+            <h3 className="text-[10px] font-black uppercase tracking-wider text-neutral-900 border-b border-neutral-300 pb-1 mb-1.5">
+              1. Member Personal &amp; Academic Credentials
+            </h3>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[11px]">
+              <div>
+                <span className="text-neutral-500 font-semibold">Full Name:</span>{' '}
+                <strong className="text-neutral-900">
+                  {membershipData.salutation} {membershipData.firstName} {membershipData.middleName ? membershipData.middleName + ' ' : ''}{membershipData.surName}
+                </strong>
+              </div>
+              <div>
+                <span className="text-neutral-500 font-semibold">Passing Out Year:</span>{' '}
+                <strong className="text-neutral-900">
+                  {membershipData.passingYear ? `Batch of ${membershipData.passingYear}` : 'N/A'}
+                </strong>
+              </div>
+              <div>
+                <span className="text-neutral-500 font-semibold">Qualification:</span>{' '}
+                <strong>{(membershipData.qualifications || []).join(', ') || 'B.Arch.'}</strong>
+              </div>
+              <div>
+                <span className="text-neutral-500 font-semibold">Specialisation:</span>{' '}
+                <span>{membershipData.specialisation || 'General Architecture'}</span>
+              </div>
+              <div>
+                <span className="text-neutral-500 font-semibold">Occupation:</span>{' '}
+                <strong>{membershipData.occupation}</strong>
+              </div>
+              <div>
+                <span className="text-neutral-500 font-semibold">Organization / Firm:</span>{' '}
+                <span>{membershipData.organization || 'Independent Practice'}</span>
+              </div>
+              <div>
+                <span className="text-neutral-500 font-semibold">Designation:</span>{' '}
+                <span>{membershipData.designation || 'Architect'}</span>
+              </div>
+              <div>
+                <span className="text-neutral-500 font-semibold">Email ID:</span>{' '}
+                <span className="font-semibold text-neutral-900">{membershipData.email || 'N/A'}</span>
+              </div>
+              <div>
+                <span className="text-neutral-500 font-semibold">Contact Phone:</span>{' '}
+                <strong className="text-neutral-900">
+                  {membershipData.residencePhone || membershipData.officePhone || 'N/A'}
+                </strong>
+              </div>
+              <div>
+                <span className="text-neutral-500 font-semibold">Office Phone:</span>{' '}
+                <span>{membershipData.officePhone || 'N/A'}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 2: Addresses */}
+          <div>
+            <h3 className="text-[10px] font-black uppercase tracking-wider text-neutral-900 border-b border-neutral-300 pb-1 mb-1.5">
+              2. Recorded Communication Addresses
+            </h3>
+            <div className="grid grid-cols-2 gap-3 text-[10px]">
+              <div className="p-2 rounded bg-neutral-50 border border-neutral-200">
+                <span className="text-[9px] font-bold uppercase text-neutral-500 block">Residence Address:</span>
+                <p className="text-neutral-800 mt-0.5 leading-snug">
+                  {membershipData.residenceStreet ? `${membershipData.residenceStreet}, ` : ''}
+                  {membershipData.residenceCity ? `${membershipData.residenceCity}, ` : ''}
+                  {membershipData.residenceCountry || 'India'}
+                </p>
+              </div>
+              <div className="p-2 rounded bg-neutral-50 border border-neutral-200">
+                <span className="text-[9px] font-bold uppercase text-neutral-500 block">Office Address:</span>
+                <p className="text-neutral-800 mt-0.5 leading-snug">
+                  {membershipData.officeStreet ? `${membershipData.officeStreet}, ` : ''}
+                  {membershipData.officeCity ? `${membershipData.officeCity}, ` : ''}
+                  {membershipData.officeCountry || 'India'}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 3: Payment Record */}
+          <div>
+            <h3 className="text-[10px] font-black uppercase tracking-wider text-neutral-900 border-b border-neutral-300 pb-1 mb-1.5">
+              3. Life Membership Contribution &amp; Payment Record
+            </h3>
+            <div className="grid grid-cols-3 gap-2 p-2 rounded bg-neutral-50 border border-neutral-200 text-[10px]">
+              <div>
+                <span className="text-neutral-500 font-semibold block text-[9px] uppercase">Contribution Amount</span>
+                <strong className="text-xs text-neutral-900">₹ {membershipData.amount || '2,000'}/- (Lifetime)</strong>
+              </div>
+              <div>
+                <span className="text-neutral-500 font-semibold block text-[9px] uppercase">Payment Mode</span>
+                <strong className="text-xs text-neutral-900">{membershipData.paymentMode}</strong>
+              </div>
+              <div>
+                <span className="text-neutral-500 font-semibold block text-[9px] uppercase">
+                  {membershipData.paymentMode === 'Cheque' ? 'Cheque No. / Date' : 'UTR / Ref ID'}
+                </span>
+                <strong className="text-xs text-neutral-900">
+                  {membershipData.chequeNo || (membershipData.paymentMode === 'Cash' ? 'Cash Receipt Pending' : 'N/A')}
+                  {membershipData.chequeDate ? ` (${membershipData.chequeDate})` : ''}
+                </strong>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 4: Declaration & Signatures */}
+          <div>
+            <div className="p-2 bg-neutral-50 border border-neutral-200 rounded text-[9.5px] text-neutral-700 italic leading-tight">
+              <strong>Declaration:</strong> &ldquo;Kindly enroll me as a member of GCA Alumni Association. I hereby agree to abide by the rules &amp; regulations of GCAAA. All information provided above is accurate and true to the best of my knowledge as per my academic degree certificate.&rdquo;
+            </div>
+
+            <div className="grid grid-cols-2 gap-6 pt-4 text-[10px] items-end">
+              <div>
+                <div className="border-b border-neutral-400 pb-1 font-serif italic text-xs font-bold text-neutral-900">
+                  {membershipData.applicantSignature || `${membershipData.firstName} ${membershipData.surName}`}
+                </div>
+                <span className="text-[9px] font-bold text-neutral-500 uppercase mt-0.5 block">
+                  Digital Signature of Applicant
+                </span>
+              </div>
+
+              <div className="text-right">
+                <div className="border-b border-neutral-400 pb-1 text-[11px] font-bold text-neutral-800">
+                  Provisionally Registered (Secretariat Seal)
+                </div>
+                <span className="text-[9px] font-bold text-neutral-500 uppercase mt-0.5 block">
+                  For GCAAA Executive Committee / Treasurer
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer note: "thoda sa kuch aur" */}
+          <div className="pt-2 border-t border-neutral-300 text-center text-[8.5px] text-neutral-500 leading-tight">
+            <p>
+              Note: Official Life Membership ID &amp; Certificate will be issued upon document verification by the GCAAA Executive Committee.
+            </p>
+            <p className="font-semibold text-neutral-700 mt-0.5">
+              Govt. College of Architecture Alumni Association • FOAP-AKTU Campus, Lucknow • contact.gcaaa@gmail.com
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* ========================================================
+          SCREEN VIEW: INTERACTIVE PAGE (HIDDEN ON PRINT)
+      ======================================================== */}
+      <div className="print:hidden">
+        {/* ========================================================
+            1. HERO HEADER BANNER
+        ======================================================== */}
+        <section className="relative py-16 sm:py-20 bg-neutral-950 text-white text-center border-b border-neutral-900 overflow-hidden">
+          {/* Glow Accent */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-red-600/15 blur-[140px] rounded-full pointer-events-none -z-10" />
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-950/80 border border-red-800/60 text-red-400 text-xs font-extrabold uppercase tracking-widest mb-4">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            Official GCAAA Portal
+            Official GCAAA Enrollment Portal
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black font-serif tracking-tight leading-tight">
-            Alumni Registration &amp;{' '}
+            Alumni Life Time{' '}
             <span className="text-[#B70D2B] underline decoration-red-400/60 underline-offset-8">
-              Membership Portal
+              Membership Registration
             </span>
           </h1>
 
           <p className="mt-5 text-neutral-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-            Register your profile in the official GCAAA database, confirm attendance for{' '}
-            <strong>Dharohar 2026</strong>, or apply for verified <strong>Life Membership</strong>.
+            Official enrollment form of Government College of Architecture Alumni Association (GCAAA Lucknow). Apply for verified Life Membership, permanent membership number, voting rights, and alumni directory credentials.
           </p>
         </div>
       </section>
@@ -214,7 +430,7 @@ export const AlumniRegistrationPage = () => {
               <p className="text-[11px] font-bold text-[#B70D2B] uppercase tracking-wider">Global Directory</p>
               <h3 className="text-base font-extrabold text-neutral-900 mt-0.5">3,500+ Alumni Network</h3>
               <p className="text-xs text-neutral-600 mt-1 leading-relaxed">
-                Connect with batchmates and seniors across India and internationally.
+                Connect with batchmates, faculty mentors, and seniors across India and internationally.
               </p>
             </div>
           </div>
@@ -224,10 +440,10 @@ export const AlumniRegistrationPage = () => {
               <Calendar className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-[11px] font-bold text-[#B70D2B] uppercase tracking-wider">Dharohar 2026 Meet</p>
-              <h3 className="text-base font-extrabold text-neutral-900 mt-0.5">Saturday, 28 Nov 2026</h3>
+              <p className="text-[11px] font-bold text-[#B70D2B] uppercase tracking-wider">Annual GBM Governance</p>
+              <h3 className="text-base font-extrabold text-neutral-900 mt-0.5">Voting &amp; Assembly Rights</h3>
               <p className="text-xs text-neutral-600 mt-1 leading-relaxed">
-                Ruby Jubilee (1986) &amp; Silver Jubilee (2001) grand celebrations at FOAP.
+                Full constitutional voting privileges in GCAAA elections and Annual General Body Meetings.
               </p>
             </div>
           </div>
@@ -238,9 +454,9 @@ export const AlumniRegistrationPage = () => {
             </div>
             <div>
               <p className="text-[11px] font-bold text-[#B70D2B] uppercase tracking-wider">Life Membership</p>
-              <h3 className="text-base font-extrabold text-neutral-900 mt-0.5">Lifetime Voting &amp; Credentials</h3>
+              <h3 className="text-base font-extrabold text-neutral-900 mt-0.5">Official ID &amp; Certificate</h3>
               <p className="text-xs text-neutral-600 mt-1 leading-relaxed">
-                Voting rights in the Annual GBM, official certificate, and directory listing.
+                Permanent Membership No., verified certificate, and listing in the official alumni roll.
               </p>
             </div>
           </div>
@@ -248,312 +464,12 @@ export const AlumniRegistrationPage = () => {
       </section>
 
       {/* ========================================================
-          3. MAIN INTERACTIVE FORM SECTION
+          3. MAIN INTERACTIVE FORM SECTION (LIFE MEMBERSHIP FORM)
       ======================================================== */}
-      <section
-        className={`mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 transition-all duration-300 ${
-          activeTab === 'membership' ? 'max-w-[1440px]' : 'max-w-5xl'
-        }`}
-      >
+      <section className="mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 max-w-[1440px]">
         <div className="bg-white rounded-2xl shadow-2xl border border-neutral-200 overflow-hidden">
-          
-          {/* Form Tabs Navigation */}
-          <div className="flex border-b border-neutral-200 bg-neutral-100/70 p-2 gap-2">
-            <button
-              type="button"
-              onClick={() => handleTabChange('register')}
-              className={`flex-1 py-3.5 px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                activeTab === 'register'
-                  ? 'bg-[#B70D2B] text-white shadow-md'
-                  : 'text-neutral-700 hover:bg-neutral-200/80'
-              }`}
-            >
-              <Users className="w-4 h-4" />
-              <span>Alumni Registration &amp; Dharohar 2026 RSVP</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleTabChange('membership')}
-              className={`flex-1 py-3.5 px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                activeTab === 'membership'
-                  ? 'bg-[#B70D2B] text-white shadow-md'
-                  : 'text-neutral-700 hover:bg-neutral-200/80'
-              }`}
-            >
-              <Award className="w-4 h-4" />
-              <span>Alumni Life Time Membership Registration </span>
-            </button>
-          </div>
-
           <div className="p-4 sm:p-7 lg:p-9">
-            {/* ==============================================
-                TAB 1: ALUMNI REGISTRATION & RSVP FORM
-            ============================================== */}
-            {activeTab === 'register' && (
-              <div>
-                {/* Event Highlight Banner inside form */}
-                <div className="mb-6 p-4 rounded-xl bg-amber-50/70 border border-amber-200 text-amber-950 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                  <div className="space-y-0.5">
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-800 bg-amber-100/90 px-2 py-0.5 rounded">
-                      FLAGSHIP REUNION · 2026
-                    </span>
-                    <h4 className="text-sm font-black text-amber-950">
-                      Annual Alumni Meet &amp; GBM — 28th November 2026
-                    </h4>
-                    <p className="text-xs text-amber-900">
-                      Celebrating Ruby Jubilee (1986) &amp; Silver Jubilee (2001) cohorts at Lucknow.
-                    </p>
-                  </div>
-                  <span className="text-[11px] font-bold text-amber-900 bg-white/80 px-3 py-1.5 rounded-lg border border-amber-200 whitespace-nowrap shadow-xs">
-                    📍 FOAP AKTU Auditorium, Lucknow
-                  </span>
-                </div>
-
-                {isSubmitted ? (
-                  <div className="text-center py-10 px-4 bg-emerald-50/70 border border-emerald-200 rounded-2xl space-y-4">
-                    <div className="w-16 h-16 bg-emerald-600 text-white rounded-full flex items-center justify-center mx-auto shadow-md">
-                      <CheckCircle2 className="w-9 h-9" />
-                    </div>
-                    <h3 className="text-2xl font-black text-emerald-950">
-                      Registration Received Successfully!
-                    </h3>
-                    <p className="text-xs sm:text-sm text-emerald-800 max-w-md mx-auto leading-relaxed">
-                      Thank you,{' '}
-                      <strong>
-                        {formData.salutation} {formData.fullName || 'Alumnus'}
-                      </strong>
-                      ! Your profile has been added to the GCAAA database, and RSVP recorded for <strong>Dharohar 2026</strong>.
-                    </p>
-
-                    <div className="bg-white/80 border border-emerald-200 rounded-xl p-4 max-w-sm mx-auto text-left text-xs space-y-1.5 text-neutral-700">
-                      <p><strong>Batch / Passout Year:</strong> {formData.batchYear || 'Alumnus'}</p>
-                      <p><strong>Attendance Mode:</strong> {formData.attendance}</p>
-                      <p><strong>Email:</strong> {formData.email}</p>
-                      <p><strong>Phone:</strong> {formData.phone}</p>
-                    </div>
-
-                    <p className="text-xs text-emerald-700">
-                      Confirmation copy and entry passes will be sent to your registered email.
-                    </p>
-
-                    <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-                      <button
-                        type="button"
-                        onClick={() => setIsSubmitted(false)}
-                        className="w-full sm:w-auto bg-[#B70D2B] hover:bg-neutral-900 text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-xl transition-all shadow"
-                      >
-                        Submit Another Profile
-                      </button>
-                      <Link
-                        to="/events"
-                        className="w-full sm:w-auto border border-neutral-300 hover:border-neutral-900 text-neutral-800 font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-xl transition-all"
-                      >
-                        View Event Schedule
-                      </Link>
-                    </div>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmitRegistration} className="space-y-4">
-                    {/* Name with Salutation */}
-                    <div>
-                      <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">
-                        Full Name <span className="text-red-600">*</span>
-                      </label>
-                      <div className="flex gap-2">
-                        <select
-                          value={formData.salutation}
-                          onChange={(e) => setFormData({ ...formData, salutation: e.target.value })}
-                          className="w-24 px-2.5 py-2.5 text-xs sm:text-sm bg-neutral-50 border border-neutral-300 rounded-xl text-neutral-900 focus:bg-white focus:ring-2 focus:ring-[#B70D2B] focus:outline-none"
-                        >
-                          <option value="Ar.">Ar.</option>
-                          <option value="Prof.">Prof.</option>
-                          <option value="Dr.">Dr.</option>
-                          <option value="Mr.">Mr.</option>
-                          <option value="Ms.">Ms.</option>
-                        </select>
-                        <input
-                          type="text"
-                          required
-                          value={formData.fullName}
-                          onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                          className="flex-1 px-3.5 py-2.5 text-xs sm:text-sm bg-neutral-50 border border-neutral-300 rounded-xl text-neutral-900 placeholder-neutral-400 focus:bg-white focus:ring-2 focus:ring-[#B70D2B] focus:border-[#B70D2B] focus:outline-none transition-all"
-                          placeholder="Enter your full name"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Email & Phone */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">
-                          Email Address <span className="text-red-600">*</span>
-                        </label>
-                        <input
-                          type="email"
-                          required
-                          value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-neutral-50 border border-neutral-300 rounded-xl text-neutral-900 placeholder-neutral-400 focus:bg-white focus:ring-2 focus:ring-[#B70D2B] focus:border-[#B70D2B] focus:outline-none transition-all"
-                          placeholder="alumnus@example.com"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">
-                          WhatsApp / Mobile Number <span className="text-red-600">*</span>
-                        </label>
-                        <input
-                          type="tel"
-                          required
-                          value={formData.phone}
-                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                          className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-neutral-50 border border-neutral-300 rounded-xl text-neutral-900 placeholder-neutral-400 focus:bg-white focus:ring-2 focus:ring-[#B70D2B] focus:border-[#B70D2B] focus:outline-none transition-all"
-                          placeholder="+91 98765 43210"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Batch & Degree */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">
-                          Batch / Passout Year <span className="text-red-600">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          required
-                          value={formData.batchYear}
-                          onChange={(e) => setFormData({ ...formData, batchYear: e.target.value })}
-                          className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-neutral-50 border border-neutral-300 rounded-xl text-neutral-900 placeholder-neutral-400 focus:bg-white focus:ring-2 focus:ring-[#B70D2B] focus:border-[#B70D2B] focus:outline-none transition-all"
-                          placeholder="e.g. 2001 (Silver Jubilee) or 1986"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">
-                          Degree / Course
-                        </label>
-                        <select
-                          value={formData.degree}
-                          onChange={(e) => setFormData({ ...formData, degree: e.target.value })}
-                          className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-neutral-50 border border-neutral-300 rounded-xl text-neutral-900 focus:bg-white focus:ring-2 focus:ring-[#B70D2B] focus:outline-none"
-                        >
-                          <option value="B.Arch">B.Arch (Architecture)</option>
-                          <option value="M.Arch">M.Arch</option>
-                          <option value="MURP">MURP (Urban Planning)</option>
-                          <option value="Interior Design">Interior Design</option>
-                          <option value="Ph.D.">Ph.D. / Research Scholar</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    {/* City & Firm */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">
-                          Current City &amp; Country
-                        </label>
-                        <input
-                          type="text"
-                          value={formData.city}
-                          onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                          className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-neutral-50 border border-neutral-300 rounded-xl text-neutral-900 placeholder-neutral-400 focus:bg-white focus:ring-2 focus:ring-[#B70D2B] focus:border-[#B70D2B] focus:outline-none transition-all"
-                          placeholder="e.g. Lucknow / Delhi NCR / Dubai"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">
-                          Firm / Organization &amp; Role
-                        </label>
-                        <input
-                          type="text"
-                          value={formData.firm}
-                          onChange={(e) => setFormData({ ...formData, firm: e.target.value })}
-                          className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-neutral-50 border border-neutral-300 rounded-xl text-neutral-900 placeholder-neutral-400 focus:bg-white focus:ring-2 focus:ring-[#B70D2B] focus:border-[#B70D2B] focus:outline-none transition-all"
-                          placeholder="e.g. Principal Architect, Design Studio"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Attendance Mode & Dietary */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">
-                          Dharohar 2026 Attendance
-                        </label>
-                        <select
-                          value={formData.attendance}
-                          onChange={(e) => setFormData({ ...formData, attendance: e.target.value })}
-                          className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-neutral-50 border border-neutral-300 rounded-xl text-neutral-900 focus:bg-white focus:ring-2 focus:ring-[#B70D2B] focus:outline-none"
-                        >
-                          <option value="Attending Solo">Attending Solo</option>
-                          <option value="Attending with Spouse">Attending with Spouse</option>
-                          <option value="Attending with Family">Attending with Family</option>
-                          <option value="Unable to Attend (Register Only)">Unable to Attend in Person (Register in Directory Only)</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">
-                          Dietary Preference
-                        </label>
-                        <select
-                          value={formData.dietary}
-                          onChange={(e) => setFormData({ ...formData, dietary: e.target.value })}
-                          className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-neutral-50 border border-neutral-300 rounded-xl text-neutral-900 focus:bg-white focus:ring-2 focus:ring-[#B70D2B] focus:outline-none"
-                        >
-                          <option value="Vegetarian">Vegetarian</option>
-                          <option value="Non-Vegetarian">Non-Vegetarian</option>
-                          <option value="Jain Food">Jain Food</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    {/* Life Membership Checkbox */}
-                    <div className="p-3.5 rounded-xl bg-red-50/60 border border-red-200/80 flex items-start gap-3">
-                      <input
-                        type="checkbox"
-                        id="membershipInterest"
-                        checked={formData.membershipInterest}
-                        onChange={(e) => setFormData({ ...formData, membershipInterest: e.target.checked })}
-                        className="mt-0.5 w-4 h-4 text-red-600 rounded border-neutral-300 focus:ring-red-500 cursor-pointer"
-                      />
-                      <label htmlFor="membershipInterest" className="text-xs text-neutral-800 cursor-pointer">
-                        <strong className="font-bold text-[#B70D2B]">Apply for Official Life Membership:</strong>{' '}
-                        Yes, please send me Life Membership verification details and credentials.
-                      </label>
-                    </div>
-
-                    {/* Message / Memories */}
-                    <div>
-                      <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">
-                        Memories or Message for Dharohar 2026 Souvenir (Optional)
-                      </label>
-                      <textarea
-                        rows="3"
-                        value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-neutral-50 border border-neutral-300 rounded-xl text-neutral-900 placeholder-neutral-400 focus:bg-white focus:ring-2 focus:ring-[#B70D2B] focus:border-[#B70D2B] focus:outline-none transition-all"
-                        placeholder="Share a message or memories for your batchmates and faculty..."
-                      />
-                    </div>
-
-                    {/* Submit Button */}
-                    <button
-                      type="submit"
-                      className="w-full flex items-center justify-center gap-2 bg-[#B70D2B] hover:bg-neutral-900 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider py-3.5 px-6 rounded-xl shadow-lg shadow-red-950/20 transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
-                    >
-                      <Send className="w-4 h-4" />
-                      <span>Complete Registration &amp; Confirm RSVP</span>
-                    </button>
-                  </form>
-                )}
-              </div>
-            )}
-
-            {/* ==============================================
-                TAB 2: LIFE MEMBERSHIP APPLICATION (OFFICIAL GCAAA FORM)
-            ============================================== */}
-            {activeTab === 'membership' && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
                 {/* --------------------------------------------------
                     LEFT COLUMN: OFFICIAL GCAAA REGISTRATION FORM
                 -------------------------------------------------- */}
@@ -683,11 +599,52 @@ export const AlumniRegistrationPage = () => {
                     </div>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmitMembership} className="space-y-7">
-                    
-                    {/* ========================================================
-                        SECTION 1: NAME IN FULL + RECENT PHOTO
-                    ======================================================== */}
+                  <form onSubmit={handleSubmitMembership} id="membership-form-box" className="space-y-6">
+                    {/* Stepper Tabs */}
+                    <div className="grid grid-cols-2 gap-3 pb-2 border-b border-neutral-200">
+                      <button
+                        type="button"
+                        onClick={() => { setStepError(''); setCurrentStep(1); }}
+                        className={`p-3 sm:p-3.5 rounded-xl border-2 flex items-center gap-2.5 sm:gap-3 transition-all cursor-pointer text-left ${
+                          currentStep === 1
+                            ? 'border-[#B70D2B] bg-red-50/70 shadow-xs'
+                            : 'border-neutral-200 bg-neutral-50 hover:bg-neutral-100'
+                        }`}
+                      >
+                        <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black shrink-0 ${
+                          currentStep === 1 ? 'bg-[#B70D2B] text-white' : 'bg-neutral-300 text-neutral-700'
+                        }`}>
+                          1
+                        </span>
+                        <div className="min-w-0">
+                          <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider block">Step 1</span>
+                          <strong className="text-xs sm:text-sm font-extrabold text-neutral-900 block truncate">Alumni Details</strong>
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={handleNextStep}
+                        className={`p-3 sm:p-3.5 rounded-xl border-2 flex items-center gap-2.5 sm:gap-3 transition-all cursor-pointer text-left ${
+                          currentStep === 2
+                            ? 'border-[#B70D2B] bg-red-50/70 shadow-xs'
+                            : 'border-neutral-200 bg-neutral-50 hover:bg-neutral-100'
+                        }`}
+                      >
+                        <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black shrink-0 ${
+                          currentStep === 2 ? 'bg-[#B70D2B] text-white' : 'bg-neutral-300 text-neutral-700'
+                        }`}>
+                          2
+                        </span>
+                        <div className="min-w-0">
+                          <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider block">Step 2</span>
+                          <strong className="text-xs sm:text-sm font-extrabold text-neutral-900 block truncate">Fee &amp; Payment</strong>
+                        </div>
+                      </button>
+                    </div>
+
+                    {currentStep === 1 ? (
+                      <div className="space-y-7">
                     <div className="flex flex-col sm:flex-row gap-5 items-start bg-white p-5 sm:p-6 rounded-2xl border border-neutral-200 shadow-xs">
                       <div className="flex-1 space-y-4 w-full">
                         <div className="border-b border-neutral-200 pb-2">
@@ -919,7 +876,6 @@ export const AlumniRegistrationPage = () => {
                             />
                             <div>
                               <strong className="text-xs sm:text-sm font-extrabold block">Selfemployed</strong>
-                              <span className="text-[11px] text-neutral-500">Private Architectural Practice / Firm Owner / Freelance Consultant</span>
                             </div>
                           </label>
 
@@ -940,7 +896,6 @@ export const AlumniRegistrationPage = () => {
                             />
                             <div>
                               <strong className="text-xs sm:text-sm font-extrabold block">Service</strong>
-                              <span className="text-[11px] text-neutral-500">Govt. Organization / Corporate Firm / Academic / Institutional</span>
                             </div>
                           </label>
                         </div>
@@ -1163,6 +1118,52 @@ export const AlumniRegistrationPage = () => {
                       </div>
                     </div>
 
+                    {/* Step 1 Error Notice if required fields missing */}
+                    {stepError && (
+                      <div className="p-4 rounded-xl bg-red-50 border border-red-300 text-red-950 flex items-start gap-3 shadow-xs">
+                        <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+                        <div className="text-xs font-bold leading-relaxed">
+                          {stepError}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Step 1: NEXT BUTTON */}
+                    <div className="pt-2">
+                      <button
+                        type="button"
+                        onClick={handleNextStep}
+                        className="w-full flex items-center justify-center gap-2 bg-[#B70D2B] hover:bg-neutral-900 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider py-4 px-6 rounded-xl shadow-xl shadow-red-950/20 transition-all hover:scale-[1.005] active:scale-[0.99] cursor-pointer"
+                      >
+                        <span>Next: Proceed to Fee &amp; Payment</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-7 animate-in fade-in duration-300">
+                    {/* Step 2 Header & Applicant Information Summary */}
+                    <div className="bg-gradient-to-r from-neutral-50 to-red-50/40 rounded-2xl p-4 sm:p-5 border border-neutral-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+                      <div>
+                        <span className="text-[10px] font-black uppercase tracking-wider text-[#B70D2B] block">Applicant Information (Step 1 Completed):</span>
+                        <h4 className="text-sm sm:text-base font-extrabold text-neutral-900 mt-0.5">
+                          {membershipData.salutation} {membershipData.firstName} {membershipData.middleName ? membershipData.middleName + ' ' : ''}{membershipData.surName}
+                          {membershipData.passingYear && <span className="text-neutral-500 font-normal ml-2">(Batch of {membershipData.passingYear})</span>}
+                        </h4>
+                        <p className="text-xs text-neutral-600 mt-0.5">
+                          {membershipData.email} • {membershipData.sameAsOffice ? membershipData.officePhone : membershipData.residencePhone}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => { setStepError(''); setCurrentStep(1); }}
+                        className="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-neutral-100 text-neutral-800 border border-neutral-300 rounded-lg font-bold text-xs transition-colors shadow-2xs cursor-pointer"
+                      >
+                        <ArrowLeft className="w-3.5 h-3.5" />
+                        <span>Edit Step 1</span>
+                      </button>
+                    </div>
+
                     {/* ========================================================
                         SECTION 7 & 8: MEMBERSHIP FEE & CHEQUE DETAILS
                     ======================================================== */}
@@ -1375,16 +1376,26 @@ export const AlumniRegistrationPage = () => {
                       </div>
                     </div>
 
-                    
-
-                    {/* SUBMIT BUTTON */}
-                    <button
-                      type="submit"
-                      className="w-full flex items-center justify-center gap-2 bg-[#B70D2B] hover:bg-neutral-900 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider py-4 px-6 rounded-xl shadow-xl shadow-red-950/20 transition-all hover:scale-[1.005] active:scale-[0.99] cursor-pointer"
-                    >
-                      <FileCheck className="w-4 h-4" />
-                      <span>Submit Membership Registration Form</span>
-                    </button>
+                    {/* Step 2 Bottom Actions: BACK & SUBMIT BUTTONS */}
+                    <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+                      <button
+                        type="button"
+                        onClick={() => { setStepError(''); setCurrentStep(1); }}
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 border-2 border-neutral-300 hover:bg-neutral-100 text-neutral-800 font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-xl transition-all cursor-pointer"
+                      >
+                        <ArrowLeft className="w-4 h-4" />
+                        <span>Back to Details</span>
+                      </button>
+                      <button
+                        type="submit"
+                        className="flex-1 w-full flex items-center justify-center gap-2 bg-[#B70D2B] hover:bg-neutral-900 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider py-4 px-6 rounded-xl shadow-xl shadow-red-950/20 transition-all hover:scale-[1.005] active:scale-[0.99] cursor-pointer"
+                      >
+                        <FileCheck className="w-4 h-4" />
+                        <span>Submit Membership Registration Form</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
                   </form>
                 )}
                 </div>
@@ -1433,16 +1444,25 @@ export const AlumniRegistrationPage = () => {
                   </div>
 
                   {/* Section Title: Process of receiving Membership */}
-                  <div className="pt-1">
-                    <h3 className="text-xl sm:text-2xl font-black text-neutral-900 tracking-tight font-serif">
-                      Process of receiving Membership
-                    </h3>
-                    <p className="text-xs text-neutral-600 mt-1">
-                      Official guidelines, eligibility criteria, and member entitlements.
-                    </p>
+                  <div className="pt-1 flex items-center justify-between">
+                    <div>
+                      <h3 className="text-xl sm:text-2xl font-black text-neutral-900 tracking-tight font-serif">
+                        Process of receiving Membership
+                      </h3>
+                      <p className="text-xs text-neutral-600 mt-1">
+                        Official guidelines, eligibility criteria, and member entitlements.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={toggleAllSections}
+                      className="hidden sm:inline-flex items-center gap-1 text-[11px] font-bold text-neutral-600 hover:text-[#B70D2B] bg-neutral-100 hover:bg-neutral-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+                    >
+                      <span>{areAllOpen ? 'Collapse All' : 'Expand All'}</span>
+                    </button>
                   </div>
 
-                  {/* Accordion Panels */}
+                  {/* Accordion Panels (Open by default on desktop) */}
                   <div className="space-y-3">
                     {/* 1. Eligibility of Application */}
                     <div className="overflow-hidden rounded-xl border border-neutral-200 shadow-2xs">
@@ -1450,19 +1470,19 @@ export const AlumniRegistrationPage = () => {
                         type="button"
                         onClick={() => toggleSection('eligibility')}
                         className={`w-full text-left px-4 py-3.5 flex items-center justify-between font-bold text-xs sm:text-sm transition-colors cursor-pointer ${
-                          openSection === 'eligibility'
+                          openSections.eligibility
                             ? 'bg-[#FB8C00] text-white'
                             : 'bg-white hover:bg-neutral-50 text-neutral-800'
                         }`}
                       >
                         <span>Eligibility of Application</span>
-                        {openSection === 'eligibility' ? (
+                        {openSections.eligibility ? (
                           <ChevronUp className="w-4 h-4 shrink-0 text-white" />
                         ) : (
                           <ChevronDown className="w-4 h-4 shrink-0 text-neutral-500" />
                         )}
                       </button>
-                      {openSection === 'eligibility' && (
+                      {openSections.eligibility && (
                         <div className="bg-white p-5 text-xs text-neutral-700 space-y-2.5 border-t border-neutral-200">
                           <ul className="space-y-2 list-disc list-outside pl-4 marker:text-neutral-400 leading-relaxed">
                             <li>
@@ -1485,19 +1505,19 @@ export const AlumniRegistrationPage = () => {
                         type="button"
                         onClick={() => toggleSection('benefits')}
                         className={`w-full text-left px-4 py-3.5 flex items-center justify-between font-bold text-xs sm:text-sm transition-colors cursor-pointer ${
-                          openSection === 'benefits'
+                          openSections.benefits
                             ? 'bg-[#FB8C00] text-white'
                             : 'bg-white hover:bg-neutral-50 text-neutral-800'
                         }`}
                       >
                         <span>Membership Benefits</span>
-                        {openSection === 'benefits' ? (
+                        {openSections.benefits ? (
                           <ChevronUp className="w-4 h-4 shrink-0 text-white" />
                         ) : (
                           <ChevronDown className="w-4 h-4 shrink-0 text-neutral-500" />
                         )}
                       </button>
-                      {openSection === 'benefits' && (
+                      {openSections.benefits && (
                         <div className="bg-white p-5 text-xs text-neutral-700 space-y-2.5 border-t border-neutral-200">
                           <ul className="space-y-2 list-disc list-outside pl-4 marker:text-neutral-400 leading-relaxed">
                             <li>
@@ -1529,19 +1549,19 @@ export const AlumniRegistrationPage = () => {
                         type="button"
                         onClick={() => toggleSection('fee')}
                         className={`w-full text-left px-4 py-3.5 flex items-center justify-between font-bold text-xs sm:text-sm transition-colors cursor-pointer ${
-                          openSection === 'fee'
+                          openSections.fee
                             ? 'bg-[#FB8C00] text-white'
                             : 'bg-white hover:bg-neutral-50 text-neutral-800'
                         }`}
                       >
                         <span>Fee Details</span>
-                        {openSection === 'fee' ? (
+                        {openSections.fee ? (
                           <ChevronUp className="w-4 h-4 shrink-0 text-white" />
                         ) : (
                           <ChevronDown className="w-4 h-4 shrink-0 text-neutral-500" />
                         )}
                       </button>
-                      {openSection === 'fee' && (
+                      {openSections.fee && (
                         <div className="bg-white p-5 text-xs text-neutral-700 space-y-2.5 border-t border-neutral-200">
                           <ul className="space-y-2 list-disc list-outside pl-4 marker:text-neutral-400 leading-relaxed">
                             <li>
@@ -1567,19 +1587,19 @@ export const AlumniRegistrationPage = () => {
                         type="button"
                         onClick={() => toggleSection('remarks')}
                         className={`w-full text-left px-4 py-3.5 flex items-center justify-between font-bold text-xs sm:text-sm transition-colors cursor-pointer ${
-                          openSection === 'remarks'
+                          openSections.remarks
                             ? 'bg-[#FB8C00] text-white'
                             : 'bg-white hover:bg-neutral-50 text-neutral-800'
                         }`}
                       >
                         <span>Remarks</span>
-                        {openSection === 'remarks' ? (
+                        {openSections.remarks ? (
                           <ChevronUp className="w-4 h-4 shrink-0 text-white" />
                         ) : (
                           <ChevronDown className="w-4 h-4 shrink-0 text-neutral-500" />
                         )}
                       </button>
-                      {openSection === 'remarks' && (
+                      {openSections.remarks && (
                         <div className="bg-white p-5 text-xs text-neutral-700 space-y-2.5 border-t border-neutral-200">
                           <ul className="space-y-2 list-disc list-outside pl-4 marker:text-neutral-400 leading-relaxed">
                             <li>
@@ -1628,10 +1648,10 @@ export const AlumniRegistrationPage = () => {
                   </div>
                 </div>
               </div>
-            )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   );
 };

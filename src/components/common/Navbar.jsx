@@ -337,7 +337,7 @@ export const Navbar = () => {
                       onClick={closeAllMenus}
                       className="block px-4 py-2 hover:bg-red-600 text-xs"
                     >
-                      Aluminus Registration
+                      Life Membership Registration
                     </Link>
                     <Link
                       to="/alumni-data-list"
@@ -351,7 +351,7 @@ export const Navbar = () => {
               </div>
 
               <NavLink
-                to="/resources"
+                to="/publications"
                 className={({ isActive }) =>
                   `px-4 py-3.5 hover:bg-red-700 transition-colors ${
                     isActive ? 'bg-red-700 text-white' : ''
@@ -591,7 +591,7 @@ export const Navbar = () => {
                   >
                     <span className="flex items-center gap-2">
                       <ChevronRight className="w-3.5 h-3.5 shrink-0" />
-                      Aluminus Registration
+                      Life Membership Registration
                     </span>
                     <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">
                       Active
@@ -618,10 +618,10 @@ export const Navbar = () => {
               )}
             </div>
 
-            {/* Resources */}
+            {/* Publications */}
             <div className="py-1">
               <NavLink
-                to="/resources"
+                to="/publications"
                 onClick={closeAllMenus}
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all ${
@@ -631,8 +631,8 @@ export const Navbar = () => {
                   }`
                 }
               >
-                <FileText className="w-4 h-4 text-red-600 shrink-0" />
-                <span>RESOURCES </span>
+                <BookOpen className="w-4 h-4 text-red-600 shrink-0" />
+                <span>PUBLICATIONS</span>
               </NavLink>
             </div>
 

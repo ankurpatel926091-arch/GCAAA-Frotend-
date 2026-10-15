@@ -8,36 +8,8 @@ import {
   Eye
 } from 'lucide-react';
 
-import { gbmGalleryItems } from '@/data/gbmPhotos';
-
-import imgCourtyard from '@/assets/gallery/gallery_1_courtyard.png';
-import imgDharoharStage from '@/assets/gallery/gallery_2_dharohar_stage.png';
-import imgLampLighting from '@/assets/gallery/gallery_4_lamp_lighting.png';
-import imgYellowCelebration from '@/assets/gallery/gallery_5_yellow_celebration.png';
-import imgStampHeritage from '@/assets/gallery/gallery_6_stamp_heritage.png';
-import imgLawnReunion from '@/assets/gallery/gallery_8_lawn_reunion.png';
-import imgStageConclave from '@/assets/gallery/gallery_10_stage_conclave.png';
-import imgHeritageSteps from '@/assets/gallery/gallery_13_heritage_steps.png';
-import imgBatch2001Cohort from '@/assets/gallery/gallery_15_batch_2001_cohort.png';
-
-export const allGalleryItems = [
-  ...gbmGalleryItems,
-  { id: 1, src: imgHeritageSteps, category: 'dharohar' },
-  { id: 2, src: imgDharoharStage, category: 'dharohar' },
-  { id: 3, src: imgBatch2001Cohort, category: 'dharohar' },
-  { id: 4, src: imgCourtyard, category: 'dharohar' },
-  { id: 5, src: imgLampLighting, category: 'dharohar' },
-  { id: 6, src: imgYellowCelebration, category: 'dharohar' },
-  { id: 7, src: imgStampHeritage, category: 'dharohar' },
-  { id: 8, src: imgLawnReunion, category: 'dharohar' },
-  { id: 9, src: imgStageConclave, category: 'dharohar' },
-];
-
-const categoryTabs = [
-  { key: 'all', label: 'All Photos' },
-  { key: 'gbm', label: 'GBM 2025' },
-  { key: 'dharohar', label: 'Dharohar & Reunions' },
-];
+import { allGalleryItems, galleryCategories as categoryTabs } from '@/data/galleryData';
+export { allGalleryItems };
 
 export const GalleryPage = () => {
   const [activeCategory, setActiveCategory] = useState('all');
