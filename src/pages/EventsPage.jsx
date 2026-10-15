@@ -1,6 +1,6 @@
 import { EventSection } from '@/components/home/EventSection';
 import { DharoharSection } from '@/components/home/DharoharSection';
-import { GallerySection } from '@/components/home/GallerySection';
+import { GallerySection } from '../components/home/GallerySection';
 
 export const EventsPage = () => {
   return (

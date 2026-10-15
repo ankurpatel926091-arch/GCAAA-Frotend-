@@ -1957,23 +1957,22 @@ export const mindRecords = [
   }
 ];
 
-// Function to determine official Batch No in alphanumeric format (e.g., B-1985, B-1986, FB-1984, DIP-1988)
+// Function to determine official Batch No (e.g., 1985 -> Batch 1, Diploma -> Dip. Batch 1, Prior to 1985 -> Foundation Batch)
 export const getBatchNo = (year, cohortId = 'all') => {
   const yrStr = String(year || '').trim();
   const yrLower = yrStr.toLowerCase();
 
   if (yrLower.includes('prior') || yrLower.includes('bfore') || yrLower.includes('before')) {
-    return 'FB-1984';
+    return 'Foundation Batch';
   }
   if (yrLower.includes('diploma 1988') || yrLower.includes('1988-91')) {
-    return 'DIP-1988';
+    return 'Dip. Batch 1';
   }
   if (yrLower.includes('diploma 1989') || yrLower.includes('1989-92')) {
-    return 'DIP-1989';
+    return 'Dip. Batch 2';
   }
   if (yrLower.includes('diploma')) {
-    const dMatch = yrStr.match(/\b(19\d\d|20\d\d)\b/);
-    return dMatch ? `DIP-${dMatch[0]}` : 'DIP';
+    return 'Diploma Batch';
   }
 
   const match = yrStr.match(/\b(19\d\d|20\d\d)\b/);
@@ -1981,23 +1980,31 @@ export const getBatchNo = (year, cohortId = 'all') => {
 
   if (!isNaN(yrNum)) {
     if (cohortId === 'm-arch') {
-      return `MARCH-${yrNum}`;
+      const num = yrNum - 2015 + 1;
+      return num > 0 ? `Batch ${num}` : `Batch ${yrNum}`;
     }
     if (cohortId === 'murp') {
-      return `MURP-${yrNum}`;
+      const num = yrNum - 2020 + 1;
+      return num > 0 ? `Batch ${num}` : `Batch ${yrNum}`;
     }
     if (cohortId === 'miend') {
-      return `MIEND-${yrNum}`;
+      const num = yrNum - 2020 + 1;
+      return num > 0 ? `Batch ${num}` : `Batch ${yrNum}`;
     }
     if (cohortId === 'mind') {
-      return `MIND-${yrNum}`;
+      const num = yrNum - 2023 + 1;
+      return num > 0 ? `Batch ${num}` : `Batch ${yrNum}`;
     }
 
-    // Default: B.Arch
-    return `B-${yrNum}`;
+    // Default: B.Arch (1985 is Batch 1)
+    if (yrNum >= 1985) {
+      const bArchBatch = yrNum - 1985 + 1;
+      return `Batch ${bArchBatch}`;
+    }
+    return 'Foundation Batch';
   }
 
-  return yrStr ? `B-${yrStr}` : '—';
+  return yrStr || '—';
 };
 
 // Function to generate standardized Membership No: GCA + year + (100 + sno)

@@ -81,27 +81,22 @@ export const RegisteredMembersPage = () => {
     list.sort((a, b) => a.name.localeCompare(b.name));
 
     // Assign sequential S.No (1, 2, 3...)
-    return list.map((item, idx) => {
-      const sno = idx + 1;
-      return {
-        ...item,
-        sno,
-        uniqueKey: `member-${sno}`,
-      };
-    });
+    return list.map((item, idx) => ({
+      ...item,
+      sno: idx + 1,
+      uniqueKey: `${item.sno}-${item.membershipNo}`,
+    }));
   }, []);
 
   // 2. Filter members based on Search Query (Name or Membership No)
   const filteredMembers = useMemo(() => {
-    const trimmed = searchQuery.trim().toLowerCase();
-    if (!trimmed) return masterMembers;
-
-    const terms = trimmed.split(/\s+/).filter(Boolean);
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return masterMembers;
 
     return masterMembers.filter((item) => {
-      const name = item.name.toLowerCase();
-      const mem = (item.membershipNo || '').toLowerCase();
-      return terms.every((t) => name.includes(t) || mem.includes(t));
+      const matchName = item.name.toLowerCase().includes(q);
+      const matchMem = (item.membershipNo || '').toLowerCase().includes(q);
+      return matchName || matchMem;
     });
   }, [masterMembers, searchQuery]);
 
@@ -124,29 +119,20 @@ export const RegisteredMembersPage = () => {
 
   // 4. Distribute currentSlice across responsive columns (3 on desktop, 2 on tablet, 1 on mobile)
   const columnsData = useMemo(() => {
-    const total = currentSlice.length;
-    if (total === 0) return [];
-
-    // When searching with few items (e.g. 1 result), don't render 3 columns with empty tables
-    const isSearching = searchQuery.trim().length > 0;
-    const numCols = isSearching
-      ? Math.min(responsiveCols, Math.max(1, Math.ceil(total / 10)))
-      : responsiveCols;
+    const numCols = responsiveCols;
     const cols = [];
+    const total = currentSlice.length;
     let startIndex = 0;
 
     for (let i = 0; i < numCols; i++) {
       const remainingCols = numCols - i;
       const remainingItems = total - startIndex;
       const chunkSize = Math.ceil(remainingItems / remainingCols);
-      const chunk = currentSlice.slice(startIndex, startIndex + chunkSize);
-      if (chunk.length > 0) {
-        cols.push(chunk);
-      }
+      cols.push(currentSlice.slice(startIndex, startIndex + chunkSize));
       startIndex += chunkSize;
     }
     return cols;
-  }, [currentSlice, responsiveCols, searchQuery]);
+  }, [currentSlice, responsiveCols]);
 
   return (
     <div className="min-h-screen bg-[#F4F6F9] text-neutral-900 pb-20">
@@ -227,16 +213,16 @@ export const RegisteredMembersPage = () => {
           {totalFiltered > 0 ? (
             <div
               className={`grid gap-4 sm:gap-6 ${
-                columnsData.length === 3
-                  ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
-                  : columnsData.length === 2
-                  ? 'grid-cols-1 md:grid-cols-2'
+                responsiveCols === 3
+                  ? 'grid-cols-3'
+                  : responsiveCols === 2
+                  ? 'grid-cols-2'
                   : 'grid-cols-1'
               }`}
             >
               {columnsData.map((colItems, colIdx) => (
                 <div
-                  key={`col-${colIdx}-${searchQuery}`}
+                  key={`col-${colIdx}`}
                   className="bg-white rounded-lg border border-neutral-200/90 overflow-hidden shadow-2xs"
                 >
                   <table className="w-full table-fixed border-collapse text-xs sm:text-sm">

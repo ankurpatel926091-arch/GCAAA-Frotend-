@@ -305,7 +305,7 @@ export const GallerySection = () => {
             <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
-          <button
+        <button
             onClick={nextPhoto}
             className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 rounded-full bg-neutral-900/80 hover:bg-red-600 border border-neutral-700 text-white transition-colors z-20 cursor-pointer shadow-lg"
             aria-label="Next Photo"
@@ -326,6 +326,7 @@ export const GallerySection = () => {
               />
             </div>
           </div>
+          
         </div>
       )}
     </section>

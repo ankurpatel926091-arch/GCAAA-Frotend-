@@ -7,8 +7,6 @@ import {
   RefreshCw,
   ChevronDown,
   ArrowUpDown,
-  Mail,
-  Phone,
   Download,
   AlertCircle,
   FileSpreadsheet,
@@ -16,6 +14,16 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { allCohorts, getBatchNo } from '../data/cohortRecords';
+
+// ✅ Helper: Extract only the numeric year from strings like "Prior to 1985", "Diploma 1988-91", "2020"
+const extractYear = (yearStr) => {
+  if (!yearStr) return '';
+  const str = yearStr.toString();
+  const matches = str.match(/\d{4}/g);
+  if (!matches || matches.length === 0) return str;
+  // Agar multiple years hain (jaise "Diploma 1988-91"), toh pehla (start year) return karein
+  return matches[0];
+};
 
 export const AlumniDataListPage = () => {
   // Course / Cohort Filter Tabs (from reference master excel sheet)
@@ -158,14 +166,13 @@ export const AlumniDataListPage = () => {
     return range;
   }, [currentPage, totalPages]);
 
-  // Export to CSV helper (Sr No, Batch No, Year, Name)
+  // Export to CSV helper (Sr No, Year, Name) — Year only numeric
   const handleExportCSV = () => {
     if (!filteredData.length) return;
-    const headers = ['Sr No.', 'Batch No.', 'Year', 'Name'];
+    const headers = ['Sr No.', 'Year', 'Name'];
     const rows = filteredData.map((d, index) => [
       index + 1,
-      `"${d.batchNo || getBatchNo(d.year, activeTab)}"`,
-      `"${d.year}"`,
+      `"${extractYear(d.year)}"`,
       `"${d.name.replace(/"/g, '""')}"`
     ]);
     const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
@@ -310,22 +317,15 @@ export const AlumniDataListPage = () => {
                   >
                     All Batches ({currentRecords.length} records)
                   </option>
-                  {activeBatches.map((yr) => {
-                    const code = getBatchNo(yr, activeTab);
-                    const count = batchStats[yr] || 0;
-                    const label = yr.toLowerCase().includes('prior') || yr.toLowerCase().includes('diploma')
-                      ? `${code} (${yr}) — ${count} alumni`
-                      : `${code} — ${count} alumni`;
-                    return (
-                      <option
-                        key={yr}
-                        value={yr}
-                        style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
-                      >
-                        {label}
-                      </option>
-                    );
-                  })}
+                  {activeBatches.map((yr) => (
+                    <option
+                      key={yr}
+                      value={yr}
+                      style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
+                    >
+                      {extractYear(yr)} ({yr}) — {batchStats[yr] || 0} alumni
+                    </option>
+                  ))}
                 </select>
                 <ChevronDown className="w-4 h-4 text-neutral-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
@@ -373,7 +373,7 @@ export const AlumniDataListPage = () => {
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-neutral-500 font-semibold">Active:</span>
               <span className="px-2.5 py-0.5 rounded-md bg-neutral-900 text-white font-bold text-[11px]">
-                {selectedYear === 'ALL' ? 'All Batches' : `${getBatchNo(selectedYear, activeTab)}`}
+                {selectedYear === 'ALL' ? 'All Batches' : `${extractYear(selectedYear)} (${selectedYear})`}
               </span>
               {searchQuery && (
                 <span className="px-2.5 py-0.5 rounded-md bg-blue-100 text-blue-800 font-bold text-[11px]">
@@ -388,16 +388,15 @@ export const AlumniDataListPage = () => {
           </div>
         </div>
 
-        {/* 3. Alumni Data Table */}
+        {/* 3. Alumni Data Table — Year column shows ONLY numeric year */}
         <div className="bg-white rounded-xl border border-neutral-200/90 shadow-xs overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full table-fixed min-w-[760px] text-left text-xs sm:text-sm border-collapse">
+            <table className="w-full table-fixed min-w-[540px] text-xs sm:text-sm border-collapse">
               <thead className="bg-[#111827] text-white uppercase font-black text-[11px] tracking-wider border-b border-neutral-800">
                 <tr>
-                  <th className="py-4 px-4 w-[12%] text-center">SR NO.</th>
-                  <th className="py-4 px-4 w-[24%] text-center">BATCH NO.</th>
-                  <th className="py-4 px-4 w-[24%] text-center">YEAR</th>
-                  <th className="py-4 px-6 w-[40%] text-left">NAME</th>
+                  <th className="py-4 px-6 sm:px-10 w-1/3 text-left">SR NO.</th>
+                  <th className="py-4 px-6 sm:px-10 w-1/3 text-left">YEAR</th>
+                  <th className="py-4 px-6 sm:px-10 w-1/3 text-left">NAME</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-neutral-200 text-neutral-800">
@@ -405,7 +404,7 @@ export const AlumniDataListPage = () => {
                   paginatedData.map((alumnus, idx) => {
                     const globalIndex = (currentPage - 1) * itemsPerPage + idx + 1;
                     const isDeceased = alumnus.deceased || alumnus.name.toLowerCase().startsWith('late ') || alumnus.name.includes('[Deceased]') || alumnus.email?.toLowerCase().includes('no more with us');
-                    const batchNo = alumnus.batchNo || getBatchNo(alumnus.year, activeTab);
+                    const displayYear = extractYear(alumnus.year);
 
                     return (
                       <tr
@@ -414,36 +413,26 @@ export const AlumniDataListPage = () => {
                           isDeceased ? 'bg-neutral-50/70' : ''
                         }`}
                       >
-                        {/* Sr No. */}
+                        {/* Sr No. — Starting (Left) */}
                         <td
                           style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
-                          className="py-3.5 px-4 text-center font-bold text-neutral-400"
+                          className="py-3.5 px-6 sm:px-10 text-left font-bold text-neutral-400"
                         >
                           {globalIndex}
                         </td>
 
-                        {/* Batch No. */}
-                        <td className="py-3.5 px-4 text-center whitespace-nowrap">
-                          <span
-                            style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
-                            className="inline-flex items-center justify-center px-3 py-1 rounded-md text-xs font-black bg-red-50 text-red-700 border border-red-200 uppercase tracking-wide shadow-2xs"
-                          >
-                            {batchNo}
-                          </span>
-                        </td>
-
-                        {/* Year */}
-                        <td className="py-3.5 px-4 text-center whitespace-nowrap">
+                        {/* Year — Middle (Left-aligned in 1/3 for equal gapping) */}
+                        <td className="py-3.5 px-6 sm:px-10 text-left whitespace-nowrap">
                           <span
                             style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", fontVariantNumeric: 'lining-nums tabular-nums' }}
                             className="inline-flex items-center justify-center px-3 py-1 rounded-md text-xs font-black bg-neutral-100 border border-neutral-200 text-neutral-900"
                           >
-                            {alumnus.year}
+                            {displayYear}
                           </span>
                         </td>
 
-                        {/* Name */}
-                        <td className="py-3.5 px-6 font-bold text-neutral-900">
+                        {/* Name — Ending (Left-aligned in 1/3 for equal gapping) */}
+                        <td className="py-3.5 px-6 sm:px-10 font-bold text-neutral-900 text-left">
                           <div className="flex items-center gap-3">
                             <div
                               className={`w-8 h-8 rounded-full font-black text-xs flex items-center justify-center shrink-0 uppercase shadow-2xs ${
@@ -454,10 +443,8 @@ export const AlumniDataListPage = () => {
                             >
                               {alumnus.name.replace(/^Late\s+/i, '').replace(/Prof\.|Dr\.|Ar\.|\[Deceased\]/gi, '').trim().charAt(0) || 'A'}
                             </div>
-                            <div className="flex flex-col min-w-0">
-                              <span className={`text-xs sm:text-sm uppercase tracking-tight truncate ${
-                                isDeceased ? 'text-neutral-800 font-extrabold' : 'text-neutral-900'
-                              }`}>
+                            <div className="flex flex-col min-w-0 text-left">
+                              <span className={`text-xs sm:text-sm uppercase tracking-tight ${isDeceased ? 'text-neutral-800 font-extrabold' : 'text-neutral-900'}`}>
                                 {alumnus.name}
                               </span>
                               {isDeceased && (
@@ -473,7 +460,7 @@ export const AlumniDataListPage = () => {
                   })
                 ) : (
                   <tr>
-                    <td colSpan={4} className="py-12 text-center text-neutral-500">
+                    <td colSpan={3} className="py-12 text-center text-neutral-500">
                       <AlertCircle className="w-8 h-8 text-neutral-400 mx-auto mb-2" />
                       <p className="font-semibold text-sm">No alumni records found matching the criteria.</p>
                       <p className="text-xs text-neutral-400 mt-1">

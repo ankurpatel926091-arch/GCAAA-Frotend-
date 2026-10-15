@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles, Users, Calendar, Award } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 
 export const HeritageCtaSection = () => {
   return (
-    <section className="w-full bg-white pt-4 sm:pt-6 pb-8 sm:pb-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-[1200px] mx-auto">
+    <section className="w-full bg-white pt-4 sm:pt-6 pb-8 sm:pb-12">
+      {/* Navbar ke equal width (1400px container) */}
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-14">
         {/* Floating CTA Card */}
         <div className="relative rounded-2xl sm:rounded-3xl bg-[#0c0d12] border border-neutral-800/90 p-6 sm:p-8 md:p-10 text-center shadow-2xl overflow-hidden">
 
@@ -22,7 +23,7 @@ export const HeritageCtaSection = () => {
 
             {/* Main Heading */}
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[36px] font-black text-white tracking-tight leading-tight">
-              Are You an Alumnus of GCA Lucknow  FOAP?
+              Are You an Alumnus of GCA Lucknow FOAP?
             </h2>
 
             {/* Subtitle Description */}
