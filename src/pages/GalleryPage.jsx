@@ -1,14 +1,13 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import {
-  Camera,
   Maximize2,
   X,
   ChevronLeft,
-  ChevronRight,
-  Eye
+  ChevronRight
 } from 'lucide-react';
 
 import { allGalleryItems, galleryCategories as categoryTabs } from '@/data/galleryData';
+import { getPublishedGalleryPhotos } from '@/Api/galleryApi';
 import { Link } from 'react-router-dom';
 import galleryHeroImg from '@/assets/images/building.jpg';
 export { allGalleryItems };
@@ -16,21 +15,84 @@ export { allGalleryItems };
 export const GalleryPage = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null);
+  const [dynamicItems, setDynamicItems] = useState([]);
+  const [galleryError, setGalleryError] = useState('');
+  const [isLoadingGallery, setIsLoadingGallery] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    getPublishedGalleryPhotos()
+      .then((photos) => {
+        if (!Array.isArray(photos)) {
+          throw new Error('Gallery API returned an invalid response.');
+        }
+
+        if (isMounted) {
+          setDynamicItems(
+            photos.map((photo) => ({
+              ...photo,
+              id: photo.id || photo._id,
+              src: photo.imageUrl,
+            }))
+          );
+          setGalleryError('');
+        }
+      })
+      .catch((error) => {
+        console.error('Unable to load gallery photos:', error);
+        if (isMounted) {
+          setGalleryError(error.friendlyMessage || 'Unable to load the latest gallery photos.');
+        }
+      })
+      .finally(() => {
+        if (isMounted) setIsLoadingGallery(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const galleryItems = useMemo(
+    () => [...allGalleryItems, ...dynamicItems],
+    [dynamicItems]
+  );
+
+  const categories = useMemo(() => {
+    const dynamicCategories = new Map();
+    dynamicItems.forEach((item) => {
+      if (!item.category || categoryTabs.some((category) => category.key === item.category)) {
+        return;
+      }
+      dynamicCategories.set(item.category, {
+        key: item.category,
+        label:
+          item.categoryLabel ||
+          item.category
+            .split('-')
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' '),
+      });
+    });
+
+    return [...categoryTabs, ...dynamicCategories.values()];
+  }, [dynamicItems]);
 
   // Category counts
   const categoryCounts = useMemo(() => {
-    const counts = { all: allGalleryItems.length };
-    allGalleryItems.forEach((item) => {
+    const counts = { all: galleryItems.length };
+    galleryItems.forEach((item) => {
       counts[item.category] = (counts[item.category] || 0) + 1;
     });
     return counts;
-  }, []);
+  }, [galleryItems]);
 
   // Filtered Items
   const filteredItems = useMemo(() => {
-    if (activeCategory === 'all') return allGalleryItems;
-    return allGalleryItems.filter((item) => item.category === activeCategory);
-  }, [activeCategory]);
+    if (activeCategory === 'all') return galleryItems;
+    return galleryItems.filter((item) => item.category === activeCategory);
+  }, [activeCategory, galleryItems]);
 
   const openLightbox = (index) => {
     setSelectedPhotoIndex(index);
@@ -108,7 +170,7 @@ export const GalleryPage = () => {
       {/* Categories Filter Pills Bar */}
       <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-14 mt-6 sm:mt-8">
         <div className="bg-white rounded-2xl border border-neutral-200/90 shadow-sm p-4 sm:p-5 flex flex-wrap items-center justify-center gap-2.5">
-          {categoryTabs.map((cat) => {
+          {categories.map((cat) => {
             const isActive = activeCategory === cat.key;
             const count = categoryCounts[cat.key] || 0;
             return (
@@ -140,6 +202,21 @@ export const GalleryPage = () => {
           })}
         </div>
       </div>
+
+      {(isLoadingGallery || galleryError) && (
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-14 mt-4">
+          {isLoadingGallery && (
+            <p className="text-center text-xs text-neutral-500" role="status">
+              Loading latest gallery photos...
+            </p>
+          )}
+          {galleryError && (
+            <p className="text-center text-xs text-amber-700" role="alert">
+              {galleryError} Showing the featured photos instead.
+            </p>
+          )}
+        </div>
+      )}
 
       {/* ========================================================
           2. PURE PHOTO GRID (NO TEXT ON CARDS)

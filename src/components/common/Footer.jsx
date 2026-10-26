@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { MapPin, Mail, Phone, Clock, ArrowRight } from 'lucide-react';
 import logoImg from '@/assets/images/logo.png';
 // ✅ Apna CodeCrafter logo yahan import karo (path apne folder ke hisaab se adjust karo)
-import codeCrafterLogo from '@/assets/images/image.png';
+import codeCrafterLogo from '@/assets/images/CClogo.png';
 
 export const Footer = () => {
   const [subscribedEmail, setSubscribedEmail] = useState('');
