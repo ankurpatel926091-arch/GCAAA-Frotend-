@@ -86,6 +86,7 @@ export const ExecutiveCommitteeSection = ({ activeSection }) => {
     { name: 'Ar. Devesh Mani Tripathi', phone: '9335210024', email: 'thinkdevesh@gmail.com', image: null },
     { name: 'Ar. Anjaneya Sharma', phone: '9452907110', email: 'sharma.anjaneya@foaaktu.ac.in', image: null },
     { name: 'Ar. Anupam', phone: '9721373056', email: 'Anupam0688@gmail.com', image: null },
+    { name: 'Ar. Shipra Singh', phone: '', email: '', image: null },
   ];
 
   const convenors = [
@@ -212,14 +213,18 @@ export const ExecutiveCommitteeSection = ({ activeSection }) => {
                   </h4>
 
                   <div className="w-full space-y-2 pt-3.5 border-t border-neutral-100 text-xs text-neutral-600 mt-auto">
-                    <a
+                    {member?.phone && (
+
+                      <a
                       href={`tel:${member.phone}`}
                       className="flex items-center justify-center gap-2 py-1.5 px-2.5 rounded-md bg-neutral-50 hover:bg-red-50 hover:text-[#B70D2B] font-semibold transition-colors"
                     >
                       <Phone className="w-3.5 h-3.5 text-[#B70D2B] shrink-0" />
                       <span className="lining-nums">{member.phone}</span>
                     </a>
-                    <a
+                    )}
+                    {member?.email && (
+                      <a
                       href={`mailto:${member.email}`}
                       className="flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-md bg-neutral-50 hover:bg-red-50 hover:text-[#B70D2B] font-medium transition-colors"
                       title={member.email}
@@ -227,6 +232,7 @@ export const ExecutiveCommitteeSection = ({ activeSection }) => {
                       <Mail className="w-3.5 h-3.5 text-[#B70D2B] shrink-0" />
                       <span className="truncate">{member.email}</span>
                     </a>
+                    )}
                   </div>
                 </div>
               ))}
