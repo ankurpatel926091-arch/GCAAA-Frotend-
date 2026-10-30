@@ -36,6 +36,12 @@ const electionDocuments = {
     url: `${import.meta.env.BASE_URL}final Nominations 28 oct2026.pdf`,
     downloadName: 'final Nominations 28 oct2026.pdf',
   },
+  voterDirectory: {
+    title: 'Voter-Directory',
+    type: 'pdf',
+    url: `${import.meta.env.BASE_URL}Voter-Directory (3).pdf`,
+    downloadName: 'Voter-Directory (3).pdf',
+  },
 };
 
 const electionPosts = [
@@ -275,10 +281,17 @@ export const ElectionNominationModal = () => {
           </button>
           <button
             onClick={() => openElectionDocument(electionDocuments.finalNominationsList)}
-            className="col-span-2 flex w-full items-center justify-center gap-2 rounded-lg border border-red-400/40 bg-red-950/60 px-2 py-2.5 text-xs sm:text-sm font-bold text-white transition-colors hover:bg-red-900/70"
+            className="flex items-center justify-center gap-2 rounded-lg border border-red-400/40 bg-red-950/60 px-2 py-2.5 text-xs sm:text-sm font-bold text-white transition-colors hover:bg-red-900/70"
           >
             <FileText className="h-4 w-4 shrink-0" />
             Final Nominations List
+          </button>
+          <button
+            onClick={() => openElectionDocument(electionDocuments.voterDirectory)}
+            className="flex items-center justify-center gap-2 rounded-lg border border-red-400/40 bg-red-950/60 px-2 py-2.5 text-xs sm:text-sm font-bold text-white transition-colors hover:bg-red-900/70"
+          >
+            <FileText className="h-4 w-4 shrink-0" />
+            Voter-Directory
           </button>
         </div>
       </div>
