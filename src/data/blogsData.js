@@ -1,9 +1,9 @@
-import blogImg1 from '@/assets/gallery/gallery_1_courtyard.png';
-import blogImg2 from '@/assets/gallery/gallery_2_dharohar_stage.png';
-import blogImg3 from '@/assets/gallery/gallery_10_stage_conclave.png';
-import blogImg4 from '@/assets/gallery/gallery_8_lawn_reunion.png';
-import blogImg5 from '@/assets/gallery/gallery_6_stamp_heritage.png';
-import blogImg6 from '@/assets/gallery/gallery_13_heritage_steps.png';
+const blogImg1 = 'https://res.cloudinary.com/dwaono6mi/image/upload/v1793440707/gcaaa/gallery/ttwqehpbgy6dfqny35te.jpg';
+const blogImg2 = 'https://res.cloudinary.com/dwaono6mi/image/upload/v1793440708/gcaaa/gallery/qh5pednwbb2qj4jmdjkh.jpg';
+const blogImg3 = 'https://res.cloudinary.com/dwaono6mi/image/upload/v1793440696/gcaaa/gallery/zj1ixx9bbvfxmbqsyeeq.jpg';
+const blogImg4 = 'https://res.cloudinary.com/dwaono6mi/image/upload/v1793440715/gcaaa/gallery/tg2yplaqjfhdoxmwv1ll.jpg';
+const blogImg5 = 'https://res.cloudinary.com/dwaono6mi/image/upload/v1793440713/gcaaa/gallery/obk2mjnniiima8uwiv2v.jpg';
+const blogImg6 = 'https://res.cloudinary.com/dwaono6mi/image/upload/v1793440699/gcaaa/gallery/ygwkzhm7ifasjokbbeks.jpg';
 
 export const blogCategories = [
   'All',
