@@ -42,6 +42,12 @@ const electionDocuments = {
     url: `${import.meta.env.BASE_URL}Voter-Directory (3).pdf`,
     downloadName: 'Voter-Directory (3).pdf',
   },
+  votingGuide: {
+    title: 'Voting Guide',
+    type: 'pdf',
+    url: `${import.meta.env.BASE_URL}PPT_compressed.pdf`,
+    downloadName: 'PPT_compressed.pdf',
+  },
 };
 
 const electionPosts = [
@@ -292,6 +298,13 @@ export const ElectionNominationModal = () => {
           >
             <FileText className="h-4 w-4 shrink-0" />
             Voter Directory – Updated as of 30-Oct-2026
+          </button>
+          <button
+            onClick={() => openElectionDocument(electionDocuments.votingGuide)}
+            className="col-span-2 flex items-center justify-center gap-2 rounded-lg border border-red-400/40 bg-red-950/60 px-2 py-2.5 text-xs sm:text-sm font-bold text-white transition-colors hover:bg-red-900/70"
+          >
+            <FileText className="h-4 w-4 shrink-0" />
+            Voting Guide
           </button>
         </div>
       </div>
