@@ -291,7 +291,7 @@ export const ElectionNominationModal = () => {
             className="flex items-center justify-center gap-2 rounded-lg border border-red-400/40 bg-red-950/60 px-2 py-2.5 text-xs sm:text-sm font-bold text-white transition-colors hover:bg-red-900/70"
           >
             <FileText className="h-4 w-4 shrink-0" />
-            Voter Directory
+            Voter Directory – Updated as of 30-Oct-2026
           </button>
         </div>
       </div>
