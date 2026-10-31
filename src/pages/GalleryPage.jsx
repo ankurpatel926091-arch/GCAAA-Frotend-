@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   Maximize2,
   X,
-  ChevronLeft,
-  ChevronRight,
   Loader2,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -21,26 +19,17 @@ export const GalleryPage = () => {
     { key: 'gbm', label: 'GBM 2025', count: 0 },
     { key: 'dharohar', label: 'Dharohar & Reunions', count: 0 },
   ]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalPhotos, setTotalPhotos] = useState(0);
   const [galleryError, setGalleryError] = useState('');
   const [isLoadingGallery, setIsLoadingGallery] = useState(true);
   const gridSectionRef = useRef(null);
 
-  const ITEMS_PER_PAGE = 16;
-
-  // Fetch photos from backend whenever activeCategory or currentPage changes
+  // Fetch all photos from backend whenever activeCategory changes
   useEffect(() => {
     let isMounted = true;
     setIsLoadingGallery(true);
     setGalleryError('');
 
-    const params = {
-      page: currentPage,
-      limit: ITEMS_PER_PAGE,
-    };
-
+    const params = {};
     if (activeCategory && activeCategory !== 'all') {
       params.category = activeCategory;
     }
@@ -57,11 +46,6 @@ export const GalleryPage = () => {
             title: p.title || p.caption || '',
           }));
           setPhotos(formatted);
-
-          if (res.pagination) {
-            setTotalPages(res.pagination.totalPages || 1);
-            setTotalPhotos(res.pagination.total || 0);
-          }
 
           if (Array.isArray(res.categories) && res.categories.length > 0) {
             setCategories(res.categories);
@@ -87,22 +71,10 @@ export const GalleryPage = () => {
     return () => {
       isMounted = false;
     };
-  }, [activeCategory, currentPage]);
+  }, [activeCategory]);
 
   const handleCategoryChange = (key) => {
     setActiveCategory(key);
-    setCurrentPage(1);
-  };
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    if (gridSectionRef.current) {
-      const topOffset =
-        gridSectionRef.current.getBoundingClientRect().top +
-        window.pageYOffset -
-        100;
-      window.scrollTo({ top: topOffset, behavior: 'smooth' });
-    }
   };
 
   const openLightbox = (index) => {
@@ -255,73 +227,6 @@ export const GalleryPage = () => {
                 </div>
               </div>
             ))}
-          </div>
-        )}
-
-        {/* Backend Pagination Controls */}
-        {totalPages > 1 && (
-          <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-neutral-200 pt-6">
-            <p className="text-xs sm:text-sm text-neutral-600 font-medium">
-              Showing Page <span className="font-bold text-neutral-900">{currentPage}</span> of{' '}
-              <span className="font-bold text-neutral-900">{totalPages}</span> ({totalPhotos} total photos)
-            </p>
-
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1 || isLoadingGallery}
-                className="inline-flex items-center gap-1 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-lg text-xs font-bold border border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-50 hover:border-neutral-300 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-xs cursor-pointer"
-                aria-label="Previous Page"
-              >
-                <ChevronLeft className="w-4 h-4 text-neutral-600" />
-                <span className="hidden sm:inline">Prev</span>
-              </button>
-
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => {
-                if (
-                  pageNum === 1 ||
-                  pageNum === totalPages ||
-                  (pageNum >= currentPage - 2 && pageNum <= currentPage + 2)
-                ) {
-                  return (
-                    <button
-                      key={pageNum}
-                      onClick={() => handlePageChange(pageNum)}
-                      className={`min-w-[34px] sm:min-w-[38px] h-[34px] sm:h-[38px] rounded-lg text-xs sm:text-sm font-bold flex items-center justify-center transition-all cursor-pointer ${
-                        pageNum === currentPage
-                          ? 'bg-[#B70D2B] text-white shadow-md shadow-red-700/25 ring-2 ring-red-400/40 font-black'
-                          : 'bg-white border border-neutral-200 text-neutral-700 hover:bg-red-50/50 hover:text-red-600 hover:border-red-300 shadow-xs'
-                      }`}
-                      style={{
-                        fontFamily:
-                          "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-                        fontVariantNumeric: 'lining-nums tabular-nums',
-                      }}
-                    >
-                      {pageNum}
-                    </button>
-                  );
-                }
-                if (pageNum === currentPage - 3 || pageNum === currentPage + 3) {
-                  return (
-                    <span key={pageNum} className="text-neutral-400 text-xs px-1">
-                      ...
-                    </span>
-                  );
-                }
-                return null;
-              })}
-
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages || isLoadingGallery}
-                className="inline-flex items-center gap-1 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-lg text-xs font-bold border border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-50 hover:border-neutral-300 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-xs cursor-pointer"
-                aria-label="Next Page"
-              >
-                <span className="hidden sm:inline">Next</span>
-                <ChevronRight className="w-4 h-4 text-neutral-600" />
-              </button>
-            </div>
           </div>
         )}
       </section>
