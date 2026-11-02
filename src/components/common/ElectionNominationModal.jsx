@@ -62,7 +62,7 @@ const electionPosts = [
 ];
 
 export const ElectionNominationModal = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [withdrawalSubmitted, setWithdrawalSubmitted] = useState(false);
 
@@ -72,14 +72,7 @@ export const ElectionNominationModal = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
-  // Show popup automatically whenever the page loads or refreshes
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsOpen(true);
-    }, 400);
 
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     if (!isOpen) return undefined;

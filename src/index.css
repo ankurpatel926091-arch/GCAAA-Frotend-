@@ -157,3 +157,10 @@
     min-height: auto !important;
   }
 }
+
+
+/* Mobile CPU & Rendering Optimization */
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 650px;
+}

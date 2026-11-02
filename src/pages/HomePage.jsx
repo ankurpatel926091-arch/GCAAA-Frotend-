@@ -1,6 +1,7 @@
   import { Link } from 'react-router-dom';
   import { ArrowRight, Sparkles, Calendar, MapPin } from 'lucide-react';
   import heroBg from '@/assets/images/clg.webp';
+  import heroBgMobile from '@/assets/images/clg-mobile.webp';
   import { AboutSection } from '@/components/home/AboutSection';
   import { CampusHeritageSection } from '@/components/home/CampusHeritageSection';
   import { NoticesSection } from '@/components/home/NoticesSection';
@@ -27,18 +28,21 @@
             1. HERO SECTION WITH VIBRANT PHOTO & SUBTLE COLOR OVERLAY
         ======================================================== */}
         <section className="relative w-full h-[calc(100vh-188px)] min-h-[350px] max-h-[620px] overflow-hidden flex items-center justify-center">
-          {/* Background Image - Bright, Vibrant, Not Dull */}
-          <img
-            src={heroBg}
-            alt="Government College of Architecture Campus"
-            fetchPriority="high"
-            loading="eager"
-            decoding="async"
-            className="absolute inset-0 w-full h-full object-cover brightness-[1.0] contrast-[1.02] saturate-[1.1] pointer-events-none"
-            style={{
-              objectPosition: 'center 20%',
-            }}
-          />
+          {/* Background Image - Responsive Picture (Mobile 54KB, Desktop 173KB) */}
+          <picture className="absolute inset-0 w-full h-full pointer-events-none">
+            <source media="(max-width: 768px)" srcSet={heroBgMobile} />
+            <img
+              src={heroBg}
+              alt="Government College of Architecture Campus"
+              fetchPriority="high"
+              loading="eager"
+              decoding="async"
+              className="w-full h-full object-cover brightness-[1.0] contrast-[1.02] saturate-[1.1]"
+              style={{
+                objectPosition: 'center 20%',
+              }}
+            />
+          </picture>
 
           {/* Light, subtle color overlay - preserves vibrant photo colors while keeping text readable */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/20" />
@@ -112,57 +116,57 @@
         {/* ========================================================
             8. ALUMNI LEGACY
         ======================================================== */}
-        <AlumniLegacySection />
+        <div className="content-auto"><AlumniLegacySection /></div>
 
       
 
         {/* ========================================================
             5. DHAROHAR 2026 SECTION
         ======================================================== */}
-        <DharoharSection />
+        <div className="content-auto"><DharoharSection /></div>
 
         {/* ========================================================
             5. EVENT SECTION
         ======================================================== */}
-        <EventSection />
+        <div className="content-auto"><EventSection /></div>
 
         {/* ========================================================
             7. WELCOME MESSAGES
         ======================================================== */}
-        <WelcomeMessagesSection />
+        <div className="content-auto"><WelcomeMessagesSection /></div>
 
         {/* ========================================================
             6. GALLERY SECTION
         ======================================================== */}
-        <GallerySection />
+        <div className="content-auto"><GallerySection /></div>
 
         
 
         {/* ========================================================
             3. ABOUT SECTION
         ======================================================== */}
-        <AboutSection />
+        <div className="content-auto"><AboutSection /></div>
 
         {/* ========================================================
             CAMPUS & ARCHITECTURAL HERITAGE SECTION
         ======================================================== */}
-        <CampusHeritageSection />
+        <div className="content-auto"><CampusHeritageSection /></div>
 
         {/* ========================================================
             4. NOTICES & ANNOUNCEMENTS SECTION (CIRCULARS & NOTICES)
         ======================================================== */}
-        <NoticesSection />
+        <div className="content-auto"><NoticesSection /></div>
         
 
         {/* ========================================================
             9. PAST SPONSORS SECTION
         ======================================================== */}
-        <PastSponsorsSection />
+        <div className="content-auto"><PastSponsorsSection /></div>
 
         {/* ========================================================
             10. HERITAGE STAMP & SKYLINE CTA SECTION
         ======================================================== */}
-        <HeritageCtaSection />
+        <div className="content-auto"><HeritageCtaSection /></div>
       </div>
     );
   };
