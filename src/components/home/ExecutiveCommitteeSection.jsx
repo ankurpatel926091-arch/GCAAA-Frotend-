@@ -1,6 +1,6 @@
 import { Phone, Mail, Shield, Award, Users } from "lucide-react";
-import p2 from "@/assets/images/p-2.png";
-import p3 from "@/assets/images/p-3.png";
+import p2 from "@/assets/images/p-2.webp";
+import p3 from "@/assets/images/p-3.webp";
 
 const formatPhone = (phone = '') => {
   const number = String(phone).replace(/\D/g, '');

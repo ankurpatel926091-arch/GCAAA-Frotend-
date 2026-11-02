@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Mail, Phone, Clock, ArrowRight } from 'lucide-react';
-import logoImg from '@/assets/images/logo.png';
+import logoImg from '@/assets/images/logo.webp';
 // ✅ Apna CodeCrafter logo yahan import karo (path apne folder ke hisaab se adjust karo)
-import codeCrafterLogo from '@/assets/images/CClogo.png';
+import codeCrafterLogo from '@/assets/images/CClogo.webp';
 
 export const Footer = () => {
   const [subscribedEmail, setSubscribedEmail] = useState('');
@@ -36,7 +36,7 @@ export const Footer = () => {
                 <img
                   src={logoImg}
                   alt="GCAAA Logo"
-                  className="h-14 w-auto object-contain bg-white/5 p-1 rounded-lg border border-neutral-800 group-hover:border-red-600/60 transition-colors"
+                  loading="lazy" decoding="async" className="h-14 w-auto object-contain bg-white/5 p-1 rounded-lg border border-neutral-800 group-hover:border-red-600/60 transition-colors"
                 />
               ) : (
                 <div className="w-14 h-14 bg-red-600 rounded-lg flex items-center justify-center text-white font-black text-2xl">
@@ -176,7 +176,7 @@ export const Footer = () => {
               <img
                 src={codeCrafterLogo}
                 alt="CodeCrafter"
-                className="h-6 sm:h-7 w-auto object-contain brightness-0 invert"
+                loading="lazy" decoding="async" className="h-6 sm:h-7 w-auto object-contain brightness-0 invert"
               />
             </a>
           </div>

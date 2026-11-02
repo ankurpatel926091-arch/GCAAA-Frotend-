@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getPublishedGalleryPhotos } from '@/Api/galleryApi';
-import galleryHeroImg from '@/assets/images/building.jpg';
+import galleryHeroImg from '@/assets/images/building.webp';
 
 export const allGalleryItems = [];
 

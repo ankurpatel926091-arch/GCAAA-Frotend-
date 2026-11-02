@@ -1,6 +1,6 @@
   import { Link } from 'react-router-dom';
   import { ArrowRight, Sparkles, Calendar, MapPin } from 'lucide-react';
-  import heroBg from '@/assets/images/clg.png';
+  import heroBg from '@/assets/images/clg.webp';
   import { AboutSection } from '@/components/home/AboutSection';
   import { CampusHeritageSection } from '@/components/home/CampusHeritageSection';
   import { NoticesSection } from '@/components/home/NoticesSection';
@@ -28,11 +28,15 @@
         ======================================================== */}
         <section className="relative w-full h-[calc(100vh-188px)] min-h-[350px] max-h-[620px] overflow-hidden flex items-center justify-center">
           {/* Background Image - Bright, Vibrant, Not Dull */}
-          <div
-            className="absolute inset-0 bg-cover bg-no-repeat brightness-[1.0] contrast-[1.02] saturate-[1.1]"
+          <img
+            src={heroBg}
+            alt="Government College of Architecture Campus"
+            fetchPriority="high"
+            loading="eager"
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover brightness-[1.0] contrast-[1.02] saturate-[1.1] pointer-events-none"
             style={{
-              backgroundImage: `url(${heroBg})`,
-              backgroundPosition: 'center 20%',
+              objectPosition: 'center 20%',
             }}
           />
 

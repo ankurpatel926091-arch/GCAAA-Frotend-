@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Quote, ArrowRight } from 'lucide-react';
-import p1 from '@/assets/images/p-1.png';
-import p2 from '@/assets/images/p-2.png';
-import p3 from '@/assets/images/p-3.png';
+import p1 from '@/assets/images/p-1.webp';
+import p2 from '@/assets/images/p-2.webp';
+import p3 from '@/assets/images/p-3.webp';
 
 export const WelcomeMessagesSection = () => {
   const messages = [

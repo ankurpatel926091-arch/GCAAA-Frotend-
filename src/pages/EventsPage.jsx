@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { EventSection } from '@/components/home/EventSection';
 import { DharoharSection } from '@/components/home/DharoharSection';
 import { GallerySection } from '../components/home/GallerySection';
-import eventHeroImg from '@/assets/images/dharohar.png';
+import eventHeroImg from '@/assets/images/dharohar.webp';
 
 export const EventsPage = () => {
   return (

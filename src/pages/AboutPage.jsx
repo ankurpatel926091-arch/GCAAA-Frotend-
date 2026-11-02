@@ -3,7 +3,7 @@ import { AboutSection } from '@/components/home/AboutSection';
 import { AlumniLegacySection } from '@/components/home/AlumniLegacySection';
 import { CheckCircle2, ShieldCheck, HeartHandshake, Globe } from 'lucide-react';
 import { APP_NAME } from '@/utils/constants';
-import aboutHeroImg from '@/assets/images/clg.png';
+import aboutHeroImg from '@/assets/images/clg.webp';
 
 export const AboutPage = () => {
   const missionGoals = [

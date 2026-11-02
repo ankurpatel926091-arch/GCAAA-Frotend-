@@ -83,30 +83,10 @@ export const ElectionNominationModal = () => {
 
   useEffect(() => {
     if (!isOpen) return undefined;
-
-    const scrollY = window.scrollY;
-    const previousBodyStyles = {
-      position: document.body.style.position,
-      top: document.body.style.top,
-      left: document.body.style.left,
-      right: document.body.style.right,
-      width: document.body.style.width,
-      overflow: document.body.style.overflow,
-    };
-    const previousHtmlOverflow = document.documentElement.style.overflow;
-
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.left = '0';
-    document.body.style.right = '0';
-    document.body.style.width = '100%';
+    const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-
     return () => {
-      document.documentElement.style.overflow = previousHtmlOverflow;
-      Object.assign(document.body.style, previousBodyStyles);
-      window.scrollTo(0, scrollY);
+      document.body.style.overflow = prevOverflow;
     };
   }, [isOpen]);
 
@@ -252,6 +232,9 @@ export const ElectionNominationModal = () => {
           <img
             src={electionBannerImg}
             alt="GCAAA Executive Body Election 2026-2028 Official Notice & Schedule"
+            width="500"
+            height="500"
+            fetchPriority="high"
             className="w-auto h-auto max-h-[calc(94vh-190px)] max-w-full object-contain block select-none mx-auto"
           />
         </div>

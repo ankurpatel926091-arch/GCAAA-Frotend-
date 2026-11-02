@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { fetchBatches, fetchBatchFilterOptions } from "../Api/batchesApi";
-import buildingHeroImg from "../assets/images/GCAAA_college_building.jpg";
+import buildingHeroImg from "../assets/images/GCAAA_college_building.webp";
 
 // Helper: Extract numeric year or batch label
 const extractYear = (yearStr) => {

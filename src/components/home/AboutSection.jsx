@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import collegeImage from '@/assets/images/building.jpg';
+import collegeImage from '@/assets/images/building.webp';
 
 export const AboutSection = () => {
   return (

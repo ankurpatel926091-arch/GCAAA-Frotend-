@@ -20,7 +20,7 @@ import {
   PhoneCall,
   Sparkles,
 } from 'lucide-react';
-import logoImg from '@/assets/images/logo.png';
+import logoImg from '@/assets/images/logo.webp';
 
 export const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -123,7 +123,7 @@ export const Navbar = () => {
                 <img
                   src={logoImg}
                   alt="GCAAA Logo"
-                  className="w-auto object-contain h-10 sm:h-12"
+                  width="32" height="48" fetchPriority="high" className="w-auto object-contain h-10 sm:h-12"
                 />
               ) : (
                 <div className="bg-red-600 rounded-lg flex items-center justify-center text-white font-black w-10 h-10 text-lg">

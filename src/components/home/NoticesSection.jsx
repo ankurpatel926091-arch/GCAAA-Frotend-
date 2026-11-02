@@ -14,7 +14,7 @@ import {
   CalendarDays,
   Gavel,
 } from 'lucide-react';
-import electionBannerImg from '@/assets/images/election_notice_banner.png';
+import electionBannerImg from '@/assets/images/election_notice_banner.webp';
 
 export const NoticesSection = () => {
   const [selectedNotice, setSelectedNotice] = useState(null);

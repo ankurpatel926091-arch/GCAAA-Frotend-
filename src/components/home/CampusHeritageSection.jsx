@@ -7,9 +7,9 @@ import {
   ChevronRight,
 } from 'lucide-react';
 
-import campusHeritageAerial from '@/assets/images/campus_heritage_aerial.jpg';
-import campusAcademicBlock from '@/assets/images/campus_academic_block.jpg';
-import campusTagoreEntrance from '@/assets/images/campus_tagore_entrance.jpg';
+import campusHeritageAerial from '@/assets/images/campus_heritage_aerial.webp';
+import campusAcademicBlock from '@/assets/images/campus_academic_block.webp';
+import campusTagoreEntrance from '@/assets/images/campus_tagore_entrance.webp';
 
 export const CampusHeritageSection = () => {
   const [activeModalIndex, setActiveModalIndex] = useState(null);

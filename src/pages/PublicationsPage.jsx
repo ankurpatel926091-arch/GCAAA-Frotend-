@@ -13,7 +13,7 @@ import {
   Loader2,
 } from 'lucide-react';
 import { getPublishedPublications } from '@/Api/publicationApi';
-import buildingHeroImg from '@/assets/images/GCAAA_college_building.jpg';
+import buildingHeroImg from '@/assets/images/GCAAA_college_building.webp';
 
 export const PublicationsPage = () => {
   const [publicationsList, setPublicationsList] = useState([]);

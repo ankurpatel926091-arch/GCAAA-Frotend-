@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Compass, Building2, Trees, HardHat, Award, ArrowRight, Sparkles } from 'lucide-react';
-import buildingPhoto from '@/assets/images/building.jpg';
+import buildingPhoto from '@/assets/images/building.webp';
 
 export const AlumniLegacySection = ({ showTimelineAndImpact = false }) => {
   // Chronological timeline milestones from the brochure

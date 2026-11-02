@@ -13,7 +13,7 @@ import {
   ExternalLink,
   Navigation,
 } from 'lucide-react';
-import buildingHeroImg from '@/assets/images/GCAAA_college_building.jpg';
+import buildingHeroImg from '@/assets/images/GCAAA_college_building.webp';
 import { submitContactMessage } from '@/Api/contactPageApi';
 import contactPageContent from '@/data/contactPageContent';
 

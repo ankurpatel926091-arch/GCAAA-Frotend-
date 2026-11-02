@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { blogsData, blogCategories } from '@/data/blogsData';
 import { fetchBlogByIdOrSlug, fetchBlogsFromApi } from '@/Api/blogApi';
-import buildingHeroImg from '@/assets/images/GCAAA_college_building.jpg';
+import buildingHeroImg from '@/assets/images/GCAAA_college_building.webp';
 
 export const BlogDetailsPage = () => {
   const { id } = useParams();

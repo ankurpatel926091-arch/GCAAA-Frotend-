@@ -22,8 +22,8 @@ import {
   CalendarDays,
   FileSignature,
 } from 'lucide-react';
-import logoImg from '@/assets/images/logo.png';
-import buildingHeroImg from '@/assets/images/GCAAA_college_building.jpg';
+import logoImg from '@/assets/images/logo.webp';
+import buildingHeroImg from '@/assets/images/GCAAA_college_building.webp';
 import {
   submitElectionNomination,
   verifyMembershipNumber,
