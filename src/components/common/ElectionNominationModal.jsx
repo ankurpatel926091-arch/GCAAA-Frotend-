@@ -208,12 +208,15 @@ export const ElectionNominationModal = () => {
       onClick={handleClose}
       aria-modal="true"
       role="dialog"
+      aria-label="GCAAA Executive Body Election Official Notice"
+      aria-labelledby="election-modal-title"
     >
       {/* Modal Card Container */}
       <div
         className="relative w-auto max-w-[min(94vw,500px)] bg-neutral-950 text-white rounded-2xl shadow-2xl border border-neutral-700/90 overflow-hidden flex flex-col max-h-[96vh] animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
+        <h2 id="election-modal-title" className="sr-only">GCAAA Executive Body Election Official Notice & Schedule</h2>
         {/* Top Decorative Header Band */}
         <div className="h-1.5 w-full bg-gradient-to-r from-red-500 via-red-600 to-[#1A365D] shrink-0" />
 

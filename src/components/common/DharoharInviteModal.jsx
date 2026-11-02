@@ -44,6 +44,7 @@ export const DharoharInviteModal = () => {
       onClick={handleClose}
       aria-modal="true"
       role="dialog"
+      aria-label="Dharohar 2026 Alumni Meet Invitation"
     >
       {/* Modal Card Container */}
       <div
