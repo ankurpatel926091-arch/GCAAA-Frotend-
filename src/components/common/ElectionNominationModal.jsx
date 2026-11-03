@@ -48,6 +48,12 @@ const electionDocuments = {
     url: `${import.meta.env.BASE_URL}PPT_compressed.pdf`,
     downloadName: 'PPT_compressed.pdf',
   },
+  electionResult: {
+    title: 'Election Result 2026-2028',
+    type: 'pdf',
+    url: `${import.meta.env.BASE_URL}Election Result - 2026-2028.pdf`,
+    downloadName: 'Election Result - 2026-2028.pdf',
+  },
 };
 
 const electionPosts = [
@@ -280,10 +286,17 @@ export const ElectionNominationModal = () => {
           </button>
           <button
             onClick={() => openElectionDocument(electionDocuments.voterDirectory)}
-            className="col-span-2 flex items-center justify-center gap-2 rounded-lg border border-red-400/40 bg-red-950/60 px-2 py-2.5 text-xs sm:text-sm font-bold text-white transition-colors hover:bg-red-900/70"
+            className="flex items-center justify-center gap-2 rounded-lg border border-red-400/40 bg-red-950/60 px-2 py-2.5 text-[11px] sm:text-xs font-bold text-white transition-colors hover:bg-red-900/70"
           >
             <FileText className="h-4 w-4 shrink-0" />
-            Voter Directory – Updated as of 30-Oct-2026
+            Voter Directory (30-Oct-26)
+          </button>
+          <button
+            onClick={() => openElectionDocument(electionDocuments.electionResult)}
+            className="flex items-center justify-center gap-2 rounded-lg border border-green-700 bg-green-900 px-2 py-2.5 text-[11px] sm:text-xs font-bold text-white transition-colors hover:bg-green-800 hover:text-green-50"
+          >
+            <FileText className="h-4 w-4 shrink-0" />
+            Election Result 2026-28
           </button>
         </div>
       </div>
