@@ -54,6 +54,12 @@ const electionDocuments = {
     url: `${import.meta.env.BASE_URL}Election Result - 2026-2028.pdf`,
     downloadName: 'Election Result - 2026-2028.pdf',
   },
+  agmAgenda: {
+    title: 'Agenda for upcoming AGM',
+    type: 'pdf',
+    url: `${import.meta.env.BASE_URL}AGM Agenda 05 11 2026.pdf`,
+    downloadName: 'AGM Agenda 05 11 2026.pdf',
+  },
 };
 
 const electionPosts = [
@@ -77,8 +83,6 @@ export const ElectionNominationModal = () => {
   const [signaturePreview, setSignaturePreview] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
-
-
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -298,6 +302,16 @@ export const ElectionNominationModal = () => {
             <FileText className="h-4 w-4 shrink-0" />
             Election Result 2026-28
           </button>
+          
+          {/* 👇 Yahan col-span-2 add kiya hai full width ke liye 👇 */}
+          <button
+            onClick={() => openElectionDocument(electionDocuments.agmAgenda)}
+            className="col-span-2 flex items-center justify-center gap-2 rounded-lg border border-blue-400/40 bg-blue-950/60 px-2 py-2.5 text-xs sm:text-sm font-bold text-white transition-colors hover:bg-blue-900/70"
+          >
+            <FileText className="h-4 w-4 shrink-0" />
+            Agenda for upcoming AGM
+          </button>
+
         </div>
       </div>
 
